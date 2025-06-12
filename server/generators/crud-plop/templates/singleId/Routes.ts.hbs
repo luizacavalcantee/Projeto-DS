@@ -1,0 +1,12 @@
+import { Router } from 'express';
+import { {{pascalCase model}}Controller } from '@controllers';
+
+const {{pascalCase model}}Router = Router();
+
+{{pascalCase model}}Router.route('/').post({{pascalCase model}}Controller.create);
+{{pascalCase model}}Router.route('/').get({{pascalCase model}}Controller.readAll);
+{{pascalCase model}}Router.route('/:{{camelCase model}}Id').get({{pascalCase model}}Controller.read);
+{{pascalCase model}}Router.route('/:{{camelCase model}}Id').patch({{pascalCase model}}Controller.update);
+{{pascalCase model}}Router.route('/:{{camelCase model}}Id').delete({{pascalCase model}}Controller.delete);
+
+export default {{pascalCase model}}Router;

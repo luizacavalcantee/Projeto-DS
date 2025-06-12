@@ -1,0 +1,9 @@
+import { z } from 'zod';
+
+export const {{pascalCase model}} = z.object({
+  {{camelCase model1}}Id: z.string(),
+  {{camelCase model2}}Id: z.string(),
+  // Outros campos obrigatórios aqui
+});
+
+export const Update{{pascalCase model}} = {{pascalCase model}}.partial();

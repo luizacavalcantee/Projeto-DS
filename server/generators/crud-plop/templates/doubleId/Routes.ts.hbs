@@ -1,0 +1,17 @@
+import { Router } from 'express';
+import {{pascalCase model}}Controller from '../controllers/{{pascalCase model}}Controller';
+
+const {{camelCase model}}Router = Router();
+
+{{camelCase model}}Router.route('/').post({{pascalCase model}}Controller.create);
+{{camelCase model}}Router.route('/:{{camelCase model1}}Id/:{{camelCase model2}}Id').get({{pascalCase model}}Controller.read);
+{{camelCase model}}Router.route('/:{{camelCase model1}}Id/:{{camelCase model2}}Id').patch({{pascalCase model}}Controller.update);
+{{camelCase model}}Router.route('/:{{camelCase model1}}Id/:{{camelCase model2}}Id').delete({{pascalCase model}}Controller.delete);
+
+// Rota para ler todos os {{pascalCase model}} associados a um {{camelCase model1}}Id
+{{camelCase model}}Router.route('/all/{{camelCase model1}}/:{{camelCase model1}}Id').get({{pascalCase model}}Controller.findBy{{pascalCase model1}}Id);
+
+// Rota para ler todos os {{pascalCase model}} associados a um {{camelCase model2}}Id
+{{camelCase model}}Router.route('/all/{{camelCase model2}}/:{{camelCase model2}}Id').get({{pascalCase model}}Controller.findBy{{pascalCase model2}}Id);
+
+export default {{camelCase model}}Router;

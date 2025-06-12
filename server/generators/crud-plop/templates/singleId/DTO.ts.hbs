@@ -1,0 +1,7 @@
+import { z } from 'zod';
+
+export const {{pascalCase model}} = z.object({
+  // Preencha as propriedades do modelo aqui
+});
+
+export const Update{{pascalCase model}} = {{pascalCase model}}.partial();

@@ -1,0 +1,71 @@
+import { Prisma, {{pascalCase model}} } from '@prisma/client';
+import prisma from '../database';
+
+class {{pascalCase model}}Repository {
+  async create(data: Prisma.{{pascalCase model}}CreateInput): Promise<{{pascalCase model}}> {
+    const {{camelCase model}} = await prisma.{{camelCase model}}.create({ data });
+    return {{camelCase model}};
+  }
+
+  async findByIds({{camelCase model1}}Id: string, {{camelCase model2}}Id: string): Promise<{{pascalCase model}} | null> {
+    const {{camelCase model}} = await prisma.{{camelCase model}}.findUnique({
+      where: {
+        {{camelCase model1}}Id_{{camelCase model2}}Id: {
+          {{camelCase model1}}Id,
+          {{camelCase model2}}Id,
+        },
+      },
+    });
+    return {{camelCase model}};
+  }
+
+  async findBy{{pascalCase model1}}Id({{camelCase model1}}Id: string): Promise<{{pascalCase model}}[]> {
+    const {{camelCase model}} = await prisma.{{camelCase model}}.findMany({
+      where: {
+        {{camelCase model1}}Id,
+      },
+    });
+    return {{camelCase model}};
+  }
+
+  async findBy{{pascalCase model2}}Id({{camelCase model2}}Id: string): Promise<{{pascalCase model}}[]> {
+    const {{camelCase model}} = await prisma.{{camelCase model}}.findMany({
+      where: {
+        {{camelCase model2}}Id,
+      },
+    });
+    return {{camelCase model}};
+  }
+
+  async update({{camelCase model1}}Id: string, {{camelCase model2}}Id: string, data: Prisma.{{pascalCase model}}UpdateInput): Promise<{{pascalCase model}}> {
+    const {{camelCase model}} = await prisma.{{camelCase model}}.update({
+      where: {
+        {{camelCase model1}}Id_{{camelCase model2}}Id: {
+          {{camelCase model1}}Id,
+          {{camelCase model2}}Id,
+        },
+      },
+      data,
+    });
+    return {{camelCase model}};
+  }
+
+  async delete({{camelCase model1}}Id: string, {{camelCase model2}}Id: string): Promise<{{pascalCase model}}> {
+    const {{camelCase model}} = await prisma.{{camelCase model}}.delete({
+      where: {
+        {{camelCase model1}}Id_{{camelCase model2}}Id: {
+          {{camelCase model1}}Id,
+          {{camelCase model2}}Id,
+        },
+      },
+    });
+    return {{camelCase model}};
+  }
+
+  async findAll(): Promise<{{pascalCase model}}[]> {
+    const {{camelCase model}} = await prisma.{{camelCase model}}.findMany();
+    return {{camelCase model}};
+  }
+}
+
+export default new {{pascalCase model}}Repository();

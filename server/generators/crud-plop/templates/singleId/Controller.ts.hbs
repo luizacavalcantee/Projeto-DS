@@ -1,0 +1,125 @@
+import { Request, Response, NextFunction } from 'express';
+import { {{pascalCase model}}Repository } from '../repositories';
+import { {{pascalCase model}}, Update{{pascalCase model}} } from '../DTOs';
+
+class {{pascalCase model}}Controller {
+  async create(req: Request, res: Response, next: NextFunction) {
+    try {
+      const {{camelCase model}}Data = {{pascalCase model}}.parse(req.body);
+
+      const {{camelCase model}} = await {{pascalCase model}}Repository.create({{camelCase model}}Data);
+
+      res.locals = {
+        status: 201,
+        message: '{{pascalCase model}} criado com sucesso!',
+        data: {{camelCase model}},
+      };
+
+      return next();
+    } catch (error) {
+      return next(error);
+    }
+  }
+
+  async read(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { {{camelCase model}}Id } = req.params;
+
+      const {{camelCase model}} = await {{pascalCase model}}Repository.findById({{camelCase model}}Id);
+
+      if (!{{camelCase model}}) {
+        return next({
+          status: 404,
+          message: '{{pascalCase model}} não encontrado',
+        });
+      }
+
+      res.locals = {
+        status: 200,
+        data: {{camelCase model}},
+      };
+
+      return next();
+    } catch (error) {
+      return next(error);
+    }
+  }
+
+  async readAll(req: Request, res: Response, next: NextFunction) {
+    try {
+      const {{camelCase model}} = await {{pascalCase model}}Repository.findAll();
+
+      if (!{{camelCase model}}) {
+        return next({
+          status: 404,
+          message: '{{pascalCase model}}s não encontrados',
+        });
+      }
+
+      res.locals = {
+        status: 200,
+        data: {{camelCase model}},
+      };
+
+      return next();
+    } catch (error) {
+      return next(error);
+    }
+  }
+
+  async update(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { {{camelCase model}}Id } = req.params;
+      const {{camelCase model}}Data = Update{{pascalCase model}}.parse(req.body);
+
+      const {{camelCase model}}exists = await {{pascalCase model}}Repository.findById({{camelCase model}}Id);
+
+      if (!{{camelCase model}}exists) {
+        return next({
+          status: 404,
+          message: '{{pascalCase model}} não encontrado',
+        });
+      }
+
+      const {{camelCase model}} = await {{pascalCase model}}Repository.update({{camelCase model}}Id, {{camelCase model}}Data);
+
+      res.locals = {
+        status: 200,
+        data: {{camelCase model}},
+        message: '{{pascalCase model}} atualizado!',
+      };
+
+      return next();
+    } catch (error) {
+      return next(error);
+    }
+  }
+
+  async delete(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { {{camelCase model}}Id } = req.params;
+
+      const {{camelCase model}}exists = await {{pascalCase model}}Repository.findById({{camelCase model}}Id);
+
+      if (!{{camelCase model}}exists) {
+        return next({
+          status: 404,
+          message: '{{pascalCase model}} não encontrado',
+        });
+      }
+
+      await {{pascalCase model}}Repository.delete({{camelCase model}}Id);
+
+      res.locals = {
+        status: 200,
+        message: '{{pascalCase model}} deletado',
+      };
+
+      return next();
+    } catch (error) {
+      return next(error);
+    }
+  }
+}
+
+export default new {{pascalCase model}}Controller();
