@@ -1,0 +1,178 @@
+/* src/components/Ranking.css */
+
+.ranking-page {
+  font-family: Arial, sans-serif;
+  background-color: #f0f2f5; /* Fundo cinza claro */
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  background-color: #ffffff;
+  padding: 15px 30px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+}
+
+/*.logo-container {
+  /* Estilo para o logo, se necessário */
+/*}*/
+
+.content-area {
+  padding: 20px 30px;
+  flex-grow: 1; /* Permite que o conteúdo ocupe o espaço disponível */
+}
+
+.back-link {
+  display: flex;
+  align-items: center;
+  color: #333;
+  font-size: 1.1em;
+  font-weight: bold;
+  margin-bottom: 20px;
+  cursor: pointer;
+}
+
+.back-link .arrow {
+  font-size: 1.5em;
+  margin-right: 8px;
+  line-height: 1;
+}
+
+.ranking-section h2 {
+  color: #333;
+  font-size: 1.8em;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.ranking-section .description {
+  color: #666;
+  font-size: 1em;
+  line-height: 1.5;
+  margin-bottom: 40px;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
+.school-cards-container {
+  display: flex;
+  justify-content: center; /* Centraliza os cards horizontalmente */
+  align-items: flex-end; /* Alinha os cards à parte inferior do contêiner (para simular o pódio) */
+  gap: 20px; /* Espaçamento entre os cards */
+  flex-wrap: wrap; /* Permite quebra de linha em telas menores */
+}
+
+.school-card {
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative; /* Para posicionar a barra azul */
+  width: 180px; /* Largura fixa para cada card */
+  margin-bottom: 20px; /* Espaço abaixo dos cards se eles quebrarem a linha */
+  overflow: hidden; /* Garante que a barra azul não transborde os cantos arredondados */
+  justify-content: flex-end; /* Empurra o conteúdo para baixo */
+}
+
+/* Ordem visual dos cards no flexbox para simular o pódio */
+.school-card.order-0 { /* Escola B - 2º lugar */
+  order: 0;
+  height: 250px; /* Altura do card para o 2º lugar */
+}
+.school-card.order-1 { /* Escola A - 1º lugar */
+  order: 1;
+  height: 300px; /* Altura do card para o 1º lugar */
+}
+.school-card.order-2 { /* Escola C - 3º lugar */
+  order: 2;
+  height: 200px; /* Altura do card para o 3º lugar */
+}
+
+.school-placeholder-circle {
+  width: 80px;
+  height: 80px;
+  background-color: #e0e0e0; /* Círculo cinza */
+  border-radius: 50%;
+  margin-bottom: 15px;
+  z-index: 1; /* Garante que esteja acima da barra */
+  position: relative; /* Para garantir que o nome da escola sobreponha */
+}
+
+.school-name-tag {
+  background-color: #555;
+  color: #fff;
+  padding: 5px 15px;
+  border-radius: 20px;
+  font-size: 0.9em;
+  margin-top: -35px; /* Puxa para cima para sobrepor o círculo */
+  position: relative;
+  z-index: 2; /* Acima do círculo e da barra */
+}
+
+.rank-icon-container {
+  margin-top: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1; /* Garante que os ícones estejam visíveis */
+}
+
+.rank-icon-container svg {
+  width: 60px; /* Ajusta o tamanho dos ícones */
+  height: 60px;
+}
+
+.rank-text {
+  font-size: 2em;
+  font-weight: bold;
+  color: #333;
+}
+
+.score-bar {
+  background-color: #36a3f7; /* Cor da barra azul */
+  width: 100%;
+  position: absolute; /* Posiciona absolutamente dentro do card */
+  bottom: 0;
+  left: 0;
+  border-radius: 0 0 8px 8px; /* Cantos inferiores arredondados */
+}
+
+/* Altura da barra de acordo com o rank */
+.school-card.order-0 .score-bar { /* Escola B */
+  height: 120px;
+}
+.school-card.order-1 .score-bar { /* Escola A */
+  height: 170px;
+}
+.school-card.order-2 .score-bar { /* Escola C */
+  height: 70px;
+}
+
+/* Ajustes responsivos */
+@media (max-width: 768px) {
+  .school-cards-container {
+    flex-direction: column; /* Empilha os cards em telas menores */
+    align-items: center;
+  }
+
+  .school-card {
+    width: 80%; /* Alarga os cards em telas menores */
+    max-width: 300px;
+    height: auto !important; /* Remove alturas fixas para maior flexibilidade */
+    margin-bottom: 30px;
+  }
+
+  .school-card .score-bar {
+    /* Você pode querer ajustar a altura das barras para telas menores
+       ou manter proporcionalmente flexível */
+    height: 100px; /* Exemplo: altura fixa para todas em telas pequenas */
+  }
+}
