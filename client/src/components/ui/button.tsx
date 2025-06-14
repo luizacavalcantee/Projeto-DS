@@ -10,9 +10,9 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          'bg-[#294BB6] text-white shadow hover:bg-[#2644a6] hover:drop-shadow-lg',
+          'bg-secondary text-white shadow hover:bg-secondaryHover hover:drop-shadow-lg',
         white:
-          'bg-white border-2 border-[#294BB6] text-[#294BB6] shadow hover:drop-shadow-lg hover:bg-[#fafafa]',
+          'bg-white border-2 border-secondary text-secondary shadow hover:drop-shadow-lg hover:bg-[#fafafa]',
         transparent:
           'bg-transparent text-white',
       },
