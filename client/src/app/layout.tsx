@@ -1,6 +1,4 @@
 import type { Metadata } from 'next';
-
-import Footer from 'components/footer';
 import 'styles/globals.css';
 
 export const metadata: Metadata = {
@@ -18,7 +16,6 @@ export default function RootLayout({
     <html>
       <body className='font-dmSans bg-background'>
         <main>{children}</main>
-        <Footer />
       </body>
     </html>
   );
