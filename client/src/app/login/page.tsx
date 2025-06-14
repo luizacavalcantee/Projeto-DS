@@ -1,71 +1,93 @@
+import React from 'react';
+import { ArrowLeft } from 'lucide-react';
 import Image from 'next/image';
-import Link from 'next/link';
+import { BoraImpactar } from 'assets';
+import { Button } from 'components/ui/button';
 
-import { Button } from '../../components/ui/button';
-import { Input } from '../../components/ui/input';
-import { Label } from '../../components/ui/label';
-import { ModeToggle } from '../../components/theme-dropdown';
-
-export default function Dashboard() {
+export default function Login() {
   return (
-    <div className="w-full lg:grid lg:min-h-[600px] lg:grid-cols-2 xl:min-h-[800px]">
-      <div className="flex items-center justify-center py-12">
-        <div className="absolute top-10 left-10">
-          <ModeToggle />
-        </div>
-        <div className="mx-auto grid w-[350px] gap-6">
-          <div className="grid gap-2 text-center">
-            <h1 className="text-3xl font-bold">Login</h1>
-            <p className="text-balance text-muted-foreground">
-              Enter your email below to login to your account
-            </p>
-          </div>
-          <div className="grid gap-4">
-            <div className="grid gap-2">
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                type="email"
-                placeholder="m@example.com"
-                required
-              />
+    <div className="flex min-h-screen items-center justify-center bg-[#CBEFFF] p-4">
+      {/* Botão de Voltar (fora do card principal) */}
+      <button className="absolute left-8 top-8 text-gray-600 hover:text-gray-800">
+        <ArrowLeft size={24} />
+      </button>
+
+      {/* Card de Login */}
+      <div className="w-full max-w-md rounded-lg bg-white p-8 shadow-lg md:p-12">
+        <div className="flex flex-col items-center">
+          {/* Logo */}
+          <Image
+            src={BoraImpactar} // Substitua pelo caminho do seu logo
+            alt="Logo Bora Impactar" 
+            className="mb-6 h-12"
+          />
+
+          {/* Título */}
+            <h1
+              className="mb-6 text-2xl font-bold text-gray-800 bg-gradient-to-r from-[#26BDE2] to-[#294BB6] bg-clip-text text-transparent"
+            >
+              Entrar
+            </h1>
             </div>
-            <div className="grid gap-2">
-              <div className="flex items-center">
-                <Label htmlFor="password">Password</Label>
-                <Link
-                  href="/forgot-password"
-                  className="ml-auto inline-block text-sm underline"
-                >
-                  Forgot your password?
-                </Link>
-              </div>
-              <Input id="password" type="password" required />
-            </div>
-            <Button type="submit" className="w-full">
-              Login
-            </Button>
-            <Button variant="outline" className="w-full">
-              Login with Google
-            </Button>
+
+        {/* Formulário */}
+        <form className="space-y-6">
+          {/* Campo CNPJ */}
+          <div>
+            <label 
+              htmlFor="cnpj" 
+              className="block text-sm font-medium text-gray-700"
+            >
+              Email
+            </label>
+            <input
+              type="text"
+              id="cnpj"
+              placeholder="Digite seu Email"
+              className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm placeholder:text-gray-400 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+            />
           </div>
-          <div className="mt-4 text-center text-sm">
-            Don&apos;t have an account?{' '}
-            <Link href="#" className="underline">
-              Sign up
-            </Link>
+
+          {/* Campo Senha */}
+          <div>
+            <label 
+              htmlFor="password" 
+              className="block text-sm font-medium text-gray-700"
+            >
+              Senha
+            </label>
+            <input
+              type="password"
+              id="password"
+              placeholder="Digite sua senha"
+              className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm placeholder:text-gray-400 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+            />
           </div>
+
+          {/* Link "Esqueci a senha" */}
+          <div className="text-center">
+            <a href="#" className="text-sm text-[#1474FF] hover:text-indigo-500">
+              Esqueceu a senha?
+            </a>
+          </div>
+
+          {/* Botão Entrar */}
+          <Button type='submit' size={"fit"}>Entrar</Button>
+        </form>
+
+        <div className="mt-8 text-center">
+          <p className="mb-4 text-sm text-black">
+            Não possui cadastro?
+          </p>
+          <Button
+            variant="white"
+            size="fit"
+            type='button'
+          >
+              Criar conta
+          </Button>
         </div>
-      </div>
-      <div className="hidden bg-muted lg:block">
-        <Image
-          src="/placeholder.svg"
-          alt="Image"
-          width="1920"
-          height="1080"
-          className="h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
-        />
       </div>
     </div>
   );
-}
+};

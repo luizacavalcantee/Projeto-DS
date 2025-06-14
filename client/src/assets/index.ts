@@ -1,2 +1,4 @@
 import Logo from "./logo-prefeitura.svg"
-export{ Logo }
+import BoraImpactar from "./bora-impactar.svg"
+
+export{ Logo, BoraImpactar };

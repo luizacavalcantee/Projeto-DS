@@ -10,9 +10,9 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          'bg-secondary text-white shadow hover:bg-secondaryHover hover:drop-shadow-lg',
+          'bg-secondary text-white shadow hover:bg-secondaryHover hover:drop-shadow',
         white:
-          'bg-white border-2 border-secondary text-secondary shadow hover:drop-shadow-lg hover:bg-[#fafafa]',
+          'bg-white border-2 border-secondary text-secondary hover:drop-shadow-md hover:bg-[#fafafa]',
         transparent:
           'bg-transparent text-white',
       },
@@ -20,6 +20,7 @@ const buttonVariants = cva(
         default: 'py-3 px-5 min-w-64',
         sm: 'py-2 px-4 min-w-28',
         lg: 'p-5 min-w-56',
+        fit: 'p-2 w-full border',
       }
     },
     defaultVariants: {
