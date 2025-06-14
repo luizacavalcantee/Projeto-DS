@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 
 import NextAuthSessionProvider from '../providers/sessionProvider';
 import { ThemeProvider } from '../components/theme-provider';
+import Footer from 'components/footer';
 import 'styles/globals.css';
 
 export const metadata: Metadata = {
@@ -25,7 +26,8 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            {children}
+            <main>{children}</main>
+            <Footer />
           </ThemeProvider>
         </NextAuthSessionProvider>
       </body>
