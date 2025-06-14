@@ -4,7 +4,6 @@ import 'styles/globals.css';
 export const metadata: Metadata = {
   title: 'Bora Impactar',
   description: 'Projeto Bora Impactar',
-  manifest: '/manifest.json'
 };
 
 export default function RootLayout({
