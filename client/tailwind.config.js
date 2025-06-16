@@ -15,6 +15,8 @@ module.exports = {
         primary: "hsl(var(--primary))",
         secondary: "hsl(var(--secondary))",
         secondaryHover: "hsl(var(--secondary-hover))",
+        darkBlueRanking: "hsl(var(--dark-blue-ranking))",
+        lightBlueRanking: "hsl(var(--light-blue-ranking))",
       },
       fontFamily: {
 				dmSans: ['DM Sans', 'sans-serif']

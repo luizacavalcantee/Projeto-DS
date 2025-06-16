@@ -9,13 +9,13 @@ export default function Ranking() {
           <Image
             src={School}
             alt="Escola"
-            className="w-32 h-32 rounded-full drop-shadow-lg border border-[#1474FF]/20 object-cover"
+            className="w-32 h-32 rounded-full drop-shadow-lg border border-lightBlueRanking/20 object-cover"
           />
-          <h1 className="absolute bottom-0 w-full bg-[#203C84] text-white p-1 text-xs font-semibold rounded text-center transform translate-y-1/3">
+          <h1 className="absolute bottom-0 w-full bg-darkBlueRanking text-white p-1 text-xs font-semibold rounded text-center transform translate-y-1/3">
             Escola Municipal Oswaldo Lima Filho
           </h1>
         </div>
-        <div className="bg-[#1474FF] h-52 w-full rounded-lg py-3 px-8">
+        <div className="bg-lightBlueRanking h-52 w-full rounded-lg py-3 px-8">
           <Image src={Second} alt="Second" className="w-16" />
         </div>
       </div>
@@ -24,13 +24,13 @@ export default function Ranking() {
           <Image
             src={School}
             alt="Escola"
-            className="w-32 h-32 rounded-full drop-shadow-lg border border-[#1474FF]/20 object-cover"
+            className="w-32 h-32 rounded-full drop-shadow-lg border border-lightBlueRanking/20 object-cover"
           />
-          <h1 className="absolute bottom-0 w-full bg-[#203C84] text-white p-1 text-xs font-semibold rounded text-center transform translate-y-1/3">
+          <h1 className="absolute bottom-0 w-full bg-darkBlueRanking text-white p-1 text-xs font-semibold rounded text-center transform translate-y-1/3">
             Escola Municipal Oswaldo Lima Filho
           </h1>
         </div>
-        <div className="bg-[#1474FF] h-60 w-full rounded-lg py-3 px-8">
+        <div className="bg-lightBlueRanking h-60 w-full rounded-lg py-3 px-8">
           <Image src={Trophy} alt="Trophy" className="w-16" />
         </div>
       </div>
@@ -39,13 +39,13 @@ export default function Ranking() {
           <Image
             src={School}
             alt="Escola"
-            className="w-32 h-32 rounded-full drop-shadow-lg border border-[#1474FF]/20 object-cover"
+            className="w-32 h-32 rounded-full drop-shadow-lg border border-lightBlueRanking/20 object-cover"
           />
-          <h1 className="absolute bottom-0 w-full bg-[#203C84] text-white p-1 text-xs font-semibold rounded text-center transform translate-y-1/3">
+          <h1 className="absolute bottom-0 w-full bg-darkBlueRanking text-white p-1 text-xs font-semibold rounded text-center transform translate-y-1/3">
             Escola Municipal Oswaldo Lima Filho
           </h1>
         </div>
-        <div className="bg-[#1474FF] h-[11.25rem] w-full rounded-lg py-3 px-8">
+        <div className="bg-lightBlueRanking h-[11.25rem] w-full rounded-lg py-3 px-8">
           <Image src={Third} alt="Third" className="w-16" />
         </div>
       </div>

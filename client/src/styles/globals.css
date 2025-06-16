@@ -6,9 +6,11 @@
 
 @layer base {
   :root {
-    --background: 0 0% 96%;
-    --primary: 198, 100%, 45%;
-    --secondary: 226, 63%, 44%;
-    --secondary-hover: 226, 63%, 38%;
+    --background: 0 0% 96%; /*#F5F5F5*/
+    --primary: 198, 100%, 45%; /*#009FE3*/
+    --secondary: 226, 63%, 44%; /*#294BB6*/
+    --secondary-hover: 226, 63%, 38%; /*#24409E*/
+    --dark-blue-ranking: 223, 61%, 32%; /*#0B236D*/
+    --light-blue-ranking: 215, 100%, 54%; /*#1474FF*/
   }
 }
