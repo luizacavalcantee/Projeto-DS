@@ -1,7 +1,7 @@
-import Image from "next/image";
+import Image, { StaticImageData } from "next/image";
 
 interface CardHorizontalProps {
-  imageSrc: string;
+  imageSrc: StaticImageData | string;
   imageAlt: string;
   title: string;
   description: string;
@@ -21,17 +21,15 @@ export default function CardHorizontal({
 }: CardHorizontalProps) {
   return (
     <div
-      className="flex bg-white rounded-md overflow-hidden shadow"
-      style={{ width: "507px", height: "145px" }}
-    >
+      className="flex bg-white rounded-md overflow-hidden shadow">
       {/* Imagem */}
       <div className="flex-shrink-0" style={{ width: "48%" }}>
         <Image
           src={imageSrc}
           alt={imageAlt}
-          width={243}
-          height={145}
-          className="object-cover w-full h-full"
+          width={240}
+          height={144}
+          className="object-cover w-60 h-36"
           quality={100}
           unoptimized
         />
