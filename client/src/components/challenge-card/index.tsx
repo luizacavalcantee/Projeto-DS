@@ -20,29 +20,28 @@ export default function CardHorizontal({
   linkLabel,
 }: CardHorizontalProps) {
   return (
-    <div
-      className="flex bg-white rounded-md overflow-hidden shadow">
+    <div className="flex bg-white rounded-md overflow-hidden drop-shadow-md">
       {/* Imagem */}
-      <div className="flex-shrink-0" style={{ width: "48%" }}>
+      <div className="w-56">
         <Image
           src={imageSrc}
           alt={imageAlt}
           width={240}
           height={144}
-          className="object-cover w-60 h-36"
+          className="object-cover w-60 h-36 border border-primary rounded"
           quality={100}
           unoptimized
         />
       </div>
 
       {/* Conteúdo */}
-      <div className="flex flex-col justify-between pl-6 pr-4 py-3 w-full">
+      <div className="flex flex-col justify-between pl-6 pr-4 py-3 w-full max-w-72">
         {/* Título e descrição */}
         <div>
-          <h2 className="text-sm font-semibold text-gray-900 mt-4 leading-snug">
+          <h2 className="text-base font-medium text-gray-900 mt-4 leading-snug">
             {title}
           </h2>
-          <p className="text-xs text-gray-700 mt-2 leading-tight">
+          <p className="text-sm text-gray-700 mt-2 leading-tight">
             {description}
           </p>
         </div>
@@ -58,7 +57,7 @@ export default function CardHorizontal({
 
           <a
             href={link}
-            className="text-xs text-blue-600 font-medium hover:underline"
+            className="text-sm text-blue-600 font-medium hover:underline"
           >
             {linkLabel}
           </a>
