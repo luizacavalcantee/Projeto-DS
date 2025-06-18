@@ -9,5 +9,6 @@ import Second from "./second.svg"
 import Third from "./third.svg"
 import Trophy from "./trophy.svg"
 import School from "./school.png"
+import Artesenato from "./artesanato.svg";
 
-export { Logo, BoraImpactar, Home_work, Emoji_people, Calendar, Public, Second, Third, Trophy, School, Challenge };
+export { Logo, BoraImpactar, Home_work, Emoji_people, Calendar, Public, Second, Third, Trophy, School, Challenge, Artesenato};
