@@ -7,7 +7,11 @@ import ScoringGuide from "components/scoring-guide";
 export default function Home() {
   return (
     <div>
-      <Header/>
+      <Header 
+      buttonText="Sou ONG"
+      secondaryButtonText="Sou Gestor Educacional"
+      showSecondaryButton={true}
+      />
     </div>
   );
 }

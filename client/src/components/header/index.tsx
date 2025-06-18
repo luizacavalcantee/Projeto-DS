@@ -3,15 +3,24 @@ import { Button } from "components/ui/button";
 import Image from "next/image";
 import { BoraImpactar } from "../../assets/index";
 
+interface HeaderProps {
+    buttonText?: string;
+    secondaryButtonText?: string;
+    showSecondaryButton?: boolean;// mostra ou não o segundo botão
+}
 
-export default function Hero() {
+export default function Header({
+    buttonText,
+    secondaryButtonText,
+    showSecondaryButton = false,
+}: HeaderProps) {
     return (
         <section className="mx-auto py-16 pl-32">
             <div className="flex flex-col md:flex-row items-center">
                 <div className="flex items-center">
                     <div className="mb-8 md:mb-0">
                         <Image src={BoraImpactar} alt="Artesanato" className="mb-12" />
-                        <h1 className="text-[32px]] md:text-3xl font-bold text-black mb-4">
+                        <h1 className="text-[32px] md:text-3xl font-bold text-black mb-4">
                             Educação que Transforma: semeando o futuro do Recife, uma ação de cada vez.
                         </h1>
 
@@ -20,7 +29,12 @@ export default function Hero() {
                             Juntos, podemos gerar um impacto real. Venha fazer parte deste movimento!
                         </p>
 
-                        <Button>Ver Desafios</Button>
+                        <div className="flex gap-4">
+                            <Button variant="default">{buttonText}</Button>
+
+                            {showSecondaryButton && (<Button variant="white">{secondaryButtonText}</Button>
+                            )}
+                        </div>
                     </div>
                 </div>
 
