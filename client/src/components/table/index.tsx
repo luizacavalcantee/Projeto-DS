@@ -13,25 +13,23 @@ export default function Table() {
     ];
 
     return (
-        <div className="flex items-center justify-center p-4">
-            <table className="border">
-                <thead>
-                    <tr>
-                        <th>Posição</th>
-                        <th>Escolas</th>
-                        <th>Desafios</th>
+        <table className="w-full m-64 border-collapse rounded-md overflow-hidden shadow-lg">
+            <thead>
+                <tr className="bg-[#294BB6] w-full">
+                    <th className="text-white font-semibold p-4">Posição</th>
+                    <th className="text-white font-semibold p-4">Escolas</th>
+                    <th className="text-white font-semibold p-4">Desafios</th>
+                </tr>
+            </thead>
+            <tbody className="bg-white">
+                {mockData.map((item, index) => (
+                    <tr key={index}>
+                        <td className="border-b border-gray-200 p-2 text-center font-semibold">{item.posicao}</td>
+                        <td className="border-b border-gray-200 p-2 text-center">{item.escola}</td>
+                        <td className="border-b border-gray-200 p-2 text-center font-semibold">{item.desafios}</td>
                     </tr>
-                </thead>
-                <tbody>
-                    {mockData.map((item, index) => (
-                        <tr key={index}>
-                            <td>{item.posicao}</td>
-                            <td>{item.escola}</td>
-                            <td>{item.desafios}</td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
-        </div>
+                ))}
+            </tbody>
+        </table>
     );
 }
