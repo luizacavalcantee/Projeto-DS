@@ -1,4 +1,4 @@
-import { Second, Third, Trophy, School } from 'assets';
+import { Second, Third, Trophy, School } from '@/assets';
 import Image from 'next/image';
 
 export default function Ranking() {

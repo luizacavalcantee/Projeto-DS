@@ -1,6 +1,5 @@
-import { Challenge } from "assets";
-import Card from "components/challenge-card";
-import JoinUs from "components/join-us";
+import { Challenge } from "@/assets";
+import Card from "@/components/challenge-card";
 
 export default function Home() {
   return (

@@ -1,4 +1,4 @@
-import  { Logo } from "../../assets/index";
+import  { Logo } from "@/assets";
 import Image from "next/image";
 
 export default function Footer(){

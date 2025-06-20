@@ -1,8 +1,8 @@
 import React from 'react';
 import { ArrowLeft } from 'lucide-react';
 import Image from 'next/image';
-import { BoraImpactar } from 'assets';
-import { Button } from 'components/ui/button';
+import { BoraImpactar } from '@/assets';
+import { Button } from '@/components/ui/button';
 
 export default function Login() {
   return (
