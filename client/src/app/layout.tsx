@@ -1,14 +1,9 @@
 import type { Metadata } from 'next';
-
-import NextAuthSessionProvider from '../providers/sessionProvider';
-import { ThemeProvider } from '../components/theme-provider';
-import Footer from 'components/footer';
 import 'styles/globals.css';
 
 export const metadata: Metadata = {
-  title: 'Next.js Boilerplate',
-  description: 'A simple boilerplate for next.js',
-  manifest: '/manifest.json'
+  title: 'Bora Impactar',
+  description: 'Projeto Bora Impactar',
 };
 
 export default function RootLayout({
@@ -18,18 +13,8 @@ export default function RootLayout({
 }) {
   return (
     <html>
-      <body>
-        <NextAuthSessionProvider>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <main>{children}</main>
-            <Footer />
-          </ThemeProvider>
-        </NextAuthSessionProvider>
+      <body className='font-dmSans bg-background'>
+        <main>{children}</main>
       </body>
     </html>
   );

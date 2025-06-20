@@ -1,50 +1,43 @@
-import  { Logo } from "../../assets/index";
+import  { Logo } from "@/assets";
 import Image from "next/image";
 
 export default function Footer(){
     return(
-        <div className="pt-12 bg-[#009FE3] min-h-[200px] py-10">
-            <div className="flex justify-between">
+        <footer className="pt-12 bg-primary pb-16">
+            <div className="flex justify-between gap-32">
                 <div className="w-48 ml-32">
-
-                    <div className="mb-5">
-                        <Image src={Logo} alt="Logo" className="w-auto h-auto" />
-                    </div>
-                    <p className=" text-white font-bold text-2xl text-left whitespace-nowrap"> 
+                    <Image src={Logo} alt="Logo" className="w-auto h-auto mb-10 mt-2" />
+                    <p className=" text-white font-bold text-2xl text-left whitespace-nowrap mb-2"> 
                         Bora Impactar 
                     </p>
-                    <ul>
-                        <li className="mb-2">
-                            <a href="" className="text-white text-left">A união que transforma vidas</a>
-                        </li>
-                    </ul>
+                    <p className="text-white text-left whitespace-nowrap">A união que transforma vidas</p>
                 </div>
-                <div className="ml-16 mr-[740px]">
-                    <p className="text-white font-bold text-2xl text-left">
+                <div className="mr-auto">
+                    <p className="text-white font-bold text-2xl text-left mb-3">
                         Portal
                     </p>
-                    <ul className="mb-[90px]">
-                        <li className="mb-2">
+                    <ul className="flex flex-col gap-2">
+                        <li>
                             <a href="" className="text-white text-left whitespace-nowrap">
                                 Voluntariado e doação
                             </a>
                         </li>
-                        <li className="mb-2">
+                        <li>
                             <a href="" className="text-white text-left whitespace-nowrap">
                                 Doação de sangue
                             </a>
                         </li>
-                        <li className="mb-2">
+                        <li>
                             <a href="" className="text-white text-left whitespace-nowrap">
                                 Imposto de renda
                             </a>
                         </li>
-                        <li className="mb-2">
+                        <li>
                             <a href="" className="text-white text-left whitespace-nowrap">
                                 Área da ONG
                             </a>
                         </li>
-                        <li className="mb-2">
+                        <li>
                             <a href="" className="text-white text-left whitespace-nowrap">
                                 Agenda de eventos
                             </a>
@@ -52,6 +45,6 @@ export default function Footer(){
                     </ul>
                 </div>
             </div>
-        </div>
+        </footer>
     )
 }
