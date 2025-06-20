@@ -1,45 +1,39 @@
-import { Artesenato } from "../../assets/index";
-import { Button } from "components/ui/button";
-import Image from "next/image";
-import { BoraImpactar } from "../../assets/index";
+"use client";
 
-interface HeaderProps {
-    buttonText?: string;
-    secondaryButtonText?: string;
-    showSecondaryButton?: boolean;// mostra ou não o segundo botão
-}
+import React from 'react';
+import Image from 'next/image';
+import { Logo } from '@/assets';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { Button } from '@/components/ui/button';
 
-export default function Header({
-    buttonText,
-    secondaryButtonText,
-    showSecondaryButton = false,
-}: HeaderProps) {
-    return (
-        <section className="mx-auto py-16 pl-32">
-            <div className="flex flex-col md:flex-row items-center">
-                <div className="flex items-center">
-                    <div className="mb-8 md:mb-0">
-                        <Image src={BoraImpactar} alt="Artesanato" className="mb-12" />
-                        <h1 className="text-[32px] md:text-3xl font-bold text-black mb-4">
-                            Educação que Transforma: semeando o futuro do Recife, uma ação de cada vez.
-                        </h1>
+export default function Header() {
+  const router = useRouter();
 
-                        <p className="text-[16px] text-gray-700 mb-12">
-                            No Painel de Impacto, sua escola se conecta a desafios e projetos sociais que transformam Recife todos os dias. Encontre causas que mobilizam seus alunos, desenvolva habilidades para o futuro e ajude a construir uma cidade mais justa e inovadora.
-                            Juntos, podemos gerar um impacto real. Venha fazer parte deste movimento!
-                        </p>
+  const handleLogin = () => {
+    router.push('/login');
+  };
+  return (
+    <header className="fixed w-full flex items-center bg-primary py-4 px-10 text-white drop-shadow-lg">
+      <div className="mr-auto">
+        <Image src={Logo} alt="Logo" className="h-12" />
+      </div>
 
-                        <div className="flex gap-4">
-                            <Button variant="default">{buttonText}</Button>
+      <nav className="mr-7">
+        <ul className="flex justify-between">
+          <li>
+            <Button variant={'transparent'} size={'sm'}>Início</Button>
+          </li>
+          <li>
+            <Button variant={'transparent'} size={'sm'}>Desafios</Button>
+          </li>
+          <li>
+            <Button variant={'transparent'} size={'sm'}>Ranking</Button>
+          </li>
+        </ul>
+      </nav>
 
-                            {showSecondaryButton && (<Button variant="white">{secondaryButtonText}</Button>
-                            )}
-                        </div>
-                    </div>
-                </div>
-
-                <Image src={Artesenato} alt="Artesanato" className="w-full h-full" />
-            </div>
-        </section>
-    );
+      <Button onClick={handleLogin} size={'sm'}>Entrar</Button>
+    </header>
+  );
 }

@@ -1,14 +1,21 @@
+"use client";
+
 import React from 'react';
 import { ArrowLeft } from 'lucide-react';
 import Image from 'next/image';
 import { BoraImpactar } from '@/assets';
 import { Button } from '@/components/ui/button';
+import { useRouter } from 'next/navigation';
 
 export default function Login() {
+  const router = useRouter();
+  const handleReturn = () => {
+    router.back();
+  };
   return (
     <div className="flex min-h-screen items-center justify-center bg-[#CBEFFF] p-4">
       {/* Botão de Voltar (fora do card principal) */}
-      <button className="absolute left-8 top-8 text-gray-600 hover:text-gray-800">
+      <button onClick={handleReturn} className="absolute left-8 top-8 text-gray-600 hover:text-gray-800">
         <ArrowLeft size={24} />
       </button>
 
