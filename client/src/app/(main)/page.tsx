@@ -1,12 +1,8 @@
-import { Challenge } from "assets";
-import Card from "components/challenge-card";
-import Header from "components/header";
-import Ranking from "components/ranking";
-import ScoringGuide from "components/scoring-guide";
+import Header from "@/components/header";
 
 export default function Home() {
   return (
-    <div>
+    <div className="flex h-screen justify-center items-center">
       <Header 
       buttonText="Sou ONG"
       secondaryButtonText="Sou Gestor Educacional"

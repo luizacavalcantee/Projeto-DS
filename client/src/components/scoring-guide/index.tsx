@@ -1,4 +1,4 @@
-import { Home_work, Emoji_people, Calendar, Public } from "assets";
+import { Home_work, Emoji_people, Calendar, Public } from "@/assets";
 import Image from "next/image";
 
 export default function ScoringGuide() {
@@ -29,7 +29,7 @@ export default function ScoringGuide() {
                         <Image src={Calendar} alt="Calendário" width={82} height={82} className="mb-4" />
                         <h3 className="text-base font-bold text-secondary mb-2">Participe de Desafios Especiais</h3>
                         <p className="text-sm text-black font-light">
-                            Fique atento aos desafios sazonais do "Bora Impactar" para pontos bônus!
+                            Fique atento aos desafios sazonais do &quot;Bora Impactar&quot; para pontos bônus!
                         </p>
                     </div>
 
