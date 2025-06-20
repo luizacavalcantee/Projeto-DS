@@ -1,10 +1,13 @@
-import { Challenge } from "@/assets";
-import Card from "@/components/challenge-card";
+import Header from "@/components/header";
 
 export default function Home() {
   return (
     <div className="flex h-screen justify-center items-center">
-      <JoinUs/>
+      <Header 
+      buttonText="Sou ONG"
+      secondaryButtonText="Sou Gestor Educacional"
+      showSecondaryButton={true}
+      />
     </div>
   );
 }
