@@ -1,4 +1,4 @@
-import { Home_work, Emoji_people, Calendar, Public } from "assets";
+import { Home_work, Emoji_people, Calendar, Public } from "@/assets";
 import Image from "next/image";
 
 export default function ScoringGuide() {
