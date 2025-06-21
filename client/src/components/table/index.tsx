@@ -1,35 +1,97 @@
-export default function Table() {
-    const mockData = [
-        { posicao: 1, escola: "Escola A", desafios: 5 },
-        { posicao: 2, escola: "Escola B", desafios: 3 },
-        { posicao: 3, escola: "Escola C", desafios: 8 },
-        { posicao: 4, escola: "Escola D", desafios: 2 },
-        { posicao: 5, escola: "Escola E", desafios: 6 },
-        { posicao: 6, escola: "Escola F", desafios: 4 },
-        { posicao: 7, escola: "Escola G", desafios: 7 },
-        { posicao: 8, escola: "Escola H", desafios: 1 },
-        { posicao: 9, escola: "Escola I", desafios: 9 },
-        { posicao: 10, escola: "Escola J", desafios: 5 },
-    ];
+'use client';
+
+import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
+
+interface SchoolData {
+    escola: string;
+    desafios: number;
+}
+
+interface TableProps {
+    data: SchoolData[];
+    actionType: 'loadMore' | 'viewFullRanking';
+    customLimit?: number;
+}
+
+export default function Table({ data, actionType, customLimit }: TableProps) {
+    const sortedData = data.slice().sort((a, b) => b.desafios - a.desafios);
+
+    const itemsPerLoad = 5;
+
+    const getInitialLimit = () => {
+        if (customLimit !== undefined) {
+            return customLimit;
+        }
+        if (actionType === 'loadMore') {
+            return 10;
+        }
+        if (actionType === 'viewFullRanking') {
+            return 7;
+        }
+        return sortedData.length;
+    };
+
+    const [itemsToShow, setItemsToShow] = useState(getInitialLimit());
+
+    useEffect(() => {
+        setItemsToShow(getInitialLimit());
+    }, [data, actionType, customLimit]);
+
+    const handleVerMais = () => {
+        setItemsToShow((prev) => prev + itemsPerLoad);
+    };
+
+    const hasMoreItemsForLoadMore = actionType === 'loadMore' && itemsToShow < sortedData.length;
+    const showActionButton = hasMoreItemsForLoadMore || actionType === 'viewFullRanking';
 
     return (
-        <table className="w-full m-64 border-collapse rounded-md overflow-hidden shadow-lg">
-            <thead>
-                <tr className="bg-[#294BB6] w-full">
-                    <th className="text-white font-semibold p-4">Posição</th>
-                    <th className="text-white font-semibold p-4">Escolas</th>
-                    <th className="text-white font-semibold p-4">Desafios</th>
-                </tr>
-            </thead>
-            <tbody className="bg-white">
-                {mockData.map((item, index) => (
-                    <tr key={index}>
-                        <td className="border-b border-gray-200 p-2 text-center font-semibold">{item.posicao}</td>
-                        <td className="border-b border-gray-200 p-2 text-center">{item.escola}</td>
-                        <td className="border-b border-gray-200 p-2 text-center font-semibold">{item.desafios}</td>
+        <div className="w-full max-w-4xl mx-auto rounded-lg shadow-lg overflow-hidden">
+            <table className="table-auto w-full">
+                <thead>
+                    <tr className="bg-[#294BB6] w-full h-12">
+                        <th className="text-white font-semibold">Posição</th>
+                        <th className="text-white font-semibold">Escolas</th>
+                        <th className="text-white font-semibold">Desafios</th>
                     </tr>
-                ))}
-            </tbody>
-        </table>
+                </thead>
+                <tbody className="bg-white">
+                    {sortedData.slice(0, itemsToShow).map((item, index) => (
+                        <tr key={index} className="h-10">
+                            <td className="border-b border-gray-200 text-center font-semibold">
+                                {index + 1}
+                            </td>
+                            <td className="border-b border-gray-200 text-center">
+                                {item.escola}
+                            </td>
+                            <td className="border-b border-gray-200 text-center font-semibold">
+                                {item.desafios}
+                            </td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+
+            {showActionButton && (
+                <div className="w-full bg-white h-10 flex items-center justify-center text-center rounded-b-xl">
+                    {actionType === 'loadMore' && (
+                        <button
+                            onClick={handleVerMais}
+                            className="text-[#294BB6] font-semibold hover:underline"
+                        >
+                            Ver mais
+                        </button>
+                    )}
+
+                    {actionType === 'viewFullRanking' && (
+                        <Link href="/ranking">
+                            <button className="text-[#294BB6] font-semibold hover:underline">
+                                Ver ranking completo
+                            </button>
+                        </Link>
+                    )}
+                </div>
+            )}
+        </div>
     );
 }

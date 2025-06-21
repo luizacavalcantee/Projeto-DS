@@ -21,7 +21,7 @@ export default function RootLayout({
 }) {
   return (
     <html>
-      <body className='font-dmSans bg-background'>
+      <body className='font-dmSans bg-background overflow-x-hidden'>
         <main>{children}</main>
       </body>
     </html>
