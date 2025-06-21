@@ -11,6 +11,9 @@ import Trophy from './trophy.svg';
 import School from './school.png';
 import Artesenato from './artesanato.svg';
 import UserProfile from './user.svg';
+import HeroBackgroung from './hero.png';
+import BoraImpactarWhite from './bora-impactar-white.svg';
+import Destaque from './destaque.svg';
 
 export {
   Logo,
@@ -25,5 +28,8 @@ export {
   School,
   Challenge,
   Artesenato,
-  UserProfile
+  UserProfile,
+  HeroBackgroung,
+  BoraImpactarWhite,
+  Destaque
 };
