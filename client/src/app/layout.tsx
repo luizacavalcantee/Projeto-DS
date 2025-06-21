@@ -2,8 +2,16 @@ import type { Metadata } from 'next';
 import 'styles/globals.css';
 
 export const metadata: Metadata = {
-  title: 'Bora Impactar',
+  title: 'Bora Impactar!',
   description: 'Projeto Bora Impactar',
+  icons: {
+    icon: [
+      {
+        url: "/icons/icon.svg",
+        type: "image/svg+xml",
+      },
+    ],
+  },
 };
 
 export default function RootLayout({
