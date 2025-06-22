@@ -35,7 +35,7 @@ export {
   UserProfile,
   HeroBackgroung,
   BoraImpactarWhite,
-  Destaque
+  Destaque,
   Grid1,
   Grid2,
   Grid3,
