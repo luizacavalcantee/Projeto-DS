@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 
 interface SchoolData {
@@ -19,7 +19,7 @@ export default function Table({ data, actionType, customLimit }: TableProps) {
 
     const itemsPerLoad = 5;
 
-    const getInitialLimit = () => {
+    const getInitialLimit = useCallback(() => {
         if (customLimit !== undefined) {
             return customLimit;
         }
@@ -30,13 +30,13 @@ export default function Table({ data, actionType, customLimit }: TableProps) {
             return 7;
         }
         return sortedData.length;
-    };
+    }, [customLimit, actionType, sortedData]);
 
     const [itemsToShow, setItemsToShow] = useState(getInitialLimit());
 
     useEffect(() => {
         setItemsToShow(getInitialLimit());
-    }, [data, actionType, customLimit]);
+    }, [getInitialLimit]);
 
     const handleVerMais = () => {
         setItemsToShow((prev) => prev + itemsPerLoad);
