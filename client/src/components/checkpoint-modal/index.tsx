@@ -4,7 +4,6 @@ interface ComponentsProps {
 import { Button } from '@/components/ui/new-button';
 import {
     Dialog,
-    DialogClose,
     DialogContent,
     DialogDescription,
     DialogFooter,
@@ -54,7 +53,6 @@ export default function CheckpointModal({
                                 />
                                 <Button
                                     type="button"
-                                    variant="outline"
                                     className="w-full h-[74px] border-dashed border-2 bg-transparent"
                                 >
                                     <div className="flex flex-col items-center">
