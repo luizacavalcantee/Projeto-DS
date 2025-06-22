@@ -18,6 +18,7 @@ import Grid1 from './grid-1.png';
 import Grid2 from './grid-2.png';
 import Grid3 from './grid-3.png';
 import Underline from './underlined.svg';
+import Nuvem from './nuvem.svg';
 
 export {
   Logo,
@@ -39,5 +40,6 @@ export {
   Grid1,
   Grid2,
   Grid3,
-  Underline
+  Underline,
+  Nuvem
 };
