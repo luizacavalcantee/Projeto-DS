@@ -11,6 +11,9 @@ import Trophy from './trophy.svg';
 import School from './school.png';
 import Artesenato from './artesanato.svg';
 import UserProfile from './user.svg';
+import HeroBackgroung from './hero.png';
+import BoraImpactarWhite from './bora-impactar-white.svg';
+import Destaque from './destaque.svg';
 import Grid1 from './grid-1.png';
 import Grid2 from './grid-2.png';
 import Grid3 from './grid-3.png';
@@ -31,6 +34,9 @@ export {
   Challenge,
   Artesenato,
   UserProfile,
+  HeroBackgroung,
+  BoraImpactarWhite,
+  Destaque,
   Grid1,
   Grid2,
   Grid3,

@@ -25,7 +25,7 @@ export default function Header() {
   };
 
   return (
-    <header className="fixed w-full flex items-center bg-primary py-4 px-10 text-white drop-shadow-lg">
+    <header className="fixed z-50 w-full flex items-center bg-primary py-4 px-10 text-white drop-shadow-lg">
       <div className="mr-auto">
         <Link href="/">
           <Image src={Logo} alt="Logo" className="h-12" />
