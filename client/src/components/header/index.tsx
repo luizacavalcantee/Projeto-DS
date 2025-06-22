@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { Logo, UserProfile } from '@/assets';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/new-button';
 
 export default function Header() {
   const router = useRouter();
@@ -69,7 +69,7 @@ export default function Header() {
           Ver meu perfil
         </Button>
       ) : (
-        <Button onClick={handleLogin} size={'sm'} className='ml-7'>
+        <Button onClick={handleLogin} size={'sm'} className="ml-7">
           Entrar
         </Button>
       )}

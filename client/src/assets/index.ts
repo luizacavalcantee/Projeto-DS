@@ -14,6 +14,10 @@ import UserProfile from './user.svg';
 import HeroBackgroung from './hero.png';
 import BoraImpactarWhite from './bora-impactar-white.svg';
 import Destaque from './destaque.svg';
+import Grid1 from './grid-1.png';
+import Grid2 from './grid-2.png';
+import Grid3 from './grid-3.png';
+import Underline from './underlined.svg';
 
 export {
   Logo,
@@ -32,4 +36,8 @@ export {
   HeroBackgroung,
   BoraImpactarWhite,
   Destaque
+  Grid1,
+  Grid2,
+  Grid3,
+  Underline
 };
