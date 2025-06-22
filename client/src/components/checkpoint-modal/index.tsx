@@ -45,6 +45,7 @@ export default function CheckpointModal({
                             />
                         </div>
                         <div className="grid gap-3">
+                            <Label htmlFor="description">Faça upload de uma foto</Label>
                             <div className="relative">
                                 <Input
                                     id="file-upload"
