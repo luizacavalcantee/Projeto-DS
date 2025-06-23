@@ -61,58 +61,48 @@ enum ChallengeCategory {
   CULTURA
   ESPORTE
   TECNOLOGIA
-}
-
-enum ChallengeStatus {
-  ACTIVE    
-  IN_PROGRESS   
-  COMPLETED 
+  CIDADANIA
+  INCLUSAO
+  SUSTENTABILIDADE
 }
 
 model Challenge {
   id                      Int                 @id @default(autoincrement())
+  title                   String
+  location                String?
+  description             String
+  startDate               DateTime
+  endDate                 DateTime
+  contactName             String
+  contactPhone            String
+  idealAge                TeachingStage[]     @default([])
+  neededResources         String
+  category                ChallengeCategory
+  documentUrls            String[]            @default([])
+  photoUrl                String               
+
   ongId                   Int    
   managerId               Int             
 
-  title                   String
-  location                String
-  description             String
-  
-  startDate               DateTime
-  endDate                 DateTime
-
-  contactName             String
-  contactPhone            String
-  
-  idealSchoolAge          String?
-  maxSchools              Int?
-
-  neededResources         String?
-  category                ChallengeCategory
-
-  documentUrls            String[]            @default([])
-  photoUrls               String[]            @default([])
-
-  checkpoint1Title        String              @map("checkpoint_1_title")
-  checkpoint2Title        String              @map("checkpoint_2_title")
-  checkpoint3Title        String              @map("checkpoint_3_title")
-
-  status                  ChallengeStatus     @default(ACTIVE)
-
   ong                     Ong                 @relation(fields: [ongId], references: [id])
   schoolManager           SchoolManager       @relation(fields: [managerId], references: [id])
+  checkpoints             Checkpoint[]        // Um desafio sempre terá 3 checkpoints
 }
 
 model Checkpoint {
   id                Int       @id @default(autoincrement())
-  challengeId       Int       
-  
-  checkpointNumber  Int       
   title             String    
-  description       String    
-  photoUrl          String    
-  completionDate    DateTime  
+  description       String?   
+  photoUrl          String?   
+  completionDate    DateTime? 
+
+  checkpointNumber  Int       
+  challengeId       Int      
 
   createdAt         DateTime  @default(now())
   updatedAt         DateTime  @updatedAt
+
+  challenge         Challenge @relation(fields: [challengeId], references: [id])
+
+  @@unique([challengeId, checkpointNumber]) // Garante que o desafio só tenha 3 checkpoints (1, 2 e 3)
 }
