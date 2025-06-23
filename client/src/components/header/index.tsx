@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { Logo, UserProfile } from '@/assets';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Button } from '@/components/ui/new-button';
+import { NewButton } from '@/components/ui/new-button';
 
 export default function Header() {
   const router = useRouter();
@@ -36,30 +36,30 @@ export default function Header() {
         <ul className="flex justify-between">
           <li>
             <Link href="/">
-              <Button variant={'transparent'} size={'sm'}>
+              <NewButton variant={'transparent'} size={'sm'}>
                 Início
-              </Button>
+              </NewButton>
             </Link>
           </li>
           <li>
             <Link href="/challenges">
-              <Button variant={'transparent'} size={'sm'}>
+              <NewButton variant={'transparent'} size={'sm'}>
                 Desafios
-              </Button>
+              </NewButton>
             </Link>
           </li>
           <li>
             <Link href="/ranking">
-              <Button variant={'transparent'} size={'sm'}>
+              <NewButton variant={'transparent'} size={'sm'}>
                 Ranking
-              </Button>
+              </NewButton>
             </Link>
           </li>
         </ul>
       </nav>
 
       {isAuthenticated ? (
-        <Button
+        <NewButton
           onClick={handleViewProfile}
           size={'sm'}
           variant={'transparent'}
@@ -67,11 +67,11 @@ export default function Header() {
         >
           <Image src={UserProfile} alt="Perfil" className="h-10 w-10 mr-3" />
           Ver meu perfil
-        </Button>
+        </NewButton>
       ) : (
-        <Button onClick={handleLogin} size={'sm'} className="ml-7">
+        <NewButton onClick={handleLogin} size={'sm'} className="ml-7">
           Entrar
-        </Button>
+        </NewButton>
       )}
     </header>
   );

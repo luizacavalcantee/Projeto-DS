@@ -1,4 +1,4 @@
-import { Button } from '@/components/ui/new-button';
+import { NewButton } from '@/components/ui/new-button';
 import Image from 'next/image';
 import { BoraImpactarWhite, Destaque, HeroBackgroung } from '@/assets';
 
@@ -48,7 +48,7 @@ export default function Hero() {
           </span>
         </p>
 
-        <Button className="w-fit">Quero fazer parte!</Button>
+        <NewButton className="w-fit">Quero fazer parte!</NewButton>
       </div>
     </section>
   );

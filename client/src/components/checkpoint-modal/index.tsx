@@ -1,7 +1,8 @@
 interface ComponentsProps {
     buttonText?: string;
 }
-import { Button } from '@/components/ui/new-button';
+import { NewButton } from '@/components/ui/new-button';
+import { Button } from '@/components/ui/button';
 import {
     Dialog,
     DialogContent,
@@ -24,7 +25,7 @@ export default function CheckpointModal({
         <Dialog>
             <form>
                 <DialogTrigger asChild>
-                    <Button variant="default">{buttonText}</Button>
+                    <NewButton variant="default">{buttonText}</NewButton>
                 </DialogTrigger>
                 <DialogContent className="sm:max-w-1/3 sm:max-h-1/3 px-[40px] py-[40px]">
                     <DialogHeader>
@@ -67,10 +68,10 @@ export default function CheckpointModal({
                         </div>
                     </div>
                     <DialogFooter className="mt-[32px]">
-                        <Button
+                        <NewButton
                             type="submit"
                             className="w-full">
-                            Salvar Checkpoint</Button>
+                            Salvar Checkpoint</NewButton>
                     </DialogFooter>
                 </DialogContent>
             </form>

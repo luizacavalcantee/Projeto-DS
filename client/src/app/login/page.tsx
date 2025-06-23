@@ -4,7 +4,7 @@ import React from 'react';
 import { ArrowLeft } from 'lucide-react';
 import Image from 'next/image';
 import { BoraImpactar } from '@/assets';
-import { Button } from '@/components/ui/new-button';
+import { NewButton } from '@/components/ui/new-button';
 import { useRouter } from 'next/navigation';
 
 export default function Login() {
@@ -68,15 +68,15 @@ export default function Login() {
               Esqueceu a senha?
             </a>
           </div>
-          <Button type="submit" size={'fit'}>
+          <NewButton type="submit" size={'fit'}>
             Entrar
-          </Button>
+          </NewButton>
         </form>
         <div className="mt-8 text-center">
           <p className="mb-4 text-sm text-black">Não possui cadastro?</p>
-          <Button variant="white" size="fit" type="button">
+          <NewButton variant="white" size="fit" type="button">
             Criar conta
-          </Button>
+          </NewButton>
         </div>
       </div>
     </div>
