@@ -66,6 +66,12 @@ enum ChallengeCategory {
   SUSTENTABILIDADE
 }
 
+enum ChallengeStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+}
+
 model Challenge {
   id                      Int                 @id @default(autoincrement())
   title                   String
@@ -79,7 +85,8 @@ model Challenge {
   neededResources         String
   category                ChallengeCategory
   documentUrls            String[]            @default([])
-  photoUrl                String               
+  photoUrl                String     
+  status                  ChallengeStatus     @default(PENDING)         
 
   ongId                   Int    
   managerId               Int             
