@@ -12,10 +12,107 @@ generator dbml {
   provider = "prisma-dbml-generator"
 }
 
-model User {
-  id       String  @id @default(uuid())
-  name     String
-  phone    String?
-  email    String  @unique
-  password String
+model Ong {
+  id              Int       @id @default(autoincrement())
+  name            String    @unique
+  email           String    @unique
+  password        String
+  description     String
+  contactPhone    String?   @map("contact_phone")
+  instagramLink   String?   @map("instagram_link")
+  facebookLink    String?   @map("facebook_link")
+  site            String?
+  coverPhotoUrl   String?   @map("cover_photo_url")
+  logoPhotoUrl    String?   @map("logo_photo_url")
+  challenges      Challenge[]
+}
+
+enum TeachingStage {
+  EDUCACAO_INFANTIL
+  ENSINO_FUNDAMENTAL_I
+  ENSINO_FUNDAMENTAL_II
+  ENSINO_MEDIO
+}
+
+model SchoolManager {
+  id                  Int                 @id @default(autoincrement())
+  fullName            String              @map("full_name")
+  role                String     
+  phoneNumber         String?             @map("phone_number")
+  email               String              @unique
+  password            String          
+  schoolName          String              @map("school_name")
+  teachingStages      TeachingStage[]     @default([])
+  estimatedStudents   Int                 @map("estimated_students")
+  inepCode            String              @unique @map("inep_code")
+  cep                 String             
+  address             String     
+  addressNumber       String              @map("address_number")
+  addressComplement   String?             @map("address_complement")
+  schoolNumber        String?             @map("school_number")
+  schoolImageUrl      String?             @map("school_image_url")
+  schoolChallenges    Challenge[]
+}
+
+enum ChallengeCategory {
+  EDUCACAO
+  MEIO_AMBIENTE
+  SAUDE
+  CULTURA
+  ESPORTE
+  TECNOLOGIA
+}
+
+enum ChallengeStatus {
+  ACTIVE    
+  IN_PROGRESS   
+  COMPLETED 
+}
+
+model Challenge {
+  id                      Int                 @id @default(autoincrement())
+  ongId                   Int    
+  managerId               Int             
+
+  title                   String
+  location                String
+  description             String
+  
+  startDate               DateTime
+  endDate                 DateTime
+
+  contactName             String
+  contactPhone            String
+  
+  idealSchoolAge          String?
+  maxSchools              Int?
+
+  neededResources         String?
+  category                ChallengeCategory
+
+  documentUrls            String[]            @default([])
+  photoUrls               String[]            @default([])
+
+  checkpoint1Title        String              @map("checkpoint_1_title")
+  checkpoint2Title        String              @map("checkpoint_2_title")
+  checkpoint3Title        String              @map("checkpoint_3_title")
+
+  status                  ChallengeStatus     @default(ACTIVE)
+
+  ong                     Ong                 @relation(fields: [ongId], references: [id])
+  schoolManager           SchoolManager       @relation(fields: [managerId], references: [id])
+}
+
+model Checkpoint {
+  id                Int       @id @default(autoincrement())
+  challengeId       Int       
+  
+  checkpointNumber  Int       
+  title             String    
+  description       String    
+  photoUrl          String    
+  completionDate    DateTime  
+
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
 }
