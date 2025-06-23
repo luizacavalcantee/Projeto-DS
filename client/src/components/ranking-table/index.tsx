@@ -14,7 +14,7 @@ interface TableProps {
     customLimit?: number;
 }
 
-export default function Table({ data, actionType, customLimit }: TableProps) {
+export default function RankingTable({ data, actionType, customLimit }: TableProps) {
     const sortedData = data.slice().sort((a, b) => b.desafios - a.desafios);
 
     const itemsPerLoad = 5;
