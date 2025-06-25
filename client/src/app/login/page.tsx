@@ -65,16 +65,21 @@ export default function Login() {
       const response = await api.post('/ong', payloadForYourApi);
       console.log('Ong saved successfully:', response.data);
       setSuccess('Login bem-sucedido e ONG sincronizada!');
-    } catch (err: any) {
-      const response = err.response;
-      if (
-        response &&
-        response.status === 400 &&
-        response.data?.message.includes('already registered')
-      ) {
-        setSuccess('Login bem-sucedido! Os dados desta ONG já estavam no seu banco de dados.');
+    } catch (err) {
+      if (axios.isAxiosError(err) && err.response) {
+        const responseData = err.response.data as { message?: string };
+
+        if (
+          err.response.status === 400 &&
+          responseData.message?.includes('already registered')
+        ) {
+          setSuccess('Login bem-sucedido! Os dados desta ONG já estavam no seu banco de dados.');
+        } else {
+          setError(responseData.message || 'Não foi possível conectar ao seu servidor para salvar os dados.');
+        }
       } else {
-        setError(response?.data?.message || 'Não foi possível conectar ao seu servidor para salvar os dados.');
+        console.error("Ocorreu um erro inesperado:", err);
+        setError("Ocorreu um erro inesperado ao salvar os dados.");
       }
     }
   };
@@ -91,16 +96,17 @@ export default function Login() {
       });
 
       const data = response.data;
+      console.log('Autenticado com sucesso na API externa!');
       await saveOngToYourDatabase(data, password);
 
     } catch (err) {
       if (axios.isAxiosError(err) && err.response) {
-        const responseData = err.response.data;
-        setError(responseData?.message || 'E-mail ou senha incorretos.');
+        const responseData = err.response.data as { message?: string };
+        console.error('Falha na autenticação externa:', responseData.message || 'Erro desconhecido');
+        setError(responseData.message || 'E-mail ou senha incorretos.');
       } else {
-        setError(
-          'Não foi possível conectar ao servidor de autenticação. Tente novamente mais tarde.'
-        );
+        console.error('Ocorreu um erro de rede:', err);
+        setError('Não foi possível conectar ao servidor de autenticação. Tente novamente mais tarde.');
       }
     }
   };
