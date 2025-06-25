@@ -1,17 +1,128 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import { ArrowLeft } from 'lucide-react';
 import Image from 'next/image';
 import { BoraImpactar } from '@/assets';
 import { NewButton } from '@/components/ui/new-button';
 import { useRouter } from 'next/navigation';
+import axios from 'axios';
+import api from '@/services/api';
+
+interface ExternalUser {
+  name: string;
+  email: string;
+}
+
+interface ExternalNgo {
+  id: number;
+  name: string;
+  description: string;
+  contact_phone: string | null;
+  instagram_link: string | null;
+  facebook_link: string | null;
+  site: string | null;
+  cover_photo_url: string | null;
+  logo_photo_url: string | null;
+}
+
+interface ExternalApiResponse {
+  message: string;
+  user: ExternalUser;
+  ngo: ExternalNgo;
+}
 
 export default function Login() {
   const router = useRouter();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+
   const handleReturn = () => {
     router.back();
   };
+
+  const saveOngToYourDatabase = async (
+    externalApiData: ExternalApiResponse,
+    userPassword: string
+  ) => {
+    const { user, ngo } = externalApiData;
+
+    const payloadForYourApi = {
+      name: ngo.name,
+      email: user.email,
+      password: userPassword,
+      description: ngo.description,
+      contactPhone: ngo.contact_phone,
+      instagramLink: ngo.instagram_link,
+      facebookLink: ngo.facebook_link,
+      site: ngo.site,
+      coverPhotoUrl: ngo.cover_photo_url,
+      logoPhotoUrl: ngo.logo_photo_url
+    };
+
+    try {
+      const response = await api.post('/ong', payloadForYourApi);
+
+      console.log(
+        'ONG salva com sucesso no seu banco de dados!',
+        response.data
+      );
+      setSuccess('Login bem-sucedido e ONG sincronizada!');
+    } catch (err: any) {
+      const response = err.response;
+      console.error('Erro ao contatar seu backend:', err);
+
+      if (
+        response &&
+        response.status === 400 &&
+        response.data?.message.includes('already registered')
+      ) {
+        setSuccess(
+          'Login bem-sucedido! Os dados desta ONG já estavam no seu banco de dados.'
+        );
+      } else {
+        setError(
+          response?.data?.message ||
+            'Não foi possível conectar ao seu servidor para salvar os dados.'
+        );
+      }
+    }
+  };
+
+  const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setError('');
+    setSuccess('');
+
+    try {
+      const externalApiResponse = await fetch('/api/proxy/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+      });
+
+      const data: ExternalApiResponse = await externalApiResponse.json();
+
+      if (externalApiResponse.ok) {
+        console.log('Autenticado com sucesso na API externa!');
+        await saveOngToYourDatabase(data, password);
+      } else {
+        console.error(
+          'Falha na autenticação externa:',
+          (data as any).message || 'Erro desconhecido'
+        );
+        setError((data as any).message || 'E-mail ou senha incorretos.');
+      }
+    } catch (err) {
+      console.error('Ocorreu um erro de rede:', err);
+      setError(
+        'Não foi possível conectar ao servidor de autenticação. Tente novamente mais tarde.'
+      );
+    }
+  };
+
   return (
     <div className="flex min-h-screen items-center justify-center bg-[#CBEFFF] p-4">
       <button
@@ -31,19 +142,22 @@ export default function Login() {
             Entrar
           </h1>
         </div>
-        <form className="space-y-6">
+        <form className="space-y-6" onSubmit={handleLogin}>
           <div>
             <label
-              htmlFor="cnpj"
+              htmlFor="email"
               className="block text-sm font-medium text-gray-700"
             >
               Email
             </label>
             <input
-              type="text"
-              id="cnpj"
+              type="email"
+              id="email"
               placeholder="Digite seu Email"
               className="h-10 mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm placeholder:text-gray-400 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
             />
           </div>
           <div>
@@ -58,8 +172,17 @@ export default function Login() {
               id="password"
               placeholder="Digite sua senha"
               className="h-10 mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm placeholder:text-gray-400 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
             />
           </div>
+
+          {error && <p className="text-sm text-red-600 text-center">{error}</p>}
+          {success && (
+            <p className="text-sm text-green-600 text-center">{success}</p>
+          )}
+
           <div className="text-center">
             <a
               href="#"
