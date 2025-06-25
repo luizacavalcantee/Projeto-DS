@@ -7,7 +7,6 @@ interface ChallengeCardProps {
   description: string;
   progress: number; 
   link: string;
-  linkLabel: string;
 }
 
 export default function ChallengeCard({
@@ -17,7 +16,6 @@ export default function ChallengeCard({
   description,
   progress,
   link,
-  linkLabel,
 }: ChallengeCardProps) {
   return (
     <div className="flex bg-white rounded-md overflow-hidden drop-shadow-md">
@@ -59,7 +57,7 @@ export default function ChallengeCard({
             href={link}
             className="text-sm text-blue-600 font-medium hover:underline"
           >
-            {linkLabel}
+            Detalhes
           </a>
         </div>
       </div>
