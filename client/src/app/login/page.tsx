@@ -63,6 +63,7 @@ export default function Login() {
 
     try {
       const response = await api.post('/ong', payloadForYourApi);
+      console.log('Ong saved successfully:', response.data);
       setSuccess('Login bem-sucedido e ONG sincronizada!');
     } catch (err: any) {
       const response = err.response;
