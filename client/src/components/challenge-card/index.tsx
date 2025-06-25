@@ -1,6 +1,6 @@
 import Image, { StaticImageData } from "next/image";
 
-interface CardHorizontalProps {
+interface ChallengeCardProps {
   imageSrc: StaticImageData | string;
   imageAlt: string;
   title: string;
@@ -10,7 +10,7 @@ interface CardHorizontalProps {
   linkLabel: string;
 }
 
-export default function CardHorizontal({
+export default function ChallengeCard({
   imageSrc,
   imageAlt,
   title,
@@ -18,7 +18,7 @@ export default function CardHorizontal({
   progress,
   link,
   linkLabel,
-}: CardHorizontalProps) {
+}: ChallengeCardProps) {
   return (
     <div className="flex bg-white rounded-md overflow-hidden drop-shadow-md">
       {/* Imagem */}
