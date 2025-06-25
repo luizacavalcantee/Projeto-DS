@@ -12,6 +12,14 @@ generator dbml {
   provider = "prisma-dbml-generator"
 }
 
+model User {
+  id       String  @id @default(uuid())
+  name     String
+  phone    String?
+  email    String  @unique
+  password String
+}
+
 model Ong {
   id              Int       @id @default(autoincrement())
   name            String    @unique
