@@ -48,7 +48,6 @@ export default function Login() {
     userPassword: string
   ) => {
     const { user, ngo } = externalApiData;
-
     const payloadForYourApi = {
       name: ngo.name,
       email: user.email,
@@ -64,29 +63,17 @@ export default function Login() {
 
     try {
       const response = await api.post('/ong', payloadForYourApi);
-
-      console.log(
-        'ONG salva com sucesso no seu banco de dados!',
-        response.data
-      );
       setSuccess('Login bem-sucedido e ONG sincronizada!');
     } catch (err: any) {
       const response = err.response;
-      console.error('Erro ao contatar seu backend:', err);
-
       if (
         response &&
         response.status === 400 &&
         response.data?.message.includes('already registered')
       ) {
-        setSuccess(
-          'Login bem-sucedido! Os dados desta ONG já estavam no seu banco de dados.'
-        );
+        setSuccess('Login bem-sucedido! Os dados desta ONG já estavam no seu banco de dados.');
       } else {
-        setError(
-          response?.data?.message ||
-            'Não foi possível conectar ao seu servidor para salvar os dados.'
-        );
+        setError(response?.data?.message || 'Não foi possível conectar ao seu servidor para salvar os dados.');
       }
     }
   };
@@ -97,29 +84,23 @@ export default function Login() {
     setSuccess('');
 
     try {
-      const externalApiResponse = await fetch('/api/proxy/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password })
+      const response = await axios.post<ExternalApiResponse>('/api/proxy/login', {
+        email,
+        password,
       });
 
-      const data: ExternalApiResponse = await externalApiResponse.json();
+      const data = response.data;
+      await saveOngToYourDatabase(data, password);
 
-      if (externalApiResponse.ok) {
-        console.log('Autenticado com sucesso na API externa!');
-        await saveOngToYourDatabase(data, password);
-      } else {
-        console.error(
-          'Falha na autenticação externa:',
-          (data as any).message || 'Erro desconhecido'
-        );
-        setError((data as any).message || 'E-mail ou senha incorretos.');
-      }
     } catch (err) {
-      console.error('Ocorreu um erro de rede:', err);
-      setError(
-        'Não foi possível conectar ao servidor de autenticação. Tente novamente mais tarde.'
-      );
+      if (axios.isAxiosError(err) && err.response) {
+        const responseData = err.response.data;
+        setError(responseData?.message || 'E-mail ou senha incorretos.');
+      } else {
+        setError(
+          'Não foi possível conectar ao servidor de autenticação. Tente novamente mais tarde.'
+        );
+      }
     }
   };
 
