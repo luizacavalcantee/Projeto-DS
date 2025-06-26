@@ -28,14 +28,14 @@ export default function ChallengeCard({
           alt={imageAlt}
           width={240}
           height={144}
-          className="object-cover w-60 h-36 border border-primary rounded"
+          className="object-cover w-60 h-full border border-primary rounded"// alterado para h-full
           quality={100}
           unoptimized
         />
       </div>
 
       {/* Conteúdo */}
-      <div className="flex flex-col justify-between pl-6 pr-4 py-3 w-full max-w-72">
+      <div className="flex flex-col justify-between pl-6 py-3 w-full max-w-72">
         {/* Título e descrição */}
         <div>
           <h2 className="text-base font-medium text-gray-900 mt-4 leading-snug">
@@ -47,7 +47,7 @@ export default function ChallengeCard({
         </div>
 
         {/* Barra de progresso + Detalhes */}
-        <div className="flex items-center gap-x-11 mt-2">
+        <div className="flex items-center gap-x-11 mt-4">
           <div className="w-[50%] bg-gray-200 rounded-full h-[8px]">
             <div
               className="bg-blue-600 h-[8px] rounded-full"
