@@ -7,7 +7,6 @@ interface ChallengeCardProps {
   description: string;
   progress: number; 
   link: string;
-  linkLabel: string;
 }
 
 export default function ChallengeCard({
@@ -17,49 +16,46 @@ export default function ChallengeCard({
   description,
   progress,
   link,
-  linkLabel,
 }: ChallengeCardProps) {
   return (
-    <div className="flex bg-white rounded-md overflow-hidden drop-shadow-md">
+    <div className="flex bg-white rounded-md overflow-hidden drop-shadow-md max-w-[31.5rem]">
       {/* Imagem */}
-      <div className="w-56">
+      <div className="w-2/5">
         <Image
           src={imageSrc}
           alt={imageAlt}
-          width={240}
-          height={144}
-          className="object-cover w-60 h-full border border-primary rounded"// alterado para h-full
+          className="object-cover h-full w-full rounded"
           quality={100}
           unoptimized
         />
       </div>
 
       {/* Conteúdo */}
-      <div className="flex flex-col justify-between pl-6 py-3 w-full max-w-72">
+      <div className="flex flex-col gap-6 px-6 py-3 w-3/5">
         {/* Título e descrição */}
         <div>
           <h2 className="text-base font-medium text-gray-900 mt-4 leading-snug">
             {title}
           </h2>
-          <p className="text-sm text-gray-700 mt-2 leading-tight">
+          <p className="text-sm text-gray-700 mt-2 leading-tight line-clamp-2">
             {description}
           </p>
         </div>
 
         {/* Barra de progresso + Detalhes */}
-        <div className="flex items-center gap-x-11 mt-4">
-          <div className="w-[50%] bg-gray-200 rounded-full h-[8px]">
+        <div className="flex items-center justify-between">
+          <div className="w-1/2 bg-gray-200 rounded-full h-2">
             <div
-              className="bg-blue-600 h-[8px] rounded-full"
-              style={{ width: `${progress}%` }}
+              className="bg-blue-600 h-2 rounded-full"
+              style={{ width: `${progress}%`}}
             ></div>
           </div>
 
           <a
             href={link}
-            className="text-sm text-blue-600 font-medium hover:underline"
+            className="text-sm text-blue-600 font-medium hover:underline whitespace-nowrap"
           >
-            {linkLabel}
+            Ver detalhes
           </a>
         </div>
       </div>

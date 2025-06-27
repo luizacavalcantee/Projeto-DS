@@ -19,6 +19,9 @@ import Grid2 from './grid-2.png';
 import Grid3 from './grid-3.png';
 import Underline from './underlined.svg';
 import Nuvem from './nuvem.svg';
+import Filter from './filter.svg';
+import ArrowDown from './arrow-down.svg';
+import Lupa from './lupa.svg';
 
 export {
   Logo,
@@ -41,5 +44,8 @@ export {
   Grid2,
   Grid3,
   Underline,
-  Nuvem
+  Nuvem,
+  Filter,
+  ArrowDown,
+  Lupa
 };
