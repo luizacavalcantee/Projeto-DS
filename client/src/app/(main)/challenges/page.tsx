@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Challenge, BoraImpactar, Filter, ArrowDown, Lupa } from "@/assets";
 import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { NewButton } from "@/components/ui/new-button";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
@@ -34,7 +35,7 @@ const mockChallenges = [
     imageAlt: "Imagem do projeto Horta Comunitária",
     title: "Reciclagem de Materiais",
     description: "Iniciativa para coletar e reciclar materiais, promovendo a consciência ambiental entre os alunos.",
-    progress: 45,
+    progress: 100,
     link: "/challenges/2",
     linkLabel: "Ver detalhes",
     situacao: "Finalizado",
@@ -155,14 +156,13 @@ export default function ChallengePage() {
   const [selectedSituacao, setSelectedSituacao] = useState("");
   const [selectedOng, setSelectedOng] = useState("");
   const [selectedEscola, setSelectedEscola] = useState("");
-  const [openDropdown, setOpenDropdown] = useState("");
   const itemsPerPage = 8;
 
   // Opções dos filtros extraídas dinamicamente do mock
   const situacoes = ["Em andamento", "Finalizado", "Pausado"];
   const ongs = [...new Set(mockChallenges.map(challenge => challenge.ong))];
   const escolas = [...new Set(mockChallenges.map(challenge => challenge.escola))];
-
+  
   // Filtrar ONGs baseado na pesquisa
   const filteredOngs = ongs.filter(ong =>
     ong.toLowerCase().includes(ongSearchTerm.toLowerCase())
@@ -173,20 +173,15 @@ export default function ChallengePage() {
     escola.toLowerCase().includes(escolaSearchTerm.toLowerCase())
   );
 
-  // Função para alternar dropdown
-  const toggleDropdown = (dropdownName: string) => {
-    setOpenDropdown(openDropdown === dropdownName ? "" : dropdownName);
-  };
-
   // filtro de pesquisa e filtros
   const filteredChallenges = mockChallenges.filter((challenge) => {
     const matchesSearch =
       challenge.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       challenge.description.toLowerCase().includes(searchTerm.toLowerCase());
 
-    const matchesSituacao = !selectedSituacao || challenge.situacao === selectedSituacao;
-    const matchesOng = !selectedOng || challenge.ong === selectedOng;
-    const matchesEscola = !selectedEscola || challenge.escola === selectedEscola;
+    const matchesSituacao = !selectedSituacao || selectedSituacao === "all" || challenge.situacao === selectedSituacao;
+    const matchesOng = !selectedOng || selectedOng === "all" || challenge.ong === selectedOng;
+    const matchesEscola = !selectedEscola || selectedEscola === "all" || challenge.escola === selectedEscola;
 
     return matchesSearch && matchesSituacao && matchesOng && matchesEscola;
   });
@@ -199,7 +194,7 @@ export default function ChallengePage() {
 
   return (
     <main className="min-h-screen flex flex-col">
-      <div className=" flex-grow">
+      <div className="flex-grow">
         <Title pageTitle="Desafios" />
 
         <div className="container mx-auto px-8 py-8">
@@ -214,136 +209,72 @@ export default function ChallengePage() {
           </div>
 
           <div className=" flex flex-wrap items-center gap-4 mb-8">
-            <div className="flex gap-2">
+            <div className="flex gap-2 ">
               <div className="px-4 rounded-full text-secondary text-sm flex items-center gap-2">
                 <Image src={Filter} alt="Filtros" className="h-4 w-4" />
                 Filtros:
               </div>
 
               {/* Filtro Situação */}
-              <div className="relative">
-                <button
-                  onClick={() => toggleDropdown("situacao")}
-                  className="px-4 h-[32px] bg-white rounded-full text-secondary text-sm border-2 border-secondary flex items-center gap-2">
-                  {selectedSituacao || "Situação da iniciativa"}
-                  <Image src={ArrowDown} alt="Filtros" className="h-2 w-2" />
-                </button>
-                {openDropdown === "situacao" && (
-                  <div className="absolute top-full mt-1 w-48 bg-white border border-gray-200 rounded-md shadow-lg z-10">
-                    <div
-                      className="px-4 py-2 hover:bg-gray-100 cursor-pointer text-sm"
-                      onClick={() => {
-                        setSelectedSituacao("");
-                        setOpenDropdown("");
-                      }}
-                    >
-                      Todas as situações
-                    </div>
-                    {situacoes.map((situacao) => (
-                      <div
-                        key={situacao}
-                        className="px-4 py-2 hover:bg-gray-100 cursor-pointer text-sm"
-                        onClick={() => {
-                          setSelectedSituacao(situacao);
-                          setOpenDropdown("");
-                        }}
-                      >
-                        {situacao}
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
+              <Select value={selectedSituacao} onValueChange={setSelectedSituacao}>
+                <SelectTrigger className="w-48 h-8 bg-white rounded-full text-secondary text-sm border-2 border-secondary">
+                  <SelectValue placeholder="Situação da iniciativa" />
+                </SelectTrigger>
+                <SelectContent className="bg-white border border-gray-200 shadow-lg">
+                  <SelectItem value="all">Todas as situações</SelectItem>
+                  {situacoes.map((situacao) => (
+                    <SelectItem key={situacao} value={situacao}>
+                      {situacao}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
 
               {/* Filtro ONG */}
-              <div className="relative">
-                <button
-                  onClick={() => toggleDropdown("ong")}
-                  className="px-4 h-[32px] bg-white rounded-full text-secondary text-sm border-2 border-secondary flex items-center gap-2">
-                  {selectedOng || "ONG responsável"}
-                  <Image src={ArrowDown} alt="Filtros" className="h-2 w-2" />
-                </button>
-                {openDropdown === "ong" && (
-                  <div className="absolute top-full mt-1 w-48 bg-white border border-gray-200 rounded-md shadow-lg z-10">
-                    <div className="p-2">
-                      <Input
-                        placeholder="Pesquisar por ONG..."
-                        value={ongSearchTerm}
-                        onChange={(e) => setOngSearchTerm(e.target.value)}
-                        className="w-full bg-white border-2 border-secondary pl-4"
-                      />
-                    </div>
-                    <div
-                      className="px-4 py-2 hover:bg-gray-100 cursor-pointer text-sm"
-                      onClick={() => {
-                        setSelectedOng("");
-                        setOpenDropdown("");
-                        setOngSearchTerm("");
-                      }}
-                    >
-                      Todas as ONGs
-                    </div>
-                    {filteredOngs.map((ong) => (
-                      <div
-                        key={ong}
-                        className="px-4 py-2 hover:bg-gray-100 cursor-pointer text-sm"
-                        onClick={() => {
-                          setSelectedOng(ong);
-                          setOpenDropdown("");
-                          setOngSearchTerm("");
-                        }}
-                      >
-                        {ong}
-                      </div>
-                    ))}
+              <Select value={selectedOng} onValueChange={setSelectedOng}>
+                <SelectTrigger className="w-48 h-8 bg-white rounded-full text-secondary text-sm border-2 border-secondary">
+                  <SelectValue placeholder="ONG responsável" />
+                </SelectTrigger>
+                <SelectContent className="bg-white border border-gray-200 shadow-lg">
+                  <div className="p-2">
+                    <Input
+                      placeholder="Pesquisar por ONG..."
+                      value={ongSearchTerm}
+                      onChange={(e) => setOngSearchTerm(e.target.value)}
+                      className="w-full bg-white border-2 border-secondary pl-4"
+                    />
                   </div>
-                )}
-              </div>
+                  <SelectItem value="all">Todas as ONGs</SelectItem>
+                  {filteredOngs.map((ong) => (
+                    <SelectItem key={ong} value={ong}>
+                      {ong}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
 
               {/* Filtro Escola */}
-              <div className="relative">
-                <button
-                  onClick={() => toggleDropdown("escola")}
-                  className="px-4 h-[32px] bg-white rounded-full text-secondary text-sm border-2 border-secondary flex items-center gap-2">
-                  {selectedEscola || "Escola participando"}
-                  <Image src={ArrowDown} alt="Filtros" className="h-2 w-2" />
-                </button>
-                {openDropdown === "escola" && (
-                  <div className="absolute top-full mt-1 w-48 bg-white border border-gray-200 rounded-md shadow-lg z-10">
-                    <div className="p-2">
-                      <Input
-                        placeholder="Pesquisar por escola..."
-                        value={escolaSearchTerm}
-                        onChange={(e) => setEscolaSearchTerm(e.target.value)}
-                        className="w-full bg-white border-2 border-secondary pl-4"
-                      />
-                    </div>
-                    <div
-                      className="px-4 py-2 hover:bg-gray-100 cursor-pointer text-sm"
-                      onClick={() => {
-                        setSelectedEscola("");
-                        setOpenDropdown("");
-                        setEscolaSearchTerm("");
-                      }}
-                    >
-                      Todas as escolas
-                    </div>
-                    {filteredEscolas.map((escola) => (
-                      <div
-                        key={escola}
-                        className="px-4 py-2 hover:bg-gray-100 cursor-pointer text-sm"
-                        onClick={() => {
-                          setSelectedEscola(escola);
-                          setOpenDropdown("");
-                          setEscolaSearchTerm("");
-                        }}
-                      >
-                        {escola}
-                      </div>
-                    ))}
+              <Select value={selectedEscola} onValueChange={setSelectedEscola}>
+                <SelectTrigger className="w-48 h-8 bg-white rounded-full text-secondary text-sm border-2 border-secondary">
+                  <SelectValue placeholder="Escola participando" />
+                </SelectTrigger>
+                <SelectContent className="bg-white border border-gray-200 shadow-lg">
+                  <div className="p-2">
+                    <Input
+                      placeholder="Pesquisar por escola..."
+                      value={escolaSearchTerm}
+                      onChange={(e) => setEscolaSearchTerm(e.target.value)}
+                      className="w-full bg-white border-2 border-secondary pl-4"
+                    />
                   </div>
-                )}
-              </div>
+                  <SelectItem value="all">Todas as escolas</SelectItem>
+                  {filteredEscolas.map((escola) => (
+                    <SelectItem key={escola} value={escola}>
+                      {escola}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
 
             <div className="w-1/3 ml-auto">
