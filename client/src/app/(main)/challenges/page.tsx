@@ -15,7 +15,7 @@ import { Pagination, PaginationContent, PaginationItem, PaginationLink, Paginati
 // Mock dos dados dos desafios
 const mockChallenges = [
   {
-   id: 1,
+    id: 1,
     imageSrc: Challenge,
     imageAlt: "Imagem do projeto Horta Comunitária",
     title: "Horta Comunitária na Escola",
@@ -26,7 +26,7 @@ const mockChallenges = [
     situacao: "Em andamento",
     ong: "ONG Verde",
     escola: "Escola Municipal João Silva"
-    
+
   },
   {
     id: 2,
@@ -84,7 +84,7 @@ const mockChallenges = [
     id: 6,
     imageSrc: Challenge,
     imageAlt: "Imagem do projeto Horta Comunitária",
-    title: "Campanha de Conscientização",
+    title: "Campanha de Doação de Livros",
     description: "Projeto para conscientizar sobre a importância da preservação do meio ambiente e recursos naturais.",
     progress: 85,
     link: "/challenges/6",
@@ -92,22 +92,86 @@ const mockChallenges = [
     situacao: "Em andamento",
     ong: "ONG Educação",
     escola: "Escola Municipal João Silva"
+  },
+  {
+    id: 7,
+    imageSrc: Challenge,
+    imageAlt: "Imagem do projeto Horta Comunitária",
+    title: "Ação de Limpeza de Praias",
+    description: "Projeto para conscientizar sobre a importância da preservação do meio ambiente e recursos naturais.",
+    progress: 85,
+    link: "/challenges/6",
+    linkLabel: "Ver detalhes",
+    situacao: "Em andamento",
+    ong: "ONG Educação",
+    escola: "Escola Municipal João Silva"
+  },
+  {
+    id: 8,
+    imageSrc: Challenge,
+    imageAlt: "Imagem do projeto Horta Comunitária",
+    title: "Ajuda a Animais Abandonados",
+    description: "Projeto para conscientizar sobre a importância da preservação do meio ambiente e recursos naturais.",
+    progress: 85,
+    link: "/challenges/6",
+    linkLabel: "Ver detalhes",
+    situacao: "Em andamento",
+    ong: "ONG Educação",
+    escola: "Escola Municipal João Silva"
+  },
+  {
+    id: 9,
+    imageSrc: Challenge,
+    imageAlt: "Imagem do projeto Horta Comunitária",
+    title: "Doe Livros para Crianças",
+    description: "Projeto para conscientizar sobre a importância da preservação do meio ambiente e recursos naturais.",
+    progress: 85,
+    link: "/challenges/6",
+    linkLabel: "Ver detalhes",
+    situacao: "Em andamento",
+    ong: "ONG Educação",
+    escola: "Escola Municipal David"
+  },
+  {
+    id: 10,
+    imageSrc: Challenge,
+    imageAlt: "Arrecadação de Alimentos",
+    title: "Ajuda a Animais Abandonados",
+    description: "Projeto para conscientizar sobre a importância da preservação do meio ambiente e recursos naturais.",
+    progress: 85,
+    link: "/challenges/6",
+    linkLabel: "Ver detalhes",
+    situacao: "Em andamento",
+    ong: "ONG Educação",
+    escola: "Escola Municipal Kiev Gama"
   }
 ];
 
 export default function ChallengePage() {
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");//pesquisa geral
+  const [ongSearchTerm, setOngSearchTerm] = useState("");//filtro ong
+  const [escolaSearchTerm, setEscolaSearchTerm] = useState("");//filtro escola
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedSituacao, setSelectedSituacao] = useState("");
   const [selectedOng, setSelectedOng] = useState("");
   const [selectedEscola, setSelectedEscola] = useState("");
   const [openDropdown, setOpenDropdown] = useState("");
-  const itemsPerPage = 4;
+  const itemsPerPage = 8;
 
   // Opções dos filtros extraídas dinamicamente do mock
   const situacoes = ["Em andamento", "Finalizado", "Pausado"];
   const ongs = [...new Set(mockChallenges.map(challenge => challenge.ong))];
   const escolas = [...new Set(mockChallenges.map(challenge => challenge.escola))];
+
+  // Filtrar ONGs baseado na pesquisa
+  const filteredOngs = ongs.filter(ong =>
+    ong.toLowerCase().includes(ongSearchTerm.toLowerCase())
+  );
+
+  // Filtrar escolas baseado na pesquisa
+  const filteredEscolas = escolas.filter(escola =>
+    escola.toLowerCase().includes(escolaSearchTerm.toLowerCase())
+  );
 
   // Função para alternar dropdown
   const toggleDropdown = (dropdownName: string) => {
@@ -116,10 +180,10 @@ export default function ChallengePage() {
 
   // filtro de pesquisa e filtros
   const filteredChallenges = mockChallenges.filter((challenge) => {
-    const matchesSearch = 
+    const matchesSearch =
       challenge.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       challenge.description.toLowerCase().includes(searchTerm.toLowerCase());
-    
+
     const matchesSituacao = !selectedSituacao || challenge.situacao === selectedSituacao;
     const matchesOng = !selectedOng || challenge.ong === selectedOng;
     const matchesEscola = !selectedEscola || challenge.escola === selectedEscola;
@@ -166,7 +230,7 @@ export default function ChallengePage() {
                 </button>
                 {openDropdown === "situacao" && (
                   <div className="absolute top-full mt-1 w-48 bg-white border border-gray-200 rounded-md shadow-lg z-10">
-                    <div 
+                    <div
                       className="px-4 py-2 hover:bg-gray-100 cursor-pointer text-sm"
                       onClick={() => {
                         setSelectedSituacao("");
@@ -201,22 +265,32 @@ export default function ChallengePage() {
                 </button>
                 {openDropdown === "ong" && (
                   <div className="absolute top-full mt-1 w-48 bg-white border border-gray-200 rounded-md shadow-lg z-10">
-                    <div 
+                    <div className="p-2">
+                      <Input
+                        placeholder="Pesquisar por ONG..."
+                        value={ongSearchTerm}
+                        onChange={(e) => setOngSearchTerm(e.target.value)}
+                        className="w-full bg-white border-2 border-secondary pl-4"
+                      />
+                    </div>
+                    <div
                       className="px-4 py-2 hover:bg-gray-100 cursor-pointer text-sm"
                       onClick={() => {
                         setSelectedOng("");
                         setOpenDropdown("");
+                        setOngSearchTerm("");
                       }}
                     >
                       Todas as ONGs
                     </div>
-                    {ongs.map((ong) => (
+                    {filteredOngs.map((ong) => (
                       <div
                         key={ong}
                         className="px-4 py-2 hover:bg-gray-100 cursor-pointer text-sm"
                         onClick={() => {
                           setSelectedOng(ong);
                           setOpenDropdown("");
+                          setOngSearchTerm("");
                         }}
                       >
                         {ong}
@@ -236,22 +310,32 @@ export default function ChallengePage() {
                 </button>
                 {openDropdown === "escola" && (
                   <div className="absolute top-full mt-1 w-48 bg-white border border-gray-200 rounded-md shadow-lg z-10">
-                    <div 
+                    <div className="p-2">
+                      <Input
+                        placeholder="Pesquisar por escola..."
+                        value={escolaSearchTerm}
+                        onChange={(e) => setEscolaSearchTerm(e.target.value)}
+                        className="w-full bg-white border-2 border-secondary pl-4"
+                      />
+                    </div>
+                    <div
                       className="px-4 py-2 hover:bg-gray-100 cursor-pointer text-sm"
                       onClick={() => {
                         setSelectedEscola("");
                         setOpenDropdown("");
+                        setEscolaSearchTerm("");
                       }}
                     >
                       Todas as escolas
                     </div>
-                    {escolas.map((escola) => (
+                    {filteredEscolas.map((escola) => (
                       <div
                         key={escola}
                         className="px-4 py-2 hover:bg-gray-100 cursor-pointer text-sm"
                         onClick={() => {
                           setSelectedEscola(escola);
                           setOpenDropdown("");
+                          setEscolaSearchTerm("");
                         }}
                       >
                         {escola}
@@ -279,22 +363,25 @@ export default function ChallengePage() {
             </div>
           </div>
 
-          <div className=" pl-16 grid grid-cols-2 gap-4">
-            {currentChallenges.map((challenge) => (
-              <ChallengeCard
-                key={challenge.id}
-                imageSrc={challenge.imageSrc}
-                imageAlt={challenge.imageAlt}
-                title={challenge.title}
-                description={challenge.description}
-                progress={challenge.progress}
-                link={challenge.link}
-                linkLabel={challenge.linkLabel}
-              />
-            ))}
+          <div>
+            <hr className="my-8 border-gray-300" />
+            <div className="mt-8 grid grid-cols-2 gap-4">
+              {currentChallenges.map((challenge) => (
+                <ChallengeCard
+                  key={challenge.id}
+                  imageSrc={challenge.imageSrc}
+                  imageAlt={challenge.imageAlt}
+                  title={challenge.title}
+                  description={challenge.description}
+                  progress={challenge.progress}
+                  link={challenge.link}
+                  linkLabel={challenge.linkLabel}
+                />
+              ))}
+            </div>
           </div>
 
-          <div className="mt-8 justify-center flex">
+          <div className="mt-16 justify-center flex">
             {totalPages > 1 && (
               <Pagination>
                 <PaginationContent>

@@ -18,7 +18,7 @@ export default function ChallengeCard({
   link,
 }: ChallengeCardProps) {
   return (
-    <div className="flex bg-white rounded-md overflow-hidden drop-shadow-md max-w-[31.5rem]">
+    <div className="flex bg-white rounded-md overflow-hidden drop-shadow-md max-w-[600px]">
       {/* Imagem */}
       <div className="w-2/5">
         <Image
