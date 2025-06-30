@@ -27,7 +27,6 @@ const mockChallenges = [
     situacao: "Em andamento",
     ong: "ONG Verde",
     escola: "Escola Municipal João Silva"
-
   },
   {
     id: 2,
@@ -306,7 +305,6 @@ export default function ChallengePage() {
                   description={challenge.description}
                   progress={challenge.progress}
                   link={challenge.link}
-                  linkLabel={challenge.linkLabel}
                 />
               ))}
             </div>
