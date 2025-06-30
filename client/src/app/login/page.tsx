@@ -1,113 +1,41 @@
 'use client';
 
 import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { signIn } from 'next-auth/react';
 import { ArrowLeft } from 'lucide-react';
 import Image from 'next/image';
 import { BoraImpactar } from '@/assets';
 import { NewButton } from '@/components/ui/new-button';
-import { useRouter } from 'next/navigation';
-import axios from 'axios';
-import api from '@/services/api';
-
-interface ExternalUser {
-  name: string;
-  email: string;
-}
-
-interface ExternalNgo {
-  id: number;
-  name: string;
-  description: string;
-  contact_phone: string | null;
-  instagram_link: string | null;
-  facebook_link: string | null;
-  site: string | null;
-  cover_photo_url: string | null;
-  logo_photo_url: string | null;
-}
-
-interface ExternalApiResponse {
-  message: string;
-  user: ExternalUser;
-  ngo: ExternalNgo;
-}
 
 export default function Login() {
   const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handleReturn = () => {
     router.back();
   };
 
-  const saveOngToYourDatabase = async (
-    externalApiData: ExternalApiResponse,
-    userPassword: string
-  ) => {
-    const { user, ngo } = externalApiData;
-    const payloadForYourApi = {
-      name: ngo.name,
-      email: user.email,
-      password: userPassword,
-      description: ngo.description,
-      contactPhone: ngo.contact_phone,
-      instagramLink: ngo.instagram_link,
-      facebookLink: ngo.facebook_link,
-      site: ngo.site,
-      coverPhotoUrl: ngo.cover_photo_url,
-      logoPhotoUrl: ngo.logo_photo_url
-    };
-
-    try {
-      const response = await api.post('/ong', payloadForYourApi);
-      console.log('Ong saved successfully:', response.data);
-      setSuccess('Login bem-sucedido e ONG sincronizada!');
-    } catch (err) {
-      if (axios.isAxiosError(err) && err.response) {
-        const responseData = err.response.data as { message?: string };
-
-        if (
-          err.response.status === 400 &&
-          responseData.message?.includes('already registered')
-        ) {
-          setSuccess('Login bem-sucedido! Os dados desta ONG já estavam no seu banco de dados.');
-        } else {
-          setError(responseData.message || 'Não foi possível conectar ao seu servidor para salvar os dados.');
-        }
-      } else {
-        console.error("Ocorreu um erro inesperado:", err);
-        setError("Ocorreu um erro inesperado ao salvar os dados.");
-      }
-    }
-  };
-
   const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setError('');
-    setSuccess('');
+    setLoading(true);
 
-    try {
-      const response = await axios.post<ExternalApiResponse>('/api/proxy/login', {
-        email,
-        password,
-      });
+    const result = await signIn('credentials', {
+      redirect: false,
+      email: email,
+      password: password,
+    });
 
-      const data = response.data;
-      console.log('Autenticado com sucesso na API externa!');
-      await saveOngToYourDatabase(data, password);
+    setLoading(false);
 
-    } catch (err) {
-      if (axios.isAxiosError(err) && err.response) {
-        const responseData = err.response.data as { message?: string };
-        console.error('Falha na autenticação externa:', responseData.message || 'Erro desconhecido');
-        setError(responseData.message || 'E-mail ou senha incorretos.');
-      } else {
-        console.error('Ocorreu um erro de rede:', err);
-        setError('Não foi possível conectar ao servidor de autenticação. Tente novamente mais tarde.');
-      }
+    if (result?.error) {
+      setError(result.error);
+    } else if (result?.ok) {
+      router.push('/ong/dashboard');
     }
   };
 
@@ -167,10 +95,6 @@ export default function Login() {
           </div>
 
           {error && <p className="text-sm text-red-600 text-center">{error}</p>}
-          {success && (
-            <p className="text-sm text-green-600 text-center">{success}</p>
-          )}
-
           <div className="text-center">
             <a
               href="#"
