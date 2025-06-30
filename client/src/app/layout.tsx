@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import 'styles/globals.css';
+import NextAuthSessionProvider from '@/providers/sessionProvider';
 
 export const metadata: Metadata = {
   title: 'Bora Impactar!',
@@ -22,7 +23,9 @@ export default function RootLayout({
   return (
     <html>
       <body className='font-dmSans bg-background overflow-x-hidden'>
-        <main>{children}</main>
+        <NextAuthSessionProvider>
+          {children}
+        </NextAuthSessionProvider>
       </body>
     </html>
   );
