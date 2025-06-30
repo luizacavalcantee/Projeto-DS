@@ -220,14 +220,14 @@ export default function ChallengePage() {
 
                     <div className=" mt-8 flex flex-wrap items-center gap-4 mb-8">
                         <div className="flex gap-2 ">
-                            <div className="px-4 rounded-full text-secondary text-sm flex items-center gap-2">
+                            <div className="px-4 rounded-full text-primary text-sm flex items-center gap-2">
                                 <Image src={Filter} alt="Filtros" className="h-4 w-4" />
                                 Filtros:
                             </div>
 
                             {/* Filtro Situação */}
                             <Select value={selectedSituacao} onValueChange={setSelectedSituacao}>
-                                <SelectTrigger className="w-48 h-8 bg-white rounded-full text-secondary text-sm border-2 border-secondary">
+                                <SelectTrigger className="w-48 h-8 bg-white rounded-full text-primary text-sm border-2 border-primary">
                                     <SelectValue placeholder="Situação da iniciativa" />
                                 </SelectTrigger>
                                 <SelectContent className="bg-white border border-gray-200 shadow-lg">
@@ -242,7 +242,7 @@ export default function ChallengePage() {
 
                             {/* Filtro ONG */}
                             <Select value={selectedOng} onValueChange={setSelectedOng}>
-                                <SelectTrigger className="w-48 h-8 bg-white rounded-full text-secondary text-sm border-2 border-secondary">
+                                <SelectTrigger className="w-48 h-8 bg-white rounded-full text-primary text-sm border-2 border-primary">
                                     <SelectValue placeholder="ONG responsável" />
                                 </SelectTrigger>
                                 <SelectContent className="bg-white border border-gray-200 shadow-lg">
@@ -251,7 +251,7 @@ export default function ChallengePage() {
                                             placeholder="Pesquisar por ONG..."
                                             value={ongSearchTerm}
                                             onChange={(e) => setOngSearchTerm(e.target.value)}
-                                            className="w-full bg-white border-2 border-secondary pl-4"
+                                            className="w-full bg-white border-2 border-primary pl-4"
                                         />
                                     </div>
                                     <SelectItem value="all">Todas as ONGs</SelectItem>
@@ -265,7 +265,7 @@ export default function ChallengePage() {
 
                             {/* Filtro Escola */}
                             <Select value={selectedEscola} onValueChange={setSelectedEscola}>
-                                <SelectTrigger className="w-48 h-8 bg-white rounded-full text-secondary text-sm border-2 border-secondary">
+                                <SelectTrigger className="w-48 h-8 bg-white rounded-full text-primary text-sm border-2 border-primary">
                                     <SelectValue placeholder="Escola participando" />
                                 </SelectTrigger>
                                 <SelectContent className="bg-white border border-gray-200 shadow-lg">
@@ -274,7 +274,7 @@ export default function ChallengePage() {
                                             placeholder="Pesquisar por escola..."
                                             value={escolaSearchTerm}
                                             onChange={(e) => setEscolaSearchTerm(e.target.value)}
-                                            className="w-full bg-white border-2 border-secondary pl-4"
+                                            className="w-full bg-white border-2 border-primary pl-4"
                                         />
                                     </div>
                                     <SelectItem value="all">Todas as escolas</SelectItem>
@@ -293,7 +293,7 @@ export default function ChallengePage() {
                                     placeholder="Pesquisar desafios..."
                                     value={searchTerm}
                                     onChange={(e) => setSearchTerm(e.target.value)}
-                                    className="w-full bg-white border-2 border-secondary pl-4"
+                                    className="w-full bg-white border-2 border-primary pl-4"
                                 />
                                 <Image
                                     src={Lupa}
