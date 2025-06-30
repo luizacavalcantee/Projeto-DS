@@ -18,7 +18,7 @@ export default function Title({ pageTitle }: TitleProps) {
   };
 
   return (
-    <div className="w-full flex items-center justify-between px-32 pt-24 bg-transparent">
+    <div className="w-full flex items-center justify-between px-16 pt-24 bg-transparent">
       <div className="flex items-center gap-4">
         <button onClick={handleBack}>
           <ChevronLeft size={32}/>
