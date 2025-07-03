@@ -155,33 +155,32 @@ const mockChallenges = [
 
 export function ChallengesCarousel() {
   return (
-    <Carousel
-      opts={{
-        align: 'start'
-      }}
-      className="w-full max-w-6xl h-fit"
-    >
-      <CarouselContent>
-        {mockChallenges.map((challenge) => (
-          <CarouselItem
-            key={challenge.id}
-            className="basis-1/2"
-          >
-            <div className="p-1 h-full">
-              <ChallengeCard
-                imageSrc={challenge.imageSrc}
-                imageAlt={challenge.imageAlt}
-                title={challenge.title}
-                description={challenge.description}
-                progress={challenge.progress}
-                link={challenge.link}
-              />
-            </div>
-          </CarouselItem>
-        ))}
-      </CarouselContent>
-      <CarouselPrevious />
-      <CarouselNext />
-    </Carousel>
+    <div className='flex justify-center items-center'>
+      <Carousel
+        opts={{
+          align: 'start'
+        }}
+        className="w-full max-w-6xl h-fit"
+      >
+        <CarouselContent>
+          {mockChallenges.map((challenge) => (
+            <CarouselItem key={challenge.id} className="basis-1/2">
+              <div className="p-1 h-full">
+                <ChallengeCard
+                  imageSrc={challenge.imageSrc}
+                  imageAlt={challenge.imageAlt}
+                  title={challenge.title}
+                  description={challenge.description}
+                  progress={challenge.progress}
+                  link={challenge.link}
+                />
+              </div>
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+        <CarouselPrevious />
+        <CarouselNext />
+      </Carousel>
+    </div>
   );
 }

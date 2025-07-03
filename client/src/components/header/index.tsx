@@ -11,6 +11,7 @@ import { useSession, signIn, signOut } from 'next-auth/react';
 export default function Header() {
   const { data: session, status } = useSession();
   const isAuthenticated = status === 'authenticated';
+  console.log(isAuthenticated, session);
 
   if (status === 'loading') {
     return (

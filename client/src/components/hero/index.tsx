@@ -1,6 +1,7 @@
 import { NewButton } from '@/components/ui/new-button';
 import Image from 'next/image';
 import { BoraImpactarWhite, Destaque, HeroBackgroung } from '@/assets';
+import Link from 'next/link';
 
 export default function Hero() {
   return (
@@ -48,7 +49,9 @@ export default function Hero() {
           </span>
         </p>
 
-        <NewButton className="w-fit">Quero fazer parte!</NewButton>
+        <Link href="/login">
+          <NewButton className="w-fit">Quero fazer parte!</NewButton>
+        </Link>
       </div>
     </section>
   );

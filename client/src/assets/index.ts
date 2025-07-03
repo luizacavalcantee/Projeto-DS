@@ -22,6 +22,7 @@ import Nuvem from './nuvem.svg';
 import Filter from './filter.svg';
 import ArrowDown from './arrow-down.svg';
 import Lupa from './lupa.svg';
+import UnderlinedDark from './underlined-dark.svg';
 
 export {
   Logo,
@@ -47,5 +48,6 @@ export {
   Nuvem,
   Filter,
   ArrowDown,
-  Lupa
+  Lupa,
+  UnderlinedDark
 };
