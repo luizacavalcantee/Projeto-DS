@@ -33,17 +33,19 @@ export default function HomePage() {
       {/* Challenges Section */}
       <section className="py-20">
         <div className="mx-auto">
-          <h2 className="text-4xl font-bold leading-tight text-center">
-            Confira abaixo todos os{' '}
-          </h2>
-          <span className="text-4xl font-bold leading-tight mb-16 relative inline-block">
-            <span className="relative z-10 text-secondary">
-              desafios das escolas
+          <div className="flex flex-col items-center justify-center mb-14">
+            <h2 className="text-4xl font-bold leading-tight text-center">
+              Confira abaixo todos os{' '}
+            </h2>
+            <span className="text-4xl font-bold leading-tight relative inline-block">
+              <span className="relative z-10 text-secondary">
+                desafios das escolas
+              </span>
+              <span className="absolute z-10 -bottom-1 left-0">
+                <Image src={UnderlinedDark} alt="Sublinhado" />
+              </span>
             </span>
-            <span className="absolute z-10 -bottom-1 left-0">
-              <Image src={UnderlinedDark} alt="Sublinhado" />
-            </span>
-          </span>
+          </div>
 
           <ChallengesCarousel />
 
@@ -77,7 +79,7 @@ export default function HomePage() {
           </div>
           <div className="flex gap-32 items-center justify-center mx-16 mb-20">
             <Ranking />
-            <RankingTable data={mockRankingData} actionType="loadMore" />
+            <RankingTable data={mockRankingData} actionType="viewFullRanking" />
           </div>
         </div>
       </section>
