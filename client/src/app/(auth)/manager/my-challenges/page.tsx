@@ -2,13 +2,10 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import Link from "next/link";
-import { Challenge, BoraImpactar, Filter, ArrowDown, Lupa } from "@/assets";
+import { Challenge, Filter, Lupa } from "@/assets";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { NewButton } from "@/components/ui/new-button";
-import Header from "@/components/header";
-import Footer from "@/components/footer";
 import Title from "@/components/title";
 import ChallengeCard from "@/components/challenge-card";
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
@@ -160,8 +157,8 @@ export default function ChallengePage() {
 
   // Opções dos filtros extraídas dinamicamente do mock
   const situacoes = ["Em andamento", "Finalizado", "Pausado"];
-  const ongs = [...new Set(mockChallenges.map(challenge => challenge.ong))];
-  const escolas = [...new Set(mockChallenges.map(challenge => challenge.escola))];
+  const ongs = Array.from(new Set(mockChallenges.map(challenge => challenge.ong)));
+  const escolas = Array.from(new Set(mockChallenges.map(challenge => challenge.escola)));
   
   // Filtrar ONGs baseado na pesquisa
   const filteredOngs = ongs.filter(ong =>
@@ -286,7 +283,6 @@ export default function ChallengePage() {
                   description={challenge.description}
                   progress={challenge.progress}
                   link={challenge.link}
-                  linkLabel={challenge.linkLabel}
                 />
               ))}
             </div>
