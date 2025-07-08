@@ -27,7 +27,7 @@ export default function Login() {
     const result = await signIn('credentials', {
       redirect: false,
       email: email,
-      password: password,
+      password: password
     });
 
     setLoading(false);
@@ -103,8 +103,8 @@ export default function Login() {
               Esqueceu a senha?
             </a>
           </div>
-          <NewButton type="submit" size={'fit'}>
-            Entrar
+          <NewButton type="submit" size={'fit'} disabled={loading}>
+            {loading ? 'Entrando...' : 'Entrar'}
           </NewButton>
         </form>
         <div className="mt-8 text-center">

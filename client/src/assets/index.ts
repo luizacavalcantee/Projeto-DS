@@ -21,7 +21,7 @@ import Underline from './underlined.svg';
 import Nuvem from './nuvem.svg';
 import Filter from './filter.svg';
 import ArrowDown from './arrow-down.svg';
-import Lupa from './lupa.svg';
+import Lupa from './Lupa.svg';
 import UnderlinedDark from './underlined-dark.svg';
 
 export {
