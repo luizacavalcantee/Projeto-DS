@@ -2,11 +2,11 @@ import { NewButton } from '@/components/ui/new-button';
 import Image from 'next/image';
 import { BoraImpactarWhite, Destaque, HeroBackgroung } from '@/assets';
 import Link from 'next/link';
-import { DualActionButtons } from '../dual-action-buttons';
-import React from 'react';
+import { DualActionButtons } from '@/components/ui/dual-action-buttons';
 
-export default function Hero({ showButtons = false }: { showButtons?: boolean }) {
+export default function Hero() {
   return (
+    // A classe foi adicionada aqui!
     <section className="relative w-full text-white h-[calc(100vh-80px)]">
       <div className='bg-[#373737]/55 h-full w-1/2 absolute blur-lg'></div>
 
@@ -49,18 +49,15 @@ export default function Hero({ showButtons = false }: { showButtons?: boolean })
             Junte-se a essa rede e faça parte da mudança.
           </span>
         </p>
-        {showButtons ? (
-          <DualActionButtons
-            left={{ text: 'Ver todos os desafios', href: '/challenges', variant: 'default' }}
-            right={{ text: 'Ver meus desafios', href: '/manager/my-challenges', variant: 'white' }}
-            className="mt-2"
-          />
-        ) : (
-          <Link href="/login">
-            <NewButton className="w-fit">Quero fazer parte!</NewButton>
-          </Link>
-        )}
+
+        <Link href="/login">
+          <NewButton className="w-fit">Quero fazer parte!</NewButton>
+        </Link>
       </div>
+      <DualActionButtons
+        left={{ text: 'Ver todos os desafios', href: '/challenges', variant: 'default' }}
+        right={{ text: 'Ver meus desafios', href: '/manager/my-challenges', variant: 'white' }}
+      />
     </section>
   );
 }
