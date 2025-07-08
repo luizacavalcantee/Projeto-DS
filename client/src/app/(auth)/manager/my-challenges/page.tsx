@@ -5,7 +5,6 @@ import Image from "next/image";
 import { Challenge, Filter, Lupa } from "@/assets";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { NewButton } from "@/components/ui/new-button";
 import Title from "@/components/title";
 import ChallengeCard from "@/components/challenge-card";
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
