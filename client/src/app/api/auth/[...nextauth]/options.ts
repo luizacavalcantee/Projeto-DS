@@ -1,5 +1,5 @@
-import { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
+import { NextAuthOptions } from 'next-auth';
 import api from 'services/api';
 import axios from 'axios';
 
@@ -35,7 +35,7 @@ export const nextAuthOptions: NextAuthOptions = {
         password: { label: 'Password', type: 'password' }
       },
 
-      async authorize(credentials) {
+      async authorize(credentials: Record<string, string> | undefined) { // Fix 3: Explicitly type credentials
         if (!credentials?.email || !credentials?.password) {
           throw new Error('Credenciais não fornecidas.');
         }
@@ -97,16 +97,5 @@ export const nextAuthOptions: NextAuthOptions = {
   ],
   pages: {
     signIn: '/login'
-  },
-  callbacks: {
-    async jwt({ token, user }) {
-      user && (token.user = user);
-      return token;
-    },
-
-    async session({ session, token }) {
-      session.user = token.user;
-      return session;
-    }
   }
 };
