@@ -149,23 +149,23 @@ const mockChallenges = [
 export default function ChallengePage() {
     const router = useRouter();
     const [searchTerm, setSearchTerm] = useState("");//pesquisa geral
-    const [ongSearchTerm, setOngSearchTerm] = useState("");//filtro ong
+    // const [ongSearchTerm, setOngSearchTerm] = useState("");//filtro ong - REMOVIDO
     const [escolaSearchTerm, setEscolaSearchTerm] = useState("");//filtro escola
     const [currentPage, setCurrentPage] = useState(1);
     const [selectedSituacao, setSelectedSituacao] = useState("");
-    const [selectedOng, setSelectedOng] = useState("");
+    // const [selectedOng, setSelectedOng] = useState(""); // REMOVIDO
     const [selectedEscola, setSelectedEscola] = useState("");
     const itemsPerPage = 8;
 
     // Opções dos filtros extraídas dinamicamente do mock
     const situacoes = ["Em andamento", "Finalizado", "Pausado"];
-    const ongs = Array.from(new Set(mockChallenges.map(challenge => challenge.ong)));
+    // const ongs = Array.from(new Set(mockChallenges.map(challenge => challenge.ong))); // REMOVIDO
     const escolas = Array.from(new Set(mockChallenges.map(challenge => challenge.escola)));
 
-    // Filtrar ONGs baseado na pesquisa
-    const filteredOngs = ongs.filter(ong =>
-        ong.toLowerCase().includes(ongSearchTerm.toLowerCase())
-    );
+    // Filtrar ONGs baseado na pesquisa - REMOVIDO
+    // const filteredOngs = ongs.filter(ong =>
+    //     ong.toLowerCase().includes(ongSearchTerm.toLowerCase())
+    // );
 
     // Filtrar escolas baseado na pesquisa
     const filteredEscolas = escolas.filter(escola =>
@@ -179,10 +179,11 @@ export default function ChallengePage() {
             challenge.description.toLowerCase().includes(searchTerm.toLowerCase());
 
         const matchesSituacao = !selectedSituacao || selectedSituacao === "all" || challenge.situacao === selectedSituacao;
-        const matchesOng = !selectedOng || selectedOng === "all" || challenge.ong === selectedOng;
+        // const matchesOng = !selectedOng || selectedOng === "all" || challenge.ong === selectedOng; // REMOVIDO
         const matchesEscola = !selectedEscola || selectedEscola === "all" || challenge.escola === selectedEscola;
 
-        return matchesSearch && matchesSituacao && matchesOng && matchesEscola;
+        // Ajustado para remover matchesOng
+        return matchesSearch && matchesSituacao && matchesEscola;
     });
 
     // calculo de paginação
@@ -203,15 +204,16 @@ export default function ChallengePage() {
                         </h2>
                         <p className="text-gray-600">
                             Uma atitude que ensina mais do que qualquer aula. Agora, a sua ONG tem a chance de fazer a diferença,
-                             propondo desafios que unem aprendizado e ação para transformar vidas de verdade!
-                             Crie um novo desafio clicando no botão abaixo.
+                            propondo desafios que unem aprendizado e ação para transformar vidas de verdade!
+                            Crie um novo desafio clicando no botão abaixo.
                         </p>
                     </div>
-                    <div><NewButton
-                     className="bg-secondary h-[44px]"
-                     onClick={() => router.push('/ong/my-challenges/create-challenge')}> 
-                     Criar novo desafio</NewButton>
-
+                    <div>
+                        <NewButton
+                            className="bg-secondary h-[44px]"
+                            onClick={() => router.push('/ong/my-challenges/create-challenge')}>
+                            Criar novo desafio
+                        </NewButton>
                     </div>
 
                     <div className=" mt-8 flex flex-wrap items-center gap-4 mb-8">
@@ -236,8 +238,8 @@ export default function ChallengePage() {
                                 </SelectContent>
                             </Select>
 
-                            {/* Filtro ONG (não existe nessa página) */}
-                            
+                            {/* Filtro ONG (não existe nessa página) - REMOVIDO */}
+
 
                             {/* Filtro Escola */}
                             <Select value={selectedEscola} onValueChange={setSelectedEscola}>
@@ -339,9 +341,6 @@ export default function ChallengePage() {
                             </Pagination>
                         )}
                     </div>
-
-
-
                 </div>
             </div>
         </main>

@@ -145,29 +145,30 @@ const mockChallenges = [
 ];
 
 export default function ChallengePage() {
+  // const router = useRouter(); // REMOVIDO: useRouter is not used in this component
   const [searchTerm, setSearchTerm] = useState("");//pesquisa geral
   const [ongSearchTerm, setOngSearchTerm] = useState("");//filtro ong
-  const [escolaSearchTerm, setEscolaSearchTerm] = useState("");//filtro escola
+  // const [escolaSearchTerm, setEscolaSearchTerm] = useState("");//filtro escola - REMOVIDO
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedSituacao, setSelectedSituacao] = useState("");
   const [selectedOng, setSelectedOng] = useState("");
-  const [selectedEscola, setSelectedEscola] = useState("");
+  // const [selectedEscola, setSelectedEscola] = useState(""); // REMOVIDO
   const itemsPerPage = 8;
 
   // Opções dos filtros extraídas dinamicamente do mock
   const situacoes = ["Em andamento", "Finalizado", "Pausado"];
   const ongs = Array.from(new Set(mockChallenges.map(challenge => challenge.ong)));
-  const escolas = Array.from(new Set(mockChallenges.map(challenge => challenge.escola)));
-  
+  // const escolas = Array.from(new Set(mockChallenges.map(challenge => challenge.escola))); // REMOVIDO
+
   // Filtrar ONGs baseado na pesquisa
   const filteredOngs = ongs.filter(ong =>
     ong.toLowerCase().includes(ongSearchTerm.toLowerCase())
   );
 
-  // Filtrar escolas baseado na pesquisa
-  const filteredEscolas = escolas.filter(escola =>
-    escola.toLowerCase().includes(escolaSearchTerm.toLowerCase())
-  );
+  // Filtrar escolas baseado na pesquisa - REMOVIDO
+  // const filteredEscolas = escolas.filter(escola =>
+  //   escola.toLowerCase().includes(escolaSearchTerm.toLowerCase())
+  // );
 
   // filtro de pesquisa e filtros
   const filteredChallenges = mockChallenges.filter((challenge) => {
@@ -177,9 +178,10 @@ export default function ChallengePage() {
 
     const matchesSituacao = !selectedSituacao || selectedSituacao === "all" || challenge.situacao === selectedSituacao;
     const matchesOng = !selectedOng || selectedOng === "all" || challenge.ong === selectedOng;
-    const matchesEscola = !selectedEscola || selectedEscola === "all" || challenge.escola === selectedEscola;
+    // const matchesEscola = !selectedEscola || selectedEscola === "all" || challenge.escola === selectedEscola; // REMOVIDO
 
-    return matchesSearch && matchesSituacao && matchesOng && matchesEscola;
+    // Ajustado para remover matchesEscola
+    return matchesSearch && matchesSituacao && matchesOng;
   });
 
   // calculo de paginação
@@ -203,6 +205,12 @@ export default function ChallengePage() {
               E agora é a sua escola que pode fazer a diferença, unindo aprendizado e ação para transformar vidas de verdade.
             </p>
           </div>
+          {/* Create new challenge button is not present for managers based on description */}
+          {/* <NewButton
+            className="bg-secondary h-[44px]"
+            onClick={() => router.push('/ong/my-challenges/create-challenge')}>
+            Criar novo desafio
+          </NewButton> */}
 
           <div className=" flex flex-wrap items-center gap-4 mb-8">
             <div className="flex gap-2 ">
@@ -249,8 +257,7 @@ export default function ChallengePage() {
                 </SelectContent>
               </Select>
 
-              {/* Filtro Escola (nesse fluxo esse filtro nao existe*/}
-              
+              {/* Filtro Escola (nesse fluxo esse filtro nao existe) - REMOVIDO */}
             </div>
 
             <div className="w-1/3 ml-auto">
@@ -329,9 +336,6 @@ export default function ChallengePage() {
               </Pagination>
             )}
           </div>
-
-
-
         </div>
       </div>
     </main>
