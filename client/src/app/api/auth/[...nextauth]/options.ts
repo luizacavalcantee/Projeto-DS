@@ -1,5 +1,4 @@
 import CredentialsProvider from 'next-auth/providers/credentials';
-import { NextAuthOptions } from 'next-auth';
 import api from 'services/api';
 import axios from 'axios';
 
@@ -26,7 +25,7 @@ interface ExternalApiResponse {
   ngo: ExternalNgo;
 }
 
-export const nextAuthOptions: NextAuthOptions = {
+export const nextAuthOptions = {
   providers: [
     CredentialsProvider({
       name: 'Credentials',
