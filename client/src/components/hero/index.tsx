@@ -2,12 +2,11 @@ import { NewButton } from '@/components/ui/new-button';
 import Image from 'next/image';
 import { BoraImpactarWhite, Destaque, HeroBackgroung } from '@/assets';
 import Link from 'next/link';
-import { DualActionButtons } from '@/components/ui/dual-action-buttons';
+import { DualActionButtons } from '../dual-action-buttons';
 import React from 'react';
 
 export default function Hero({ showButtons = false }: { showButtons?: boolean }) {
   return (
-    // A classe foi adicionada aqui!
     <section className="relative w-full text-white h-[calc(100vh-80px)]">
       <div className='bg-[#373737]/55 h-full w-1/2 absolute blur-lg'></div>
 

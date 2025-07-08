@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { NewButton } from './new-button';
+import { NewButton } from '../ui/new-button';
 import React from 'react';
 
 interface DualActionButtonsProps {
