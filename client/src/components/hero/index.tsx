@@ -1,15 +1,47 @@
-import { NewButton } from '@/components/ui/new-button';
-import Image from 'next/image';
-import { BoraImpactarWhite, Destaque, HeroBackgroung } from '@/assets';
 import Link from 'next/link';
-import { DualActionButtons } from '../dual-action-buttons';
+import Image from 'next/image';
 import React from 'react';
 
-export default function Hero({ showButtons = false }: { showButtons?: boolean }) {
+import { NewButton } from '@/components/ui/new-button';
+import { BoraImpactarWhite, Destaque, HeroBackgroung } from '@/assets';
+
+// As interfaces e o componente DualActionButtons não precisam mudar
+interface ActionButtonProps {
+  text: string;
+  href: string;
+  variant?: 'default' | 'white';
+}
+
+interface DualActionButtonsProps {
+  left: ActionButtonProps;
+  right: ActionButtonProps;
+  className?: string;
+}
+
+const DualActionButtons: React.FC<DualActionButtonsProps> = ({ left, right, className }) => (
+  <div className={`flex gap-4 ${className || ''}`}>
+    <Link href={left.href}>
+      <NewButton className="w-fit px-10 py-3" variant={left.variant || 'default'}>{left.text}</NewButton>
+    </Link>
+    <Link href={right.href}>
+      <NewButton className="w-fit px-10 py-3" variant={right.variant || 'white'}>{right.text}</NewButton>
+    </Link>
+  </div>
+);
+
+// --- AJUSTE NOS NOMES DAS PROPS ---
+interface HeroProps {
+  showButtons?: boolean;
+  leftButton?: string; // Antes: leftButtonHref
+  rightButton?: string; // Antes: rightButtonHref
+}
+
+// Componente Hero com as props renomeadas
+export default function Hero({ showButtons = false, leftButton, rightButton }: HeroProps) {
   return (
     <section className="relative w-full text-white h-[calc(100vh-80px)]">
+      {/* O resto do JSX continua igual */}
       <div className='bg-[#373737]/55 h-full w-1/2 absolute blur-lg'></div>
-
       <Image
         src={HeroBackgroung}
         alt="Background image of children"
@@ -17,7 +49,6 @@ export default function Hero({ showButtons = false }: { showButtons?: boolean })
         className="object-cover object-top -z-10"
         priority
       />
-
       <div className="relative z-10 w-1/2 h-full flex flex-col justify-center pl-16">
         <div>
           <Image
@@ -26,7 +57,6 @@ export default function Hero({ showButtons = false }: { showButtons?: boolean })
             className="h-auto w-auto mb-6"
           />
         </div>
-
         <h1 className="text-4xl font-bold leading-tight mb-4 pr-16">
           Conectamos quem quer ajudar com quem faz{' '}
           <span className="relative inline-block px-3">
@@ -40,7 +70,6 @@ export default function Hero({ showButtons = false }: { showButtons?: boolean })
             />
           </span>
         </h1>
-
         <p className="text-lg mb-8">
           Conectamos ONGs e empresas, voluntários e doadores que querem gerar
           impacto social real. Nossa plataforma facilita parcerias, promove
@@ -49,10 +78,20 @@ export default function Hero({ showButtons = false }: { showButtons?: boolean })
             Junte-se a essa rede e faça parte da mudança.
           </span>
         </p>
-        {showButtons ? (
+
+        {/* Lógica de renderização usando os novos nomes de props */}
+        {showButtons && leftButton && rightButton ? (
           <DualActionButtons
-            left={{ text: 'Ver todos os desafios', href: '/challenges', variant: 'default' }}
-            right={{ text: 'Ver meus desafios', href: '/manager/my-challenges', variant: 'white' }}
+            left={{
+              text: 'Ver todos os desafios',
+              href: leftButton, // Usando a prop 'leftButton'
+              variant: 'default'
+            }}
+            right={{
+              text: 'Ver meus desafios',
+              href: rightButton, // Usando a prop 'rightButton'
+              variant: 'white'
+            }}
             className="mt-2"
           />
         ) : (

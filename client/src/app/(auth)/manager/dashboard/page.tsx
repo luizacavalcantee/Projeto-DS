@@ -25,7 +25,7 @@ export default function HomePage() {
   return (
     <main className="min-h-screen">
       {/* Hero Section */}
-      <Hero showButtons />
+      <Hero showButtons leftButton={'/manager/challenges'} rightButton={'/manager/my-challenges'}/>
       {/* Impact Section */}
       <div className="mt-24">
         <ImpactSection />
