@@ -3,7 +3,7 @@ import Image from 'next/image';
 
 export default function ScoringGuide() {
   return (
-    <section className="flex flex-col items-center justify-center shadow-md rounded-md px-40 py-14 w-full bg-gradient-to-r from-[#32B9F3] via-[#009FE3] to-[#029FE2]">
+    <section className="flex flex-col my-16 items-center justify-center shadow-md rounded-md px-40 py-14 w-full bg-gradient-to-r from-[#32B9F3] via-[#009FE3] to-[#029FE2]">
       <h2 className="text-4xl font-bold text-center text-white mb-5">
         Como Pontuar e Subir no Ranking?
       </h2>

@@ -19,7 +19,7 @@ const buttonVariants = cva(
       size: {
         default: 'py-4 px-5',
         sm: 'py-2 px-4 min-w-28',
-        lg: 'p-5 min-w-56',
+        lg: 'px-5 py-3 min-w-56',
         fit: 'p-2 w-full border',
       }
     },

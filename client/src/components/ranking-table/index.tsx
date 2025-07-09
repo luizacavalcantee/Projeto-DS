@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import Link from 'next/link';
 
 interface SchoolData {
@@ -15,7 +15,9 @@ interface TableProps {
 }
 
 export default function RankingTable({ data, actionType, customLimit }: TableProps) {
-    const sortedData = data.slice().sort((a, b) => b.desafios - a.desafios);
+    const sortedData = useMemo(() => {
+        return data.slice().sort((a, b) => b.desafios - a.desafios);
+    }, [data]);
 
     const itemsPerLoad = 5;
 

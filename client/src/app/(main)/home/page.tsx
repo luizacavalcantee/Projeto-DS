@@ -51,7 +51,7 @@ export default function HomePage() {
 
           <div className="flex justify-center mt-10">
             <Link href="/challenges">
-              <NewButton className="px-10 py-3">Ver Todos</NewButton>
+              <NewButton size={'lg'}>Ver Todos</NewButton>
             </Link>
           </div>
         </div>
