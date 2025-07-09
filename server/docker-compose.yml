@@ -15,7 +15,7 @@ services:
         restart: true
       test-db:
         condition: service_started
-        res=tart: true
+        restart: true
     develop:
       watch:
         - action: sync
