@@ -4,11 +4,13 @@ import UserRouter from './UserRoutes';
 import AuthRouter from './AuthRoutes';
 import FileRouter from './FileRoutes';
 import OngRouter from './OngRoutes';
+import ChallengeRouter from './ChallengeRoutes';
 
 const router = Router();
 
 router.use('/user', UserRouter);
 router.use('/ong', OngRouter);
+router.use('/challenge', ChallengeRouter);
 router.use('/sessions', AuthRouter);
 router.use('/file', FileRouter);
 router.route('/').get((_, res) => {
