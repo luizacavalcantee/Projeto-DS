@@ -31,7 +31,6 @@ class ChallengeController {
         ...challengeData // <-- Pega o restante dos dados (title, description, etc.)
       } = challengeDto;
 
-      // ✅ CORREÇÃO APLICADA AQUI
       const dataForPrisma = {
         ...challengeData, // Espalha os dados escalares (title, description, etc.)
         
