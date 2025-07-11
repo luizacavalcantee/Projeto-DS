@@ -1,5 +1,9 @@
+import Title from "@/components/title";
+
 export default function ChallengeDetails() {
     return (
-        <div></div>
+        <div>
+            <Title pageTitle="Detalhes do desafio"/>
+        </div>
     );
 }

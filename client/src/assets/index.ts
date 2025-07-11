@@ -23,6 +23,11 @@ import Filter from './filter.svg';
 import ArrowDown from './arrow-down.svg';
 import Lupa from './Lupa.svg';
 import UnderlinedDark from './underlined-dark.svg';
+import Checkpoint1 from './checkpoint1.png';
+import Checkpoint2 from './checkpoint2.png';
+import Checkpoint3 from './checkpoint3.png';
+import CoracaoQuentinho from './coracao-quentinho.png';
+import ChallengeCover from './challenge-cover.png';
 
 export {
   Logo,
@@ -49,5 +54,10 @@ export {
   Filter,
   ArrowDown,
   Lupa,
-  UnderlinedDark
+  UnderlinedDark,
+  Checkpoint1,
+  Checkpoint2,
+  Checkpoint3,
+  CoracaoQuentinho,
+  ChallengeCover
 };
