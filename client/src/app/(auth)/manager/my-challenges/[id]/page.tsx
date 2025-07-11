@@ -12,7 +12,6 @@ import Title from '@/components/title';
 import Image from 'next/image';
 import { File } from 'lucide-react';
 import Link from 'next/link';
-import { NewButton } from '@/components/ui/new-button';
 import CheckpointModal from '@/components/checkpoint-modal';
 
 export default function MyChallengesDetailsManager() {

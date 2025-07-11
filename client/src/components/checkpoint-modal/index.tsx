@@ -18,7 +18,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Nuvem } from '@/assets';
 import Image from 'next/image';
 
-export default function CheckpointModal({ buttonText }: ComponentsProps) {
+export default function CheckpointModal() {
   return (
     <Dialog>
       <form>
