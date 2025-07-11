@@ -8,6 +8,17 @@ CREATE TYPE "ChallengeCategory" AS ENUM ('EDUCACAO', 'MEIO_AMBIENTE', 'SAUDE', '
 CREATE TYPE "ChallengeStatus" AS ENUM ('PENDING', 'IN_PROGRESS', 'COMPLETED');
 
 -- CreateTable
+CREATE TABLE "User" (
+    "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "phone" TEXT,
+    "email" TEXT NOT NULL,
+    "password" TEXT NOT NULL,
+
+    CONSTRAINT "User_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "Ong" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
@@ -28,7 +39,6 @@ CREATE TABLE "Ong" (
 CREATE TABLE "SchoolManager" (
     "id" SERIAL NOT NULL,
     "full_name" TEXT NOT NULL,
-    "role" TEXT NOT NULL,
     "phone_number" TEXT,
     "email" TEXT NOT NULL,
     "password" TEXT NOT NULL,
@@ -82,6 +92,9 @@ CREATE TABLE "Checkpoint" (
 
     CONSTRAINT "Checkpoint_pkey" PRIMARY KEY ("id")
 );
+
+-- CreateIndex
+CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Ong_name_key" ON "Ong"("name");

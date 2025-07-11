@@ -28,7 +28,6 @@ Table Ong {
 Table SchoolManager {
   id Int [pk, increment]
   fullName String [not null]
-  role String [not null]
   phoneNumber String
   email String [unique, not null]
   password String [not null]

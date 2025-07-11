@@ -9,13 +9,6 @@ export const CreateSchoolManager = z.object({
     })
     .min(3, { message: 'O nome completo deve ter no mínimo 3 caracteres' }),
 
-  role: z
-    .string({
-      invalid_type_error: 'O cargo deve ser uma string',
-      required_error: 'O cargo é obrigatório',
-    })
-    .min(3, { message: 'O cargo deve ter no mínimo 3 caracteres' }),
-
   phoneNumber: z
     .string({ invalid_type_error: 'O número de telefone deve ser uma string' })
     .regex(/^\d{10,11}$/, {
@@ -37,33 +30,36 @@ export const CreateSchoolManager = z.object({
     })
     .min(8, { message: 'A senha deve ter no mínimo 8 caracteres' }),
 
-  schoolName: z
-    .string({
-      invalid_type_error: 'O nome da escola deve ser uma string',
-      required_error: 'O nome da escola é obrigatório',
-    }),
+  schoolName: z.string({
+    invalid_type_error: 'O nome da escola deve ser uma string',
+    required_error: 'O nome da escola é obrigatório',
+  }),
 
   teachingStages: z
     .array(z.nativeEnum(TeachingStage), {
-        invalid_type_error: 'As etapas de ensino devem ser um array',
-        required_error: 'As etapas de ensino são obrigatórias',
+      invalid_type_error: 'As etapas de ensino devem ser um array',
+      required_error: 'As etapas de ensino são obrigatórias',
     })
     .min(1, { message: 'Selecione ao menos uma etapa de ensino' }),
 
   estimatedStudents: z
     .number({
-        invalid_type_error: 'A estimativa de alunos deve ser um número',
-        required_error: 'A estimativa de alunos é obrigatória',
+      invalid_type_error: 'A estimativa de alunos deve ser um número',
+      required_error: 'A estimativa de alunos é obrigatória',
     })
     .int({ message: 'A estimativa de alunos deve ser um número inteiro' })
-    .positive({ message: 'A estimativa de alunos deve ser um número positivo' }),
+    .positive({
+      message: 'A estimativa de alunos deve ser um número positivo',
+    }),
 
   inepCode: z
     .string({
       invalid_type_error: 'O código INEP deve ser uma string',
       required_error: 'O código INEP é obrigatório',
     })
-    .regex(/^\d{8}$/, { message: 'O código INEP deve conter exatamente 8 dígitos' }),
+    .regex(/^\d{8}$/, {
+      message: 'O código INEP deve conter exatamente 8 dígitos',
+    }),
 
   cep: z
     .string({
@@ -72,17 +68,15 @@ export const CreateSchoolManager = z.object({
     })
     .regex(/^\d{8}$/, { message: 'O CEP deve conter 8 dígitos, sem traço' }),
 
-  address: z
-    .string({
-      invalid_type_error: 'O endereço deve ser uma string',
-      required_error: 'O endereço é obrigatório',
-    }),
+  address: z.string({
+    invalid_type_error: 'O endereço deve ser uma string',
+    required_error: 'O endereço é obrigatório',
+  }),
 
-  addressNumber: z
-    .string({
-      invalid_type_error: 'O número do endereço deve ser uma string',
-      required_error: 'O número do endereço é obrigatório',
-    }),
+  addressNumber: z.string({
+    invalid_type_error: 'O número do endereço deve ser uma string',
+    required_error: 'O número do endereço é obrigatório',
+  }),
 
   addressComplement: z.string().optional(),
 

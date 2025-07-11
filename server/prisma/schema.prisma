@@ -45,7 +45,6 @@ enum TeachingStage {
 model SchoolManager {
   id                  Int                 @id @default(autoincrement())
   fullName            String              @map("full_name")
-  role                String     
   phoneNumber         String?             @map("phone_number")
   email               String              @unique
   password            String          
