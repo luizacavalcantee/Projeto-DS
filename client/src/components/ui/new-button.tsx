@@ -15,6 +15,8 @@ const buttonVariants = cva(
           'bg-white border-2 border-secondary text-secondary hover:drop-shadow-md hover:bg-[#fafafa]',
         transparent:
           'bg-transparent text-white',
+        lightBlue:
+          'bg-primary font-medium text-white shadow hover:bg-primaryHover hover:drop-shadow',
       },
       size: {
         default: 'py-4 px-5',

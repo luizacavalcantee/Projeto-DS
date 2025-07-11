@@ -8,9 +8,13 @@
   :root {
     --background: 0 0% 96%; /*#F5F5F5*/
     --primary: 198, 100%, 45%; /*#009FE3*/
+    --primery-hover: 198, 100%, 40%; /*#0088C7*/
     --secondary: 226, 63%, 44%; /*#294BB6*/
     --secondary-hover: 226, 63%, 38%; /*#24409E*/
     --dark-blue-ranking: 223, 61%, 32%; /*#0B236D*/
     --light-blue-ranking: 215, 100%, 54%; /*#1474FF*/
+    --text-black: 212, 37%, 8%; /*#0D141C*/
+    --details-background: 217, 39%, 94%;  /*#E8EDF5*/
+    --text-gray: 0, 0%, 51%; /*#838383*/
   }
 }
