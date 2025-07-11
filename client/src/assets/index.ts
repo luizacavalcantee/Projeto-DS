@@ -28,6 +28,7 @@ import Checkpoint2 from './checkpoint2.png';
 import Checkpoint3 from './checkpoint3.png';
 import CoracaoQuentinho from './coracao-quentinho.png';
 import ChallengeCover from './challenge-cover.png';
+import Check from './check.svg';
 
 export {
   Logo,
@@ -59,5 +60,6 @@ export {
   Checkpoint2,
   Checkpoint3,
   CoracaoQuentinho,
-  ChallengeCover
+  ChallengeCover,
+  Check
 };
