@@ -1,6 +1,3 @@
-interface ComponentsProps {
-  buttonText?: string;
-}
 import { NewButton } from '@/components/ui/new-button';
 import { Button } from '@/components/ui/button';
 import {
