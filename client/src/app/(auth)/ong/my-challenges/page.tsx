@@ -23,6 +23,7 @@ import {
   PaginationNext,
   PaginationPrevious
 } from '@/components/ui/pagination';
+import Link from 'next/link';
 
 // Mock dos dados dos desafios
 const mockChallenges = [
@@ -243,12 +244,16 @@ export default function ChallengePage() {
             </p>
           </div>
           <div>
-            <NewButton
-              className="bg-secondary h-[44px]"
-              onClick={() => router.push('/ong/my-challenges/create-challenge')}
-            >
-              Criar novo desafio
-            </NewButton>
+            <Link href="/ong/my-challenges/create-challenge">
+              <NewButton
+                className="bg-secondary h-[44px]"
+                onClick={() =>
+                  router.push('/ong/my-challenges/create-challenge')
+                }
+              >
+                Criar novo desafio
+              </NewButton>
+            </Link>
           </div>
 
           <div className=" mt-8 flex flex-wrap items-center gap-4 mb-8">

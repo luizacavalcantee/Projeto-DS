@@ -7,6 +7,7 @@ import { ArrowLeft } from 'lucide-react';
 import Image from 'next/image';
 import { BoraImpactar } from '@/assets';
 import { NewButton } from '@/components/ui/new-button';
+import Link from 'next/link';
 
 export default function Login() {
   const router = useRouter();
@@ -109,9 +110,11 @@ export default function Login() {
         </form>
         <div className="mt-8 text-center">
           <p className="mb-4 text-sm text-black">Não possui cadastro?</p>
-          <NewButton variant="white" size="fit" type="button">
-            Criar conta
-          </NewButton>
+          <Link href="/manager-registration">
+            <NewButton variant="white" size="fit" type="button">
+              Criar conta
+            </NewButton>
+          </Link>
         </div>
       </div>
     </div>

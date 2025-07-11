@@ -205,12 +205,6 @@ export default function ChallengePage() {
               E agora é a sua escola que pode fazer a diferença, unindo aprendizado e ação para transformar vidas de verdade.
             </p>
           </div>
-          {/* Create new challenge button is not present for managers based on description */}
-          {/* <NewButton
-            className="bg-secondary h-[44px]"
-            onClick={() => router.push('/ong/my-challenges/create-challenge')}>
-            Criar novo desafio
-          </NewButton> */}
 
           <div className=" flex flex-wrap items-center gap-4 mb-8">
             <div className="flex gap-2 ">

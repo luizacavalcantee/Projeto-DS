@@ -12,16 +12,18 @@ import {
 
 import { NewButton } from "@/components/ui/new-button"
 
-interface DeleteModalProps {
-  children: React.ReactNode
-  onConfirm: () => void
-}
-
-export function DeleteModal({ children, onConfirm }: DeleteModalProps) {
+export function DeleteModal() {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        {children}
+            <NewButton
+              type="submit"
+              variant={'white'}
+              size={'fit'}
+              className="min-w-96 font-medium"
+            >
+              Excluir desafio
+            </NewButton>
       </AlertDialogTrigger>
 
       <AlertDialogContent className="max-w-sm text-center p-10">
@@ -31,7 +33,7 @@ export function DeleteModal({ children, onConfirm }: DeleteModalProps) {
 
         <AlertDialogFooter className="flex justify-start gap-4" >
           <AlertDialogAction asChild>
-            <NewButton className="bg-[#294BB6] hover:bg-[#3E5ED1] text-white" size={"fit"} variant="default" onClick={onConfirm}  >
+            <NewButton className="bg-[#294BB6] hover:bg-[#3E5ED1] text-white" size={"fit"} variant="default">
               Confirmo
             </NewButton>
           </AlertDialogAction>

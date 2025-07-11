@@ -49,11 +49,11 @@ export default function HomePage() {
 
           <ChallengesCarousel />
             <div className="flex justify-center gap-4 mt-10">
-              <Link href="/challenges">
-                <NewButton className="px-10 py-3">Ver Todos</NewButton>
+              <Link href="/manager/challenges">
+                <NewButton className="px-10 py-3 min-w-44">Ver Todos</NewButton>
               </Link>
-              <Link href="/login">
-                <NewButton className="px-10 py-3" variant="white">Ver os meus</NewButton>
+              <Link href="manager/my-challenges">
+                <NewButton className="px-10 py-3 max-h-12 min-w-44" variant="white">Ver os meus</NewButton>
               </Link>
             </div>
         </div>

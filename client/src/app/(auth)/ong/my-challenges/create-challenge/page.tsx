@@ -28,6 +28,7 @@ import { CalendarIcon, UploadCloud } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import Image from 'next/image';
 import { Upload } from '@/assets';
+import { useRouter } from 'next/navigation';
 
 type FormData = {
   nomeProjeto: string;
@@ -46,6 +47,7 @@ type FormData = {
 };
 
 export default function CreateChallenge() {
+  const router = useRouter();
   const { register, handleSubmit, setValue, watch } = useForm<FormData>({
     defaultValues: {
       dataInicio: null,
@@ -81,6 +83,10 @@ export default function CreateChallenge() {
 
   const onSubmit = (data: FormData) => {
     console.log('Dados do desafio prontos para enviar:', data);
+  };
+
+  const handleReturn = () => {
+    router.back();
   };
 
   return (
@@ -393,7 +399,7 @@ export default function CreateChallenge() {
           </div>
 
           <div className="pt-6 flex justify-center">
-            <NewButton type="submit" className="min-w-96 font-medium">
+            <NewButton type="submit" className="min-w-96 font-medium" onClick={handleReturn}>
               Propor desafio
             </NewButton>
           </div>

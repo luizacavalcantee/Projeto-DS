@@ -22,7 +22,7 @@ const buttonVariants = cva(
         default: 'py-4 px-5',
         sm: 'py-2 px-4 min-w-28',
         lg: 'px-5 py-3 min-w-56',
-        fit: 'p-2 w-full border',
+        fit: 'p-2 w-full',
       }
     },
     defaultVariants: {

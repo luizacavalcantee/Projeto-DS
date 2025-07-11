@@ -28,6 +28,7 @@ import { CalendarIcon, UploadCloud } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import Image from 'next/image';
 import { Upload } from '@/assets';
+import { DeleteModal } from '@/components/delete-modal';
 
 type FormData = {
   nomeProjeto: string;
@@ -85,7 +86,7 @@ export default function EditMyChallengeOng() {
 
   return (
     <div>
-      <Title pageTitle="Cadastro de desafio" />
+      <Title pageTitle="Edição de desafio" />
       <div className="max-w-7xl mx-auto p-6 ">
         <p className="text-2xl font-bold mb-4">
           Proponha Seu Desafio de Impacto para as Escolas
@@ -95,7 +96,7 @@ export default function EditMyChallengeOng() {
           possamos conectar os projetos aos voluntários e recursos ideais.
         </p>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 mb-20">
           <div className="space-y-1">
             <NewLabel>Nome do Desafio</NewLabel>
             <NewInput
@@ -298,10 +299,7 @@ export default function EditMyChallengeOng() {
 
           {/* --- SEÇÃO DE UPLOAD DE IMAGEM --- */}
           <div className="space-y-2 pt-4">
-            <NewLabel
-              className="text-xl font-semibold"
-              htmlFor="imagem-upload"
-            >
+            <NewLabel className="text-xl font-semibold" htmlFor="imagem-upload">
               Imagem do desafio
             </NewLabel>
             <p className="text-sm text-muted-foreground">
@@ -363,10 +361,7 @@ export default function EditMyChallengeOng() {
               onClick={() => attachmentsInputRef.current?.click()} // Dispara o clique no input de anexo
               className="flex items-center justify-center gap-2"
             >
-              <Image
-                src={Upload}
-                alt="Upload Icon"
-              />
+              <Image src={Upload} alt="Upload Icon" />
               <span className="text-white">Carregar arquivo(s)</span>
             </NewButton>
             {attachmentFiles && attachmentFiles.length > 0 && (
@@ -381,10 +376,15 @@ export default function EditMyChallengeOng() {
             )}
           </div>
 
-          <div className="pt-6 flex justify-center">
-            <NewButton type="submit" className="min-w-96 font-medium">
-              Propor desafio
+          <div className="pt-6 flex justify-center gap-6">
+            <NewButton
+              type="submit"
+              size={'fit'}
+              className="min-w-96 font-medium"
+            >
+              Salvar alterações
             </NewButton>
+            <DeleteModal />
           </div>
         </form>
       </div>
