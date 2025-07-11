@@ -31,6 +31,7 @@ import ChallengeCover from './challenge-cover.png';
 import Check from './check.svg';
 import Facebook from './facebook.svg';
 import Instagram from './Instagram.svg';
+import Upload from './upload.svg';
 
 export {
   Logo,
@@ -65,5 +66,6 @@ export {
   ChallengeCover,
   Check,
   Facebook,
-  Instagram
+  Instagram,
+  Upload
 };

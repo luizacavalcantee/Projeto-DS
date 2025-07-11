@@ -24,7 +24,10 @@ import {
 import { cn } from '@/lib/utils';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
-import { CalendarIcon } from 'lucide-react';
+import { CalendarIcon, UploadCloud } from 'lucide-react';
+import { Input } from '@/components/ui/input';
+import Image from 'next/image';
+import { Upload } from '@/assets';
 
 type FormData = {
   nomeProjeto: string;
@@ -32,8 +35,6 @@ type FormData = {
   descricao: string;
   dataInicio: Date | null;
   dataFim: Date | null;
-  nomeContato: string;
-  telefoneContato: string;
   idadeIdeal: string;
   secretaria: string;
   categoria: string;
@@ -57,6 +58,11 @@ export default function CreateChallenge() {
   const [dataInicio, setDataInicio] = useState<Date | null>(null);
   const [dataFim, setDataFim] = useState<Date | null>(null);
 
+  const attachmentsInputRef = useRef<HTMLInputElement>(null);
+
+  const imageFile = watch('imagem');
+  const attachmentFiles = watch('anexos');
+
   const idadeIdealValue = watch('idadeIdeal');
   const categoriaValue = watch('categoria');
 
@@ -74,7 +80,7 @@ export default function CreateChallenge() {
 
   return (
     <div>
-      <Title pageTitle="Desafio Específico" />
+      <Title pageTitle="Cadastro de desafio" />
       <div className="max-w-7xl mx-auto p-6 ">
         <p className="text-2xl font-bold mb-4">
           Proponha Seu Desafio de Impacto para as Escolas
@@ -84,10 +90,7 @@ export default function CreateChallenge() {
           possamos conectar os projetos aos voluntários e recursos ideais.
         </p>
 
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          className="space-y-6"
-        >
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           {/* Estrutura simplificada: NewLabel acima do NewInput */}
           <div className="space-y-1">
             <NewLabel>Nome do Desafio</NewLabel>
@@ -101,7 +104,9 @@ export default function CreateChallenge() {
 
           {/* NewLabel acima do NewInput */}
           <div className="space-y-1">
-            <NewLabel htmlFor="localizacaoDesafio">Localização do Desafio</NewLabel>
+            <NewLabel htmlFor="localizacaoDesafio">
+              Localização do Desafio
+            </NewLabel>
             <NewInput
               id="localizacaoDesafio"
               placeholder="Digite onde o desafio deverá ocorrer"
@@ -176,7 +181,9 @@ export default function CreateChallenge() {
 
           {/* NewLabel acima do NewTextarea */}
           <div className="space-y-1">
-            <NewLabel htmlFor="descricao">Descrição Detalhada do Desafio</NewLabel>
+            <NewLabel htmlFor="descricao">
+              Descrição Detalhada do Desafio
+            </NewLabel>
             <NewTextarea
               id="descricao"
               placeholder="Descreva os detalhes do desafio proposto"
@@ -232,7 +239,9 @@ export default function CreateChallenge() {
               <NewSelectContent className="z-50 bg-white shadow-lg">
                 <NewSelectItem value="Educação">Educação</NewSelectItem>
                 <NewSelectItem value="Saúde">Saúde</NewSelectItem>
-                <NewSelectItem value="Meio Ambiente">Meio Ambiente</NewSelectItem>
+                <NewSelectItem value="Meio Ambiente">
+                  Meio Ambiente
+                </NewSelectItem>
                 <NewSelectItem value="Cultura">Cultura</NewSelectItem>
                 <NewSelectItem value="Esporte">Esporte</NewSelectItem>
                 <NewSelectItem value="Tecnologia">Tecnologia</NewSelectItem>
@@ -258,7 +267,9 @@ export default function CreateChallenge() {
 
           {/* NewLabel acima do NewInput */}
           <div className="space-y-1">
-            <NewLabel htmlFor="tituloCheckpoint1">Título do checkpoint 1</NewLabel>
+            <NewLabel htmlFor="tituloCheckpoint1">
+              Título do checkpoint 1
+            </NewLabel>
             <NewInput
               id="tituloCheckpoint1"
               placeholder="Título da primeira etapa"
@@ -268,7 +279,9 @@ export default function CreateChallenge() {
 
           {/* NewLabel acima do NewInput */}
           <div className="space-y-1">
-            <NewLabel htmlFor="tituloCheckpoint2">Título do checkpoint 2</NewLabel>
+            <NewLabel htmlFor="tituloCheckpoint2">
+              Título do checkpoint 2
+            </NewLabel>
             <NewInput
               id="tituloCheckpoint2"
               placeholder="Título da segunda etapa"
@@ -278,7 +291,9 @@ export default function CreateChallenge() {
 
           {/* NewLabel acima do NewInput */}
           <div className="space-y-1">
-            <NewLabel htmlFor="tituloCheckpoint3">Título do checkpoint 3</NewLabel>
+            <NewLabel htmlFor="tituloCheckpoint3">
+              Título do checkpoint 3
+            </NewLabel>
             <NewInput
               id="tituloCheckpoint3"
               placeholder="Título da terceira etapa"
@@ -286,16 +301,89 @@ export default function CreateChallenge() {
             />
           </div>
 
-          {/* Seção de Imagem (já estava correta) */}
-          <div className="space-y-2 mt-8">
-            <NewLabel className="text-base font-semibold">Imagem do desafio</NewLabel>
+          {/* --- SEÇÃO DE UPLOAD DE IMAGEM --- */}
+          <div className="space-y-2 pt-4">
+            <NewLabel
+              className="text-xl font-semibold"
+              htmlFor="imagem-upload"
+            >
+              Imagem do desafio
+            </NewLabel>
             <p className="text-sm text-muted-foreground">
               Escolha uma imagem para representar o desafio
             </p>
           </div>
+          <div>
+            <NewLabel
+              htmlFor="imagem-upload"
+              className="flex flex-col items-center bg-white/60 justify-center w-full h-32 px-4 py-6 text-center border border-gray-300 border-dashed rounded-lg cursor-pointer text-muted-foreground transition-colors hover:border-primary hover:text-primary"
+            >
+              <UploadCloud className="w-8 h-8" />
+              <span className="mt-2 text-sm font-medium">
+                Clique para fazer upload
+              </span>
+              <span className="mt-1 text-xs">SVG, PNG, JPG or GIF</span>
+            </NewLabel>
+            <Input
+              id="imagem-upload"
+              type="file"
+              className="hidden"
+              accept="image/svg+xml, image/png, image/jpeg, image/gif"
+              {...register('imagem')}
+            />
+            {imageFile && imageFile.length > 0 && (
+              <div className="mt-2 text-sm text-muted-foreground">
+                <strong>Arquivo selecionado:</strong> {imageFile[0].name}
+              </div>
+            )}
+          </div>
+
+          {/* --- SEÇÃO DE ANEXAR ARQUIVOS --- */}
+          <div className="space-y-2 pt-4">
+            <NewLabel className="text-xl font-semibold">
+              Anexar arquivos
+            </NewLabel>
+            <p className="text-sm text-muted-foreground">
+              Anexe documentos relevantes referente ao desafio. (Max: 5MB por
+              arquivo).
+            </p>
+          </div>
+          <div>
+            <Input
+              id="file-attachments"
+              type="file"
+              className="hidden"
+              multiple
+              ref={attachmentsInputRef}
+              {...register('anexos')}
+            />
+            <NewButton
+              variant={'lightBlue'}
+              size={'lg'}
+              className="flex items-center justify-center gap-2"
+            >
+              <Image
+                src={Upload}
+                alt="Upload Icon"
+              />
+              <span className="text-white">Carregar arquivo(s)</span>
+            </NewButton>
+            {attachmentFiles && attachmentFiles.length > 0 && (
+              <div className="mt-2 space-y-1">
+                <p className="text-sm font-semibold">Arquivos selecionados:</p>
+                <ul className="list-disc list-inside text-sm text-muted-foreground">
+                  {Array.from(attachmentFiles).map((file, index) => (
+                    <li key={index}>{file.name}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
 
           <div className="pt-6 flex justify-center">
-            <NewButton type="submit" className='min-w-96 font-medium'>Propor desafio</NewButton>
+            <NewButton type="submit" className="min-w-96 font-medium">
+              Propor desafio
+            </NewButton>
           </div>
         </form>
       </div>
