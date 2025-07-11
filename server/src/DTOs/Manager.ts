@@ -9,13 +9,6 @@ export const CreateSchoolManager = z.object({
     })
     .min(3, { message: 'O nome completo deve ter no mínimo 3 caracteres' }),
 
-  role: z
-    .string({
-      invalid_type_error: 'O cargo deve ser uma string',
-      required_error: 'O cargo é obrigatório',
-    })
-    .min(3, { message: 'O cargo deve ter no mínimo 3 caracteres' }),
-
   phoneNumber: z
     .string({ invalid_type_error: 'O número de telefone deve ser uma string' })
     .regex(/^\d{10,11}$/, {
