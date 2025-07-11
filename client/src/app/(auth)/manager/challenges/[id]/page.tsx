@@ -1,6 +1,5 @@
 import {
   ChallengeCover,
-  Check,
   Checkpoint1,
   Checkpoint2,
   Checkpoint3,
