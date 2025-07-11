@@ -58,7 +58,12 @@ export default function EditMyChallengeOng() {
   const [dataInicio, setDataInicio] = useState<Date | null>(null);
   const [dataFim, setDataFim] = useState<Date | null>(null);
 
-  const attachmentsInputRef = useRef<HTMLInputElement>(null);
+  // Ref para clicar no input de anexo programaticamente
+  const attachmentsInputRef = useRef<HTMLInputElement | null>(null);
+
+  // Desestruturando a ref do 'register' para o input de anexos
+  const { ref: attachmentsRegisterRef, ...attachmentsRegisterRest } =
+    register('anexos');
 
   const imageFile = watch('imagem');
   const attachmentFiles = watch('anexos');
@@ -91,7 +96,6 @@ export default function EditMyChallengeOng() {
         </p>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-          {/* Estrutura simplificada: NewLabel acima do NewInput */}
           <div className="space-y-1">
             <NewLabel>Nome do Desafio</NewLabel>
             <NewInput
@@ -102,7 +106,6 @@ export default function EditMyChallengeOng() {
             />
           </div>
 
-          {/* NewLabel acima do NewInput */}
           <div className="space-y-1">
             <NewLabel htmlFor="localizacaoDesafio">
               Localização do Desafio
@@ -115,7 +118,6 @@ export default function EditMyChallengeOng() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {/* DatePicker para Data de Início (já estava correto) */}
             <div className="space-y-2">
               <NewLabel>Data de Início do Desafio</NewLabel>
               <Popover>
@@ -147,7 +149,6 @@ export default function EditMyChallengeOng() {
                 </PopoverContent>
               </Popover>
             </div>
-            {/* DatePicker para Data de Fim (já estava correto) */}
             <div className="space-y-2">
               <NewLabel>Data de Fim do Desafio</NewLabel>
               <Popover>
@@ -179,7 +180,6 @@ export default function EditMyChallengeOng() {
             </div>
           </div>
 
-          {/* NewLabel acima do NewTextarea */}
           <div className="space-y-1">
             <NewLabel htmlFor="descricao">
               Descrição Detalhada do Desafio
@@ -191,7 +191,6 @@ export default function EditMyChallengeOng() {
             />
           </div>
 
-          {/* NewLabel acima do NewSelect */}
           <div className="space-y-1">
             <NewLabel htmlFor="idadeIdeal">Idade Ideal dos Alunos</NewLabel>
             <NewSelect
@@ -216,17 +215,16 @@ export default function EditMyChallengeOng() {
             </NewSelect>
           </div>
 
-          {/* NewLabel acima do NewInput */}
           <div className="space-y-1">
             <NewLabel htmlFor="secretaria">Recursos Necessários</NewLabel>
+            {/* CORREÇÃO: Removido o </NewSelectTrigger> que estava sobrando no id */}
             <NewInput
-              id="secr</NewSelectTrigger>etaria"
+              id="secretaria"
               placeholder="Cite os recursos necessários para executar o desafio"
               {...register('secretaria')}
             />
           </div>
 
-          {/* NewLabel acima do NewSelect */}
           <div className="space-y-1">
             <NewLabel htmlFor="categoria">Categoria do Desafio</NewLabel>
             <NewSelect
@@ -265,7 +263,6 @@ export default function EditMyChallengeOng() {
             </p>
           </div>
 
-          {/* NewLabel acima do NewInput */}
           <div className="space-y-1">
             <NewLabel htmlFor="tituloCheckpoint1">
               Título do checkpoint 1
@@ -277,7 +274,6 @@ export default function EditMyChallengeOng() {
             />
           </div>
 
-          {/* NewLabel acima do NewInput */}
           <div className="space-y-1">
             <NewLabel htmlFor="tituloCheckpoint2">
               Título do checkpoint 2
@@ -289,7 +285,6 @@ export default function EditMyChallengeOng() {
             />
           </div>
 
-          {/* NewLabel acima do NewInput */}
           <div className="space-y-1">
             <NewLabel htmlFor="tituloCheckpoint3">
               Título do checkpoint 3
@@ -349,17 +344,23 @@ export default function EditMyChallengeOng() {
             </p>
           </div>
           <div>
+            {/* CORREÇÃO: Unificando a ref do react-hook-form com a ref customizada. */}
             <Input
               id="file-attachments"
               type="file"
               className="hidden"
               multiple
-              ref={attachmentsInputRef}
-              {...register('anexos')}
+              {...attachmentsRegisterRest}
+              ref={(e) => {
+                attachmentsRegisterRef(e);
+                attachmentsInputRef.current = e;
+              }}
             />
             <NewButton
               variant={'lightBlue'}
               size={'lg'}
+              type="button" // Evita que o botão envie o formulário
+              onClick={() => attachmentsInputRef.current?.click()} // Dispara o clique no input de anexo
               className="flex items-center justify-center gap-2"
             >
               <Image

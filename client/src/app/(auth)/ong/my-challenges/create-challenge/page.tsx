@@ -58,7 +58,12 @@ export default function CreateChallenge() {
   const [dataInicio, setDataInicio] = useState<Date | null>(null);
   const [dataFim, setDataFim] = useState<Date | null>(null);
 
-  const attachmentsInputRef = useRef<HTMLInputElement>(null);
+  // This ref is used to programmatically click the hidden file input
+  const attachmentsInputRef = useRef<HTMLInputElement | null>(null);
+
+  // Destructure the ref and other props from the register function for the attachments input
+  const { ref: attachmentsRegisterRef, ...attachmentsRegisterRest } =
+    register('anexos');
 
   const imageFile = watch('imagem');
   const attachmentFiles = watch('anexos');
@@ -219,8 +224,9 @@ export default function CreateChallenge() {
           {/* NewLabel acima do NewInput */}
           <div className="space-y-1">
             <NewLabel htmlFor="secretaria">Recursos Necessários</NewLabel>
+            {/* FIX: Corrected typo in the id attribute */}
             <NewInput
-              id="secr</NewSelectTrigger>etaria"
+              id="secretaria"
               placeholder="Cite os recursos necessários para executar o desafio"
               {...register('secretaria')}
             />
@@ -349,17 +355,23 @@ export default function CreateChallenge() {
             </p>
           </div>
           <div>
+            {/* FIX: The ref prop was conflicting. This is the correct way to merge react-hook-form's ref with a custom ref. */}
             <Input
               id="file-attachments"
               type="file"
               className="hidden"
               multiple
-              ref={attachmentsInputRef}
-              {...register('anexos')}
+              {...attachmentsRegisterRest}
+              ref={(e) => {
+                attachmentsRegisterRef(e); // Pass the element to react-hook-form's ref
+                attachmentsInputRef.current = e; // Assign the element to our custom ref
+              }}
             />
             <NewButton
               variant={'lightBlue'}
               size={'lg'}
+              type="button" // Use type="button" to prevent form submission on click
+              onClick={() => attachmentsInputRef.current?.click()} // Programmatically click the hidden input
               className="flex items-center justify-center gap-2"
             >
               <Image
