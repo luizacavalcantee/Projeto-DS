@@ -7,7 +7,6 @@ class SchoolManagerController {
     try {
       const managerData = req.body;
 
-      // Verifica se já existe um gestor com o mesmo e-mail
       const existsManagerWithEmail = await SchoolManagerRepository.findByEmail(managerData.email);
       if (existsManagerWithEmail) {
         return next({
@@ -16,7 +15,6 @@ class SchoolManagerController {
         });
       }
 
-      // Verifica se já existe um gestor com o mesmo código INEP
       const existsManagerWithInep = await SchoolManagerRepository.findByInepCode(managerData.inepCode);
       if (existsManagerWithInep) {
         return next({
@@ -25,7 +23,6 @@ class SchoolManagerController {
         });
       }
 
-      // Criptografa a senha antes de salvar
       const hashedPassword = await hash(managerData.password, 8);
       managerData.password = hashedPassword;
 
