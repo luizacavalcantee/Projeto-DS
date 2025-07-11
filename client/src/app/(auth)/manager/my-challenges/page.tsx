@@ -288,7 +288,7 @@ export default function ChallengePage() {
                   title={challenge.title}
                   description={challenge.description}
                   progress={challenge.progress}
-                  link={challenge.link}
+                  id="undefined"
                 />
               ))}
             </div>
