@@ -28,7 +28,7 @@ import Checkpoint2 from './checkpoint2.png';
 import Checkpoint3 from './checkpoint3.png';
 import CoracaoQuentinho from './coracao-quentinho.png';
 import ChallengeCover from './challenge-cover.png';
-import Check from './check.svg';
+import Check from './Check.svg';
 import Facebook from './facebook.svg';
 import Instagram from './Instagram.svg';
 import Upload from './upload.svg';
