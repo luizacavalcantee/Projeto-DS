@@ -1,22 +1,34 @@
 'use client';
 
 import { useForm } from 'react-hook-form';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
+import { NewInput } from '@/components/ui/new-input';
+import { NewTextarea } from '@/components/ui/new-textarea';
 import { Button } from '@/components/ui/button';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { NewButton } from '@/components/ui/new-button';
+import { NewLabel } from '@/components/ui/new-label';
+import {
+  NewSelect,
+  NewSelectContent,
+  NewSelectItem,
+  NewSelectTrigger,
+  NewSelectValue
+} from '@/components/ui/new-select';
 import Title from '@/components/title';
 import { Calendar } from '@/components/ui/calendar';
 import React, { useState, useRef } from 'react';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger
+} from '@/components/ui/popover';
 import { cn } from '@/lib/utils';
 import { format } from 'date-fns';
-import { ptBR } from 'date-fns/locale'; // Importação do locale ptBR
+import { ptBR } from 'date-fns/locale';
 import { CalendarIcon } from 'lucide-react';
 
 type FormData = {
   nomeProjeto: string;
-  liderDesafio: string;
+  localizacaoDesafio: string;
   descricao: string;
   dataInicio: Date | null;
   dataFim: Date | null;
@@ -38,32 +50,15 @@ export default function CreateChallenge() {
       dataInicio: null,
       dataFim: null,
       idadeIdeal: '',
-      categoria: '',
-    },
+      categoria: ''
+    }
   });
 
   const [dataInicio, setDataInicio] = useState<Date | null>(null);
   const [dataFim, setDataFim] = useState<Date | null>(null);
 
-  const imageInputRef = useRef<HTMLInputElement>(null);
-  const attachmentsInputRef = useRef<HTMLInputElement>(null);
-
-  const [selectedImageName, setSelectedImageName] = useState<string>('Nenhum arquivo escolhido');
-  const [selectedAttachmentsNames, setSelectedAttachmentsNames] = useState<string[]>([]);
-
-  const tituloCheckpoint1Value = watch('tituloCheckpoint1');
-  const tituloCheckpoint2Value = watch('tituloCheckpoint2');
-  const tituloCheckpoint3Value = watch('tituloCheckpoint3');
-
-  const nomeProjetoValue = watch('nomeProjeto');
-  const liderDesafioValue = watch('liderDesafio');
-  const descricaoValue = watch('descricao');
-  const nomeContatoValue = watch('nomeContato');
-  const telefoneContatoValue = watch('telefoneContato');
-  const secretariaValue = watch('secretaria');
   const idadeIdealValue = watch('idadeIdeal');
   const categoriaValue = watch('categoria');
-
 
   React.useEffect(() => {
     setValue('dataInicio', dataInicio);
@@ -77,122 +72,64 @@ export default function CreateChallenge() {
     console.log('Dados do desafio prontos para enviar:', data);
   };
 
-  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files && event.target.files.length > 0) {
-      setValue('imagem', event.target.files);
-      setSelectedImageName(event.target.files[0].name);
-    } else {
-      setValue('imagem', undefined);
-      setSelectedImageName('Nenhum arquivo escolhido');
-    }
-  };
-
-  const handleAttachmentsChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files && event.target.files.length > 0) {
-      setValue('anexos', event.target.files);
-      setSelectedAttachmentsNames(Array.from(event.target.files).map(file => file.name));
-    } else {
-      setValue('anexos', undefined);
-      setSelectedAttachmentsNames([]);
-    }
-  };
-
   return (
     <div>
-      <Title
-        pageTitle="Desafio Específico"
-      />
+      <Title pageTitle="Desafio Específico" />
       <div className="max-w-7xl mx-auto p-6 ">
-
         <p className="text-2xl font-bold mb-4">
           Proponha Seu Desafio de Impacto para as Escolas
         </p>
         <p className="text-sm text-muted-foreground mb-8">
-          Descreva o desafio que sua ONG propõe para as escolas, para que possamos conectar os projetos aos voluntários e recursos ideais.
+          Descreva o desafio que sua ONG propõe para as escolas, para que
+          possamos conectar os projetos aos voluntários e recursos ideais.
         </p>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-          {/* Floating Label para Nome do Projeto/Desafio */}
-          <div className="relative">
-            <label
-              htmlFor="nomeProjeto"
-              className={`
-                absolute left-3 transition-all duration-200 pointer-events-none
-                ${nomeProjetoValue || watch().nomeProjeto
-                  ? '-top-2 text-xs text-gray-500 bg-white px-1'
-                  : 'top-1/2 -translate-y-1/2 text-sm text-gray-400'
-                }
-              `}
-            >
-              Nome do Projeto/Desafio
-            </label>
-            <Input
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="space-y-6"
+        >
+          {/* Estrutura simplificada: NewLabel acima do NewInput */}
+          <div className="space-y-1">
+            <NewLabel>Nome do Desafio</NewLabel>
+            <NewInput
               id="nomeProjeto"
-              placeholder={nomeProjetoValue ? '' : ''}
+              placeholder="Digite o nome do projeto"
               {...register('nomeProjeto')}
-              className="pt-3 pb-2"
+              className="border"
             />
           </div>
 
-          {/* Floating Label para Líder/Professor do Desafio */}
-          <div className="relative">
-            <label
-              htmlFor="liderDesafio"
-              className={`
-                absolute left-3 transition-all duration-200 pointer-events-none
-                ${liderDesafioValue || watch().liderDesafio
-                  ? '-top-2 text-xs text-gray-500 bg-white px-1'
-                  : 'top-1/2 -translate-y-1/2 text-sm text-gray-400'
-                }
-              `}
-            >
-              Líder/Professor do Desafio (Nome/Telefone Principal)
-            </label>
-            <Input
-              id="liderDesafio"
-              placeholder={liderDesafioValue ? '' : ''}
-              {...register('liderDesafio')}
-              className="pt-3 pb-2"
-            />
-          </div>
-
-          {/* Floating Label para Descrição Detalhada do Desafio */}
-          <div className="relative">
-            <label
-              htmlFor="descricao"
-              className={`
-                absolute left-3 transition-all duration-200 pointer-events-none
-                ${descricaoValue || watch().descricao
-                  ? '-top-2 text-xs text-gray-500 bg-white px-1'
-                  : 'top-1/2 -translate-y-1/2 text-sm text-gray-400'
-                }
-              `}
-            >
-              Descrição Detalhada do Desafio
-            </label>
-            <Textarea
-              id="descricao"
-              placeholder={descricaoValue ? '' : ''}
-              {...register('descricao')}
-              className="pt-3 pb-2"
+          {/* NewLabel acima do NewInput */}
+          <div className="space-y-1">
+            <NewLabel htmlFor="localizacaoDesafio">Localização do Desafio</NewLabel>
+            <NewInput
+              id="localizacaoDesafio"
+              placeholder="Digite onde o desafio deverá ocorrer"
+              {...register('localizacaoDesafio')}
             />
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {/* DatePicker para Data de Início do Desafio */}
+            {/* DatePicker para Data de Início (já estava correto) */}
             <div className="space-y-2">
-              <label className="text-sm font-medium">Data de Início do Desafio</label>
+              <NewLabel>Data de Início do Desafio</NewLabel>
               <Popover>
                 <PopoverTrigger asChild>
                   <Button
-                    variant={"outline"}
+                    variant={'outline'}
                     className={cn(
-                      "w-full justify-start text-left font-normal",
-                      !dataInicio && "text-muted-foreground"
+                      'w-full justify-start text-left font-normal bg-white/60 border border-gray-300 hover:border-gray-600 focus:border-primary focus:border-[1.5px]',
+                      !dataInicio && 'text-muted-foreground'
                     )}
                   >
                     <CalendarIcon className="mr-2 h-4 w-4" />
-                    {dataInicio ? format(dataInicio, "PPP", { locale: ptBR }) : <span>Selecione a data</span>}
+                    {dataInicio ? (
+                      format(dataInicio, 'PPP', { locale: ptBR })
+                    ) : (
+                      <span className="font-dmSans">
+                        Selecione a data de início
+                      </span>
+                    )}
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent className="w-auto p-0">
@@ -205,20 +142,24 @@ export default function CreateChallenge() {
                 </PopoverContent>
               </Popover>
             </div>
-            {/* DatePicker para Data de Fim do Desafio */}
+            {/* DatePicker para Data de Fim (já estava correto) */}
             <div className="space-y-2">
-              <label className="text-sm font-medium">Data de Fim do Desafio</label>
+              <NewLabel>Data de Fim do Desafio</NewLabel>
               <Popover>
                 <PopoverTrigger asChild>
                   <Button
-                    variant={"outline"}
+                    variant={'outline'}
                     className={cn(
-                      "w-full justify-start text-left font-normal",
-                      !dataFim && "text-muted-foreground"
+                      'w-full justify-start text-left font-normal bg-white/60 border border-gray-300 hover:border-gray-600 focus:border-primary focus:border-[1.5px]',
+                      !dataFim && 'text-muted-foreground'
                     )}
                   >
                     <CalendarIcon className="mr-2 h-4 w-4" />
-                    {dataFim ? format(dataFim, "PPP", { locale: ptBR }) : <span>Selecione a data</span>}
+                    {dataFim ? (
+                      format(dataFim, 'PPP', { locale: ptBR })
+                    ) : (
+                      <span>Selecione a data final</span>
+                    )}
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent className="w-auto p-0">
@@ -233,283 +174,128 @@ export default function CreateChallenge() {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {/* Floating Label para Nome do Contato para este Desafio */}
-            <div className="relative">
-              <label
-                htmlFor="nomeContato"
-                className={`
-                  absolute left-3 transition-all duration-200 pointer-events-none
-                  ${nomeContatoValue || watch().nomeContato
-                    ? '-top-2 text-xs text-gray-500 bg-white px-1'
-                    : 'top-1/2 -translate-y-1/2 text-sm text-gray-400'
-                  }
-                `}
-              >
-                Nome do Contato para este Desafio
-              </label>
-              <Input
-                id="nomeContato"
-                placeholder={nomeContatoValue ? '' : ''}
-                {...register('nomeContato')}
-                className="pt-3 pb-2"
-              />
-            </div>
-            {/* Floating Label para Número de Contato para este Desafio */}
-            <div className="relative">
-              <label
-                htmlFor="telefoneContato"
-                className={`
-                  absolute left-3 transition-all duration-200 pointer-events-none
-                  ${telefoneContatoValue || watch().telefoneContato
-                    ? '-top-2 text-xs text-gray-500 bg-white px-1'
-                    : 'top-1/2 -translate-y-1/2 text-sm text-gray-400'
-                  }
-                `}
-              >
-                Número de Contato para este Desafio
-              </label>
-              <Input
-                id="telefoneContato"
-                placeholder={telefoneContatoValue ? '' : ''}
-                {...register('telefoneContato')}
-                className="pt-3 pb-2"
-              />
-            </div>
-          </div>
-
-          {/* Floating Label para Idade Ideal dos Alunos (Select) */}
-          <div className="relative">
-            <label
-              htmlFor="idadeIdeal"
-              className={`
-                absolute left-3 transition-all duration-200 pointer-events-none
-                ${idadeIdealValue || watch().idadeIdeal
-                  ? '-top-2 text-xs text-gray-500 bg-white px-1'
-                  : 'top-1/2 -translate-y-1/2 text-sm text-gray-400'
-                }
-              `}
-            >
-              Idade Ideal dos Alunos
-            </label>
-            <Select onValueChange={(value) => setValue('idadeIdeal', value)} value={idadeIdealValue}>
-              <SelectTrigger id="idadeIdeal" className="pt-3 pb-2">
-                <SelectValue placeholder="" /> {/* Placeholder vazio para a label flutuar */}
-              </SelectTrigger>
-              <SelectContent className="z-50 bg-white shadow-lg">
-                <SelectItem value="6-10">6-10 anos</SelectItem>
-                <SelectItem value="11-14">11-14 anos</SelectItem>
-                <SelectItem value="15-18">15-18 anos</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-
-          {/* Floating Label para Secretaria responsável */}
-          <div className="relative">
-            <label
-              htmlFor="secretaria"
-              className={`
-                absolute left-3 transition-all duration-200 pointer-events-none
-                ${secretariaValue || watch().secretaria
-                  ? '-top-2 text-xs text-gray-500 bg-white px-1'
-                  : 'top-1/2 -translate-y-1/2 text-sm text-gray-400'
-                }
-              `}
-            >
-              Secretaria responsável
-            </label>
-            <Input
-              id="secretaria"
-              placeholder={secretariaValue ? '' : ''}
-              {...register('secretaria')}
-              className="pt-3 pb-2"
+          {/* NewLabel acima do NewTextarea */}
+          <div className="space-y-1">
+            <NewLabel htmlFor="descricao">Descrição Detalhada do Desafio</NewLabel>
+            <NewTextarea
+              id="descricao"
+              placeholder="Descreva os detalhes do desafio proposto"
+              {...register('descricao')}
             />
           </div>
 
-          {/* Floating Label para Categoria do Desafio (Select) */}
-          <div className="relative">
-            <label
-              htmlFor="categoria"
-              className={`
-                absolute left-3 transition-all duration-200 pointer-events-none
-                ${categoriaValue || watch().categoria
-                  ? '-top-2 text-xs text-gray-500 bg-white px-1'
-                  : 'top-1/2 -translate-y-1/2 text-sm text-gray-400'
-                }
-              `}
+          {/* NewLabel acima do NewSelect */}
+          <div className="space-y-1">
+            <NewLabel htmlFor="idadeIdeal">Idade Ideal dos Alunos</NewLabel>
+            <NewSelect
+              onValueChange={(value) => setValue('idadeIdeal', value)}
+              value={idadeIdealValue}
             >
-              Categoria do Desafio
-            </label>
-            <Select onValueChange={(value) => setValue('categoria', value)} value={categoriaValue}>
-              <SelectTrigger id="categoria" className="pt-3 pb-2">
-                <SelectValue placeholder="" /> {/* Placeholder vazio para a label flutuar */}
-              </SelectTrigger>
-              <SelectContent className="z-50 bg-white shadow-lg">
-                <SelectItem value="Educação">Educação</SelectItem>
-                <SelectItem value="Saúde">Saúde</SelectItem>
-                <SelectItem value="Meio Ambiente">Meio Ambiente</SelectItem>
-              </SelectContent>
-            </Select>
+              <NewSelectTrigger id="idadeIdeal">
+                <NewSelectValue placeholder="Selecione nível de ensino ideal" />
+              </NewSelectTrigger>
+              <NewSelectContent className="z-50 bg-white shadow-lg">
+                <NewSelectItem value="Educação Infantil">
+                  Educação Infantil
+                </NewSelectItem>
+                <NewSelectItem value="Ensino Fundamental 1">
+                  Ensino Fundamental 1
+                </NewSelectItem>
+                <NewSelectItem value="Ensino Fundamental 2">
+                  Ensino Fundamental 2
+                </NewSelectItem>
+                <NewSelectItem value="Ensino Médio">Ensino Médio</NewSelectItem>
+              </NewSelectContent>
+            </NewSelect>
           </div>
 
-          <div className="space-y-4 mt-8">
-            <h3 className="text-base font-semibold">
+          {/* NewLabel acima do NewInput */}
+          <div className="space-y-1">
+            <NewLabel htmlFor="secretaria">Recursos Necessários</NewLabel>
+            <NewInput
+              id="secr</NewSelectTrigger>etaria"
+              placeholder="Cite os recursos necessários para executar o desafio"
+              {...register('secretaria')}
+            />
+          </div>
+
+          {/* NewLabel acima do NewSelect */}
+          <div className="space-y-1">
+            <NewLabel htmlFor="categoria">Categoria do Desafio</NewLabel>
+            <NewSelect
+              onValueChange={(value) => setValue('categoria', value)}
+              value={categoriaValue}
+            >
+              <NewSelectTrigger id="categoria">
+                <NewSelectValue placeholder="Selecione a categoria" />
+              </NewSelectTrigger>
+              <NewSelectContent className="z-50 bg-white shadow-lg">
+                <NewSelectItem value="Educação">Educação</NewSelectItem>
+                <NewSelectItem value="Saúde">Saúde</NewSelectItem>
+                <NewSelectItem value="Meio Ambiente">Meio Ambiente</NewSelectItem>
+                <NewSelectItem value="Cultura">Cultura</NewSelectItem>
+                <NewSelectItem value="Esporte">Esporte</NewSelectItem>
+                <NewSelectItem value="Tecnologia">Tecnologia</NewSelectItem>
+                <NewSelectItem value="Cidadania">Cidadania</NewSelectItem>
+                <NewSelectItem value="Inclusão">Inclusão</NewSelectItem>
+                <NewSelectItem value="Sustentabilidade">
+                  Sustentabilidade
+                </NewSelectItem>
+              </NewSelectContent>
+            </NewSelect>
+          </div>
+
+          <div>
+            <h3 className="text-xl font-semibold">
               Informações para o acompanhamento do desafio
             </h3>
             <p className="text-sm text-muted-foreground">
-              Para ser possível acompanhar o andamento do seu desafio é necessário que você divida esse desafio em 3 etapas e dê um título para cada uma delas.
+              Para ser possível acompanhar o andamento do seu desafio é
+              necessário que você divida esse desafio em 3 etapas e dê um título
+              para cada uma delas.
             </p>
-
-            {/* Floating Label para Título do checkpoint 1 */}
-            <div className="relative">
-              <label
-                htmlFor="tituloCheckpoint1"
-                className={`
-                  absolute left-3 transition-all duration-200 pointer-events-none
-                  ${tituloCheckpoint1Value || watch().tituloCheckpoint1
-                    ? '-top-2 text-xs text-gray-500 bg-white px-1'
-                    : 'top-1/2 -translate-y-1/2 text-sm text-gray-400'
-                  }
-                `}
-              >
-                Título do checkpoint 1
-              </label>
-              <Input
-                id="tituloCheckpoint1"
-                placeholder={tituloCheckpoint1Value ? '' : ''}
-                {...register('tituloCheckpoint1')}
-                className="pt-3 pb-2"
-              />
-            </div>
-
-            {/* Floating Label para Título do checkpoint 2 - REPLICADO */}
-            <div className="relative">
-              <label
-                htmlFor="tituloCheckpoint2"
-                className={`
-                  absolute left-3 transition-all duration-200 pointer-events-none
-                  ${tituloCheckpoint2Value || watch().tituloCheckpoint2
-                    ? '-top-2 text-xs text-gray-500 bg-white px-1'
-                    : 'top-1/2 -translate-y-1/2 text-sm text-gray-400'
-                  }
-                `}
-              >
-                Título do checkpoint 2
-              </label>
-              <Input
-                id="tituloCheckpoint2"
-                placeholder={tituloCheckpoint2Value ? '' : ''}
-                {...register('tituloCheckpoint2')}
-                className="pt-3 pb-2"
-              />
-            </div>
-
-            {/* Floating Label para Título do checkpoint 3 - REPLICADO */}
-            <div className="relative">
-              <label
-                htmlFor="tituloCheckpoint3"
-                className={`
-                  absolute left-3 transition-all duration-200 pointer-events-none
-                  ${tituloCheckpoint3Value || watch().tituloCheckpoint3
-                    ? '-top-2 text-xs text-gray-500 bg-white px-1'
-                    : 'top-1/2 -translate-y-1/2 text-sm text-gray-400'
-                  }
-                `}
-              >
-                Título do checkpoint 3
-              </label>
-              <Input
-                id="tituloCheckpoint3"
-                placeholder={tituloCheckpoint3Value ? '' : ''}
-                {...register('tituloCheckpoint3')}
-                className="pt-3 pb-2"
-              />
-            </div>
           </div>
 
+          {/* NewLabel acima do NewInput */}
+          <div className="space-y-1">
+            <NewLabel htmlFor="tituloCheckpoint1">Título do checkpoint 1</NewLabel>
+            <NewInput
+              id="tituloCheckpoint1"
+              placeholder="Título da primeira etapa"
+              {...register('tituloCheckpoint1')}
+            />
+          </div>
+
+          {/* NewLabel acima do NewInput */}
+          <div className="space-y-1">
+            <NewLabel htmlFor="tituloCheckpoint2">Título do checkpoint 2</NewLabel>
+            <NewInput
+              id="tituloCheckpoint2"
+              placeholder="Título da segunda etapa"
+              {...register('tituloCheckpoint2')}
+            />
+          </div>
+
+          {/* NewLabel acima do NewInput */}
+          <div className="space-y-1">
+            <NewLabel htmlFor="tituloCheckpoint3">Título do checkpoint 3</NewLabel>
+            <NewInput
+              id="tituloCheckpoint3"
+              placeholder="Título da terceira etapa"
+              {...register('tituloCheckpoint3')}
+            />
+          </div>
+
+          {/* Seção de Imagem (já estava correta) */}
           <div className="space-y-2 mt-8">
-            <label className="text-base font-semibold">Imagem do desafio</label>
+            <NewLabel className="text-base font-semibold">Imagem do desafio</NewLabel>
             <p className="text-sm text-muted-foreground">
               Escolha uma imagem para representar o desafio
             </p>
-            <div
-              className="flex flex-col items-center justify-center p-6 border-2 border-dashed border-gray-300 rounded-md cursor-pointer hover:border-gray-400"
-              onClick={() => imageInputRef.current?.click()}
-              onDragOver={(e) => e.preventDefault()}
-              onDrop={(e) => {
-                e.preventDefault();
-                if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-                  setValue('imagem', e.dataTransfer.files);
-                  setSelectedImageName(e.dataTransfer.files[0].name);
-                }
-              }}
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-10 w-10 text-gray-400"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M7 16a4 4 0 01-.88-7.903A5 5 0 0115.9 6H16a5 5 0 012.984 9.126M12 16v.01M12 12l-4 4m4-4l4 4"
-                />
-              </svg>
-              <p className="mt-2 text-sm text-gray-600">
-                Clique para fazer upload
-              </p>
-              <p className="text-xs text-gray-500">
-                SVG, PNG, JPG ou GIF
-              </p>
-              {selectedImageName !== 'Nenhum arquivo escolhido' && (
-                <p className="mt-2 text-sm text-green-600">Arquivo selecionado: {selectedImageName}</p>
-              )}
-            </div>
-            <input
-              type="file"
-              ref={imageInputRef}
-              onChange={handleImageChange}
-              className="hidden"
-              accept="image/*"
-            />
-          </div>
-
-          <div className="space-y-2">
-            <label className="text-base font-semibold">Anexar arquivos</label>
-            <p className="text-sm text-muted-foreground">
-              Anexe documentos relevantes referentes ao desafio (Máx 5MB por arquivo).
-            </p>
-            <Button
-              variant="secondary"
-              type="button"
-              onClick={() => attachmentsInputRef.current?.click()}
-            >
-              📎 Carregar arquivo
-            </Button>
-            <input
-              type="file"
-              multiple
-              ref={attachmentsInputRef}
-              onChange={handleAttachmentsChange}
-              className="hidden"
-            />
-            {selectedAttachmentsNames.length > 0 && (
-              <div className="mt-2 text-sm text-gray-600">
-                <p>Arquivos selecionados:</p>
-                <ul className="list-disc list-inside">
-                  {selectedAttachmentsNames.map((name, index) => (
-                    <li key={index}>{name}</li>
-                  ))}
-                </ul>
-              </div>
-            )}
           </div>
 
           <div className="pt-6 flex justify-center">
-            <Button type="submit">Propor desafio</Button>
+            <NewButton type="submit" className='min-w-96 font-medium'>Propor desafio</NewButton>
           </div>
         </form>
       </div>

@@ -86,8 +86,8 @@ model Challenge {
   description             String
   startDate               DateTime
   endDate                 DateTime
-  contactName             String
-  contactPhone            String
+  contactName             String   //remover
+  contactPhone            String   //remover
   idealAge                TeachingStage[]     @default([])
   neededResources         String
   category                ChallengeCategory
