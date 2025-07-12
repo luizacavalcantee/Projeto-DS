@@ -19,15 +19,19 @@ export default function ChallengeCard({
   progress,
 }: ChallengeCardProps) {
   return (
-    <Link href={`/challenges/${id}`} className="block hover:scale-[1.02] transition-transform duration-200 ease-in-out">
-      <div className="flex bg-white rounded-md overflow-hidden drop-shadow-md max-w-[600px] cursor-pointer">
-        <div className="w-2/5">
+    <Link href={`/challenges/${id}`} className="block hover:scale-[1.02] transition-transform duration-200 ease-in-out h-full">
+      <div className="flex bg-white rounded-md overflow-hidden drop-shadow-md max-w-[600px] cursor-pointer h-full">
+        {/* --- CORREÇÃO 3: AJUSTE PARA O COMPONENTE IMAGE --- */}
+        {/* Adicionado 'relative' para que a propriedade 'fill' do Image funcione corretamente */}
+        <div className="w-2/5 relative"> 
           <Image
             src={imageSrc}
             alt={imageAlt}
-            className="object-cover h-full w-full"
-            quality={100}
-            unoptimized
+            // A propriedade 'fill' faz a imagem preencher o contêiner pai.
+            fill 
+            // 'object-cover' garante que a imagem cubra o espaço sem distorcer.
+            className="object-cover" 
+            // Não é mais necessário 'h-full', 'w-full', 'quality' ou 'unoptimized' ao usar 'fill'.
           />
         </div>
 

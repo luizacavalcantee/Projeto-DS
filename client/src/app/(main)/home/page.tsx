@@ -9,7 +9,6 @@ import { NewButton } from '@/components/ui/new-button';
 import Image from 'next/image';
 import Link from 'next/link';
 
-//dados que foram mockados para demonstração
 const mockRankingData = [
   { escola: 'Escola Municipal Oswaldo Lima Filho', desafios: 25 },
   { escola: 'Escola Estadual João da Silva', desafios: 22 },
@@ -24,13 +23,10 @@ const mockRankingData = [
 export default function HomePage() {
   return (
     <main className="min-h-screen">
-      {/* Hero Section */}
       <Hero />
-      {/* Impact Section */}
       <div className="mt-24">
         <ImpactSection />
       </div>
-      {/* Challenges Section */}
       <section className="py-20">
         <div className="mx-auto">
           <div className="flex flex-col items-center justify-center mb-14">
@@ -56,9 +52,7 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-      {/* Impact Numbers Section */}
       <ImpactNumbers />
-      {/* Ranking Section */}
       <section className="py-16 px-4">
         <div className="mx-auto">
           <div className="flex flex-col items-center justify-center">
