@@ -4,6 +4,7 @@ import OngController from './OngController';
 import SchoolManagerController from './schoolManagerController';
 import ChallengeController from './ChallengeController';
 import CheckpointController from './CheckpointController';
+import RankingController from './RankingController';
 
 export {
   LoginController,
@@ -12,4 +13,5 @@ export {
   SchoolManagerController,
   ChallengeController,
   CheckpointController,
+  RankingController
 };

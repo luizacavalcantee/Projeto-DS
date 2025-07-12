@@ -6,6 +6,8 @@ import OngRouter from './OngRoutes';
 import SchoolManagerRouter from './schoolManagerRoutes';
 import ChallengeRouter from './ChallengeRoutes';
 import CheckpointRouter from './CheckpointRoutes';
+import rankingRouter from './RankingRoutes';
+
 const router = Router();
 
 router.use('/ong', OngRouter);
@@ -15,6 +17,7 @@ router.use('/file', FileRouter);
 
 router.use('/challenges', ChallengeRouter);
 router.use('/checkpoints', CheckpointRouter);
+router.use('/ranking', rankingRouter);
 
 router.route('/').get((_, res) => {
   res.status(200).send('Projeto Desenvolvimento de Software Backend');

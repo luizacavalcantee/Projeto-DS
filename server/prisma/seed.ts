@@ -284,8 +284,8 @@ async function seed() {
       category: 'CULTURA',
       photoUrl:
         'https://images.pexels.com/photos/2608517/pexels-photo-2608517.jpeg',
-      ongId: 1,
-      managerId: 1,
+      ongId: 2,
+      managerId: 2,
       checkpoint1Title: 'Treinamento em Técnicas de Entrevista e Pesquisa',
       checkpoint2Title: 'Coleta de Depoimentos e Material Histórico em Campo',
       checkpoint3Title: 'Edição do Material e Montagem da Exposição Final',
@@ -305,7 +305,7 @@ async function seed() {
       photoUrl:
         'https://images.pexels.com/photos/8566472/pexels-photo-8566472.jpeg',
       ongId: 1,
-      managerId: 1,
+      managerId: 3,
       checkpoint1Title:
         'Oficina de Eletrônica Básica e Desmontagem de Equipamentos',
       checkpoint2Title: 'Construção dos Protótipos dos Robôs',
@@ -324,8 +324,8 @@ async function seed() {
       category: 'SAUDE',
       photoUrl:
         'https://images.pexels.com/photos/4098150/pexels-photo-4098150.jpeg',
-      ongId: 1,
-      managerId: 1,
+      ongId: 2,
+      managerId: 4,
       checkpoint1Title: 'Pesquisa e Definição dos Temas da Campanha',
       checkpoint2Title: 'Criação do Material de Divulgação (Online e Offline)',
       checkpoint3Title: 'Semana da Saúde: Palestras e Atividades Práticas',
@@ -363,7 +363,7 @@ async function seed() {
       photoUrl:
         'https://images.pexels.com/photos/7235899/pexels-photo-7235899.jpeg',
       ongId: 1,
-      managerId: 1,
+      managerId: 5,
       checkpoint1Title: 'Oficina de Roteiro e Técnicas de Filmagem com Celular',
       checkpoint2Title: 'Período de Gravação e Edição dos Curtas',
       checkpoint3Title: 'Noite de Exibição e Premiação dos Melhores Filmes',
@@ -381,8 +381,8 @@ async function seed() {
       category: 'ESPORTE',
       photoUrl:
         'https://images.pexels.com/photos/274506/pexels-photo-274506.jpeg',
-      ongId: 1,
-      managerId: 1,
+      ongId: 2,
+      managerId: 6,
       checkpoint1Title: 'Inscrição das Equipes e Divulgação do Regulamento',
       checkpoint2Title: 'Sorteio das Chaves e Organização da Tabela de Jogos',
       checkpoint3Title: 'Realização dos Jogos e Cerimônia de Premiação',
@@ -401,7 +401,7 @@ async function seed() {
       photoUrl:
         'https://images.pexels.com/photos/7821516/pexels-photo-7821516.jpeg',
       ongId: 1,
-      managerId: 1,
+      managerId: 7,
       checkpoint1Title: 'Workshop 1: Orçamento Pessoal e Controle de Gastos',
       checkpoint2Title: 'Workshop 2: Poupança e Introdução a Investimentos',
       checkpoint3Title: 'Workshop 3: Consumo Consciente e Prevenção de Dívidas',
@@ -419,8 +419,8 @@ async function seed() {
       category: 'INCLUSAO',
       photoUrl:
         'https://images.pexels.com/photos/7718641/pexels-photo-7718641.jpeg',
-      ongId: 1,
-      managerId: 1,
+      ongId: 2,
+      managerId: 8,
       checkpoint1Title: 'Estudo sobre as Normas de Acessibilidade (NBR 9050)',
       checkpoint2Title: 'Mapeamento em Campo: Coleta de Dados e Fotos',
       checkpoint3Title:
@@ -440,7 +440,7 @@ async function seed() {
       photoUrl:
         'https://images.pexels.com/photos/3913426/pexels-photo-3913426.jpeg',
       ongId: 1,
-      managerId: 1,
+      managerId: 9,
       checkpoint1Title:
         'Campanha de Coleta e Separação de Materiais Recicláveis',
       checkpoint2Title: 'Oficinas de Criação e Produção das Peças de Arte',
