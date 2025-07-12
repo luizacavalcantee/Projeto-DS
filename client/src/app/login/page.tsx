@@ -2,12 +2,14 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { signIn } from 'next-auth/react';
 import { ArrowLeft } from 'lucide-react';
 import Image from 'next/image';
+import Link from 'next/link';
+
+// 1. Importe o serviço de login que criamos, em vez do 'signIn'
+import { login, UserType } from '@/services/auth.services';
 import { BoraImpactar } from '@/assets';
 import { NewButton } from '@/components/ui/new-button';
-import Link from 'next/link';
 
 export default function Login() {
   const router = useRouter();
@@ -15,28 +17,38 @@ export default function Login() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  
+  // 2. Adicione um estado para controlar o tipo de usuário
+  const [userType, setUserType] = useState<UserType>('ong');
 
   const handleReturn = () => {
     router.back();
   };
 
+  // 3. Atualize a função handleLogin para usar nosso serviço
   const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setError('');
     setLoading(true);
 
-    const result = await signIn('credentials', {
-      redirect: false,
-      email: email,
-      password: password
-    });
+    try {
+      // Chama a nossa função de login com as credenciais e o userType
+      const { loggedUser } = await login({
+        email,
+        password_hash: password, // O serviço já renomeia para 'password' internamente
+        userType,
+      });
 
-    setLoading(false);
+      // Se o login for bem-sucedido, redireciona para uma página de dashboard
+      alert(`Bem-vindo(a), ${'name' in loggedUser ? loggedUser.name : loggedUser.fullName}!`);
+      router.push('/dashboard'); // Crie uma página de dashboard depois
 
-    if (result?.error) {
-      setError(result.error);
-    } else if (result?.ok) {
-      router.push('/ong');
+    } catch (err: any) {
+      // Captura o erro da API e exibe uma mensagem amigável
+      const errorMessage = err.response?.data?.message || 'Falha no login. Verifique suas credenciais.';
+      setError(errorMessage);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -60,6 +72,35 @@ export default function Login() {
           </h1>
         </div>
         <form className="space-y-6" onSubmit={handleLogin}>
+          {/* 4. Adicione o seletor de tipo de usuário */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Eu sou:</label>
+            <div className="flex items-center space-x-4">
+              <label className="flex items-center">
+                <input
+                  type="radio"
+                  name="userType"
+                  value="ong"
+                  checked={userType === 'ong'}
+                  onChange={() => setUserType('ong')}
+                  className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300"
+                />
+                <span className="ml-2 text-gray-700">ONG</span>
+              </label>
+              <label className="flex items-center">
+                <input
+                  type="radio"
+                  name="userType"
+                  value="manager"
+                  checked={userType === 'manager'}
+                  onChange={() => setUserType('manager')}
+                  className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300"
+                />
+                <span className="ml-2 text-gray-700">Gestor Escolar</span>
+              </label>
+            </div>
+          </div>
+
           <div>
             <label
               htmlFor="email"
