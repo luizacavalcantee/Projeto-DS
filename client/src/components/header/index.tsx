@@ -2,18 +2,21 @@
 
 import React from 'react';
 import Image from 'next/image';
-import { Logo, UserProfile } from '@/assets';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { Logo, UserProfile } from '@/assets';
 import { NewButton } from '@/components/ui/new-button';
 
-import { useSession, signIn, signOut } from 'next-auth/react'; 
+// 1. Importa o nosso hook customizado
+import { useAuth } from '@/hooks/useAuth';
 
 export default function Header() {
-  const { data: session, status } = useSession();
-  const isAuthenticated = status === 'authenticated';
-  console.log(isAuthenticated, session);
+  // 2. Usa o nosso hook para obter o estado de autenticação
+  const { user, isAuthenticated, loading, logout } = useAuth();
+  const router = useRouter();
 
-  if (status === 'loading') {
+  // Exibe um loader enquanto o hook verifica o localStorage
+  if (loading) {
     return (
         <header className="fixed z-50 w-full flex items-center bg-primary py-4 px-10 text-white drop-shadow-lg">
             <div className="mr-auto">
@@ -26,7 +29,8 @@ export default function Header() {
     );
   }
   
-  const isOng = session?.user?.role === 'ong';
+  // 3. Determina as variáveis com base no nosso objeto 'user'
+  const isOng = user?.type === 'ong';
 
   const navLinks = [
     { label: 'Início', href: '/' },
@@ -34,14 +38,15 @@ export default function Header() {
     { label: 'Ranking', href: isOng ? '/ong/ranking' : '/ranking' },
   ];
 
-  if (isOng) {
+  if (isAuthenticated && isOng) {
     navLinks.push({ label: 'Criar Desafio', href: '/ong/my-challenges/create' });
   }
 
-  const profileLink = isOng ? '/ong/profile' : '/profile';
+  const profileLink = isOng ? '/ong/profile' : '/manager/profile'; // Ajuste para a rota de perfil do gestor
 
-  const handleLogin = () => signIn();
-  const handleLogout = () => signOut({ callbackUrl: '/' });
+  // 4. Define as funções de login e logout para usar nosso sistema
+  const handleLogin = () => router.push('/login');
+  const handleLogout = () => logout();
 
   return (
     <header className="fixed z-50 w-full flex items-center bg-primary py-4 px-10 text-white drop-shadow-lg">
@@ -65,19 +70,20 @@ export default function Header() {
         </ul>
       </nav>
 
-      <div className="flex items-center">
-        {isAuthenticated ? (
+      <div className="flex items-center"> {/* Adicionado ml-auto para empurrar para a direita */}
+        {isAuthenticated && user ? (
           <div className="flex items-center gap-4">
             <Link href={profileLink}>
               <NewButton size={'sm'} variant={'transparent'} className="flex items-center">
                 <Image
-                  src={session.user?.image || UserProfile}
-                  alt={session.user?.name || 'Perfil'}
-                  className="h-10 w-10 mr-3 rounded-full"
+                  // 5. Usa os dados do nosso objeto 'user'
+                  src={UserProfile}
+                  alt={'Perfil'}
+                  className="h-10 w-10 mr-3 rounded-full object-cover" // Adicionado object-cover
                   width={40}
                   height={40}
                 />
-                {session.user?.name || 'Ver meu perfil'}
+                {user.name || user.fullName || 'Ver meu perfil'}
               </NewButton>
             </Link>
             <NewButton onClick={handleLogout} size={'sm'} className="min-w-0">

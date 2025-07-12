@@ -41,7 +41,11 @@ export default function Login() {
 
       // Se o login for bem-sucedido, redireciona para uma página de dashboard
       alert(`Bem-vindo(a), ${'name' in loggedUser ? loggedUser.name : loggedUser.fullName}!`);
-      router.push('/dashboard'); // Crie uma página de dashboard depois
+      if (userType === 'ong') {
+        router.push('/ong'); // Crie uma página de dashboard para ONGs
+      } else { 
+        router.push('/manager'); // Crie uma página de dashboard para Gestores Escolares
+      }
 
     } catch (err: any) {
       // Captura o erro da API e exibe uma mensagem amigável
