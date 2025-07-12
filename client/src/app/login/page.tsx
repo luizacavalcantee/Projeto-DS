@@ -36,7 +36,7 @@ export default function Login() {
     if (result?.error) {
       setError(result.error);
     } else if (result?.ok) {
-      router.push('/ong/dashboard');
+      router.push('/ong');
     }
   };
 

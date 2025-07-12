@@ -30,18 +30,6 @@ export const CreateChallenge = z.object({
     required_error: 'A data de término é obrigatória',
   }),
 
-  contactName: z.string({
-    invalid_type_error: 'O nome do contato deve ser uma string',
-    required_error: 'O nome do contato é obrigatório',
-  }),
-
-  contactPhone: z.string({
-    invalid_type_error: 'O telefone de contato deve ser uma string',
-    required_error: 'O telefone de contato é obrigatório',
-  }).regex(/^\d{10,11}$/, {
-      message: 'O telefone de contato deve ter 10 ou 11 dígitos',
-  }),
-
   idealAge: z
     .array(z.nativeEnum(TeachingStage), {
       invalid_type_error: 'A idade ideal (etapa de ensino) deve ser um array',

@@ -1,12 +1,41 @@
-import { PrismaClient, TeachingStage } from '@prisma/client';
+import { PrismaClient, TeachingStage, ChallengeCategory } from '@prisma/client';
 import { hash } from 'bcryptjs';
 
 const prisma = new PrismaClient();
 
+type ChallengeSeedData = {
+  title: string;
+  description: string;
+  location: string;
+  startDate: Date;
+  endDate: Date;
+  idealAge: TeachingStage[];
+  neededResources: string;
+  category: ChallengeCategory; 
+  photoUrl: string;
+  ongId: number;
+  managerId: number;
+  checkpoint1Title: string;
+  checkpoint2Title: string;
+  checkpoint3Title: string;
+};
+
 async function seed() {
   const saltRounds = 6;
+
+  //  ---------------- SEED SCHOOL MANAGERS ---------------------
+
+  await prisma.checkpoint.deleteMany();
+  console.log('Deleted existing checkpoints.');
+
+  await prisma.challenge.deleteMany();
+  console.log('Deleted existing challenges.');
+
   await prisma.schoolManager.deleteMany();
   console.log('Deleted existing school managers.');
+
+  await prisma.ong.deleteMany();
+  console.log('Deleted existing ONGs.');
 
   await prisma.schoolManager.createMany({
     data: [
@@ -184,8 +213,273 @@ async function seed() {
     ],
   });
   console.log('School Managers created successfully');
-}
 
+  //   ---------------- SEED ONGs --------------------------------
+
+  await prisma.ong.createMany({
+    data: [
+      {
+        id: 1,
+        name: 'ONG Verde Futuro',
+        email: 'ong1@gmail.com',
+        password: await hash('123456', saltRounds),
+        description:
+          'Promove a conservação ambiental e educação sustentável em comunidades urbanas.',
+        contactPhone: null,
+        instagramLink: null,
+        facebookLink: null,
+        site: null,
+        coverPhotoUrl: null,
+        logoPhotoUrl: null,
+      },
+      {
+        id: 2,
+        name: 'Ong Água Boa',
+        email: 'ong3@gmail.com',
+        password: await hash('123456', saltRounds),
+        description: 'Somos uma ONG que preza pelo cuidado da água.',
+        contactPhone: null,
+        instagramLink: null,
+        facebookLink: null,
+        site: null,
+        coverPhotoUrl: null,
+        logoPhotoUrl: null,
+      },
+    ],
+  });
+  console.log('ONGs created successfully');
+
+  //   ---------------- SEED Challenges --------------------------
+
+  const challengesToCreate : ChallengeSeedData[] = [
+    {
+      title: 'Horta Escolar Comunitária',
+      description:
+        'Criar e manter uma horta orgânica na escola, ensinando sobre segurança alimentar, compostagem e trabalho em equipe. Os alimentos colhidos serão doados para a comunidade.',
+      location: 'Área externa da Escola Municipal Ariano Suassuna',
+      startDate: new Date('2025-08-01T09:00:00.000Z'),
+      endDate: new Date('2025-12-15T17:00:00.000Z'),
+      idealAge: ['ENSINO_FUNDAMENTAL_I'],
+      neededResources:
+        'Sementes de hortaliças, terra adubada, pás, rastelos, regadores, material para composteira.',
+      category: 'MEIO_AMBIENTE',
+      photoUrl:
+        'https://images.pexels.com/photos/2886937/pexels-photo-2886937.jpeg',
+      ongId: 1,
+      managerId: 1,
+      checkpoint1Title: 'Planejamento e Preparação dos Canteiros',
+      checkpoint2Title: 'Plantio das Sementes e Início da Compostagem',
+      checkpoint3Title: 'Manutenção, Colheita e Distribuição dos Alimentos',
+    },
+    {
+      title: 'Guardiões da Memória Local',
+      description:
+        'Projeto de pesquisa e documentação da história do bairro. Os alunos irão entrevistar moradores antigos, coletar fotos e criar um documentário ou exposição final.',
+      location: 'Bairro de Santo Antônio, Recife',
+      startDate: new Date('2025-09-02T09:00:00.000Z'),
+      endDate: new Date('2025-11-28T17:00:00.000Z'),
+      idealAge: ['ENSINO_MEDIO'],
+      neededResources:
+        'Gravadores de áudio/vídeo (pode ser celular), câmeras fotográficas, software de edição, espaço para exposição.',
+      category: 'CULTURA',
+      photoUrl:
+        'https://images.pexels.com/photos/2608517/pexels-photo-2608517.jpeg',
+      ongId: 1,
+      managerId: 1,
+      checkpoint1Title: 'Treinamento em Técnicas de Entrevista e Pesquisa',
+      checkpoint2Title: 'Coleta de Depoimentos e Material Histórico em Campo',
+      checkpoint3Title: 'Edição do Material e Montagem da Exposição Final',
+    },
+    {
+      title: 'Olimpíada de Robótica Sustentável',
+      description:
+        'Construir robôs funcionais a partir de lixo eletrônico e materiais recicláveis para competir em desafios de agilidade e tarefas.',
+      location:
+        'Laboratório de Informática da Escola Técnica Estadual Cícero Dias',
+      startDate: new Date('2025-08-15T14:00:00.000Z'),
+      endDate: new Date('2025-11-20T18:00:00.000Z'),
+      idealAge: ['ENSINO_MEDIO'],
+      neededResources:
+        'Sucata eletrônica (motores, fios, placas), kits de arduíno básicos, ferramentas (ferro de solda, alicates), baterias.',
+      category: 'TECNOLOGIA',
+      photoUrl:
+        'https://images.pexels.com/photos/8566472/pexels-photo-8566472.jpeg',
+      ongId: 1,
+      managerId: 1,
+      checkpoint1Title:
+        'Oficina de Eletrônica Básica e Desmontagem de Equipamentos',
+      checkpoint2Title: 'Construção dos Protótipos dos Robôs',
+      checkpoint3Title: 'Competição Final e Apresentação dos Projetos',
+    },
+    {
+      title: 'Campanha de Saúde e Bem-Estar',
+      description:
+        'Criar e divulgar uma campanha de conscientização sobre saúde mental e hábitos saudáveis (alimentação e exercícios) para a comunidade escolar.',
+      location: 'Escola de Referência em Ensino Médio Ginásio Pernambucano',
+      startDate: new Date('2025-10-01T09:00:00.000Z'),
+      endDate: new Date('2025-10-31T17:00:00.000Z'),
+      idealAge: ['ENSINO_MEDIO'],
+      neededResources:
+        'Material de papelaria para cartazes, acesso a redes sociais, palestrates voluntários (nutricionistas, psicólogos).',
+      category: 'SAUDE',
+      photoUrl:
+        'https://images.pexels.com/photos/4098150/pexels-photo-4098150.jpeg',
+      ongId: 1,
+      managerId: 1,
+      checkpoint1Title: 'Pesquisa e Definição dos Temas da Campanha',
+      checkpoint2Title: 'Criação do Material de Divulgação (Online e Offline)',
+      checkpoint3Title: 'Semana da Saúde: Palestras e Atividades Práticas',
+    },
+    {
+      title: 'Inclusão Digital para a Terceira Idade',
+      description:
+        'Alunos voluntários irão ensinar noções básicas de informática e uso de smartphones para idosos da comunidade, promovendo a cidadania e a conexão entre gerações.',
+      location: 'Centro Comunitário do Pina',
+      startDate: new Date('2025-08-05T14:00:00.000Z'),
+      endDate: new Date('2025-10-28T16:00:00.000Z'),
+      idealAge: ['ENSINO_MEDIO'],
+      neededResources:
+        'Laboratório de informática com acesso à internet, cartilha didática impressa, lanche para os participantes.',
+      category: 'CIDADANIA',
+      photoUrl:
+        'https://images.pexels.com/photos/5905709/pexels-photo-5905709.jpeg',
+      ongId: 1,
+      managerId: 1,
+      checkpoint1Title: 'Capacitação dos Alunos Voluntários como Monitores',
+      checkpoint2Title: 'Realização das Aulas Semanais de Informática',
+      checkpoint3Title: 'Evento de Encerramento e Entrega de Certificados',
+    },
+    {
+      title: 'Festival de Curtas com Celular',
+      description:
+        "Produzir curtas-metragens de até 5 minutos usando apenas celulares, com o tema 'Minha Realidade'. O festival visa estimular a criatividade e o olhar crítico dos jovens.",
+      location: 'Online / Escola de Referência em Ensino Médio Oliveira Lima',
+      startDate: new Date('2025-09-10T10:00:00.000Z'),
+      endDate: new Date('2025-11-30T19:00:00.000Z'),
+      idealAge: ['ENSINO_FUNDAMENTAL_II', 'ENSINO_MEDIO'],
+      neededResources:
+        'Celulares com câmera, aplicativos gratuitos de edição de vídeo, projetor para a noite de estreia.',
+      category: 'CULTURA',
+      photoUrl:
+        'https://images.pexels.com/photos/7235899/pexels-photo-7235899.jpeg',
+      ongId: 1,
+      managerId: 1,
+      checkpoint1Title: 'Oficina de Roteiro e Técnicas de Filmagem com Celular',
+      checkpoint2Title: 'Período de Gravação e Edição dos Curtas',
+      checkpoint3Title: 'Noite de Exibição e Premiação dos Melhores Filmes',
+    },
+    {
+      title: 'Torneio Esportivo Interescolar Pela Paz',
+      description:
+        'Organizar um torneio de futsal e vôlei entre escolas da região para promover a integração, o respeito e o espírito esportivo.',
+      location: 'Ginásio de Esportes Geraldo Magalhães (Geraldão)',
+      startDate: new Date('2025-10-20T08:00:00.000Z'),
+      endDate: new Date('2025-10-25T18:00:00.000Z'),
+      idealAge: ['ENSINO_FUNDAMENTAL_I', 'ENSINO_MEDIO'],
+      neededResources:
+        'Uso da quadra, bolas, coletes, troféus e medalhas, equipe de arbitragem voluntária.',
+      category: 'ESPORTE',
+      photoUrl:
+        'https://images.pexels.com/photos/274506/pexels-photo-274506.jpeg',
+      ongId: 1,
+      managerId: 1,
+      checkpoint1Title: 'Inscrição das Equipes e Divulgação do Regulamento',
+      checkpoint2Title: 'Sorteio das Chaves e Organização da Tabela de Jogos',
+      checkpoint3Title: 'Realização dos Jogos e Cerimônia de Premiação',
+    },
+    {
+      title: 'Alfabetização Financeira para Jovens',
+      description:
+        'Workshops interativos sobre como gerenciar o dinheiro, poupar, investir e evitar dívidas, preparando os jovens para a vida adulta.',
+      location: 'Auditório da Faculdade de Administração do Recife (FAR)',
+      startDate: new Date('2025-08-18T18:30:00.000Z'),
+      endDate: new Date('2025-09-22T20:30:00.000Z'),
+      idealAge: ['ENSINO_MEDIO', 'ENSINO_FUNDAMENTAL_II'],
+      neededResources:
+        'Sala de aula ou auditório, material didático (apostilas), palestrantes voluntários da área de finanças.',
+      category: 'EDUCACAO',
+      photoUrl:
+        'https://images.pexels.com/photos/7821516/pexels-photo-7821516.jpeg',
+      ongId: 1,
+      managerId: 1,
+      checkpoint1Title: 'Workshop 1: Orçamento Pessoal e Controle de Gastos',
+      checkpoint2Title: 'Workshop 2: Poupança e Introdução a Investimentos',
+      checkpoint3Title: 'Workshop 3: Consumo Consciente e Prevenção de Dívidas',
+    },
+    {
+      title: 'Acessibilidade em Foco',
+      description:
+        'Mapear a acessibilidade (ou a falta dela) no entorno da escola, identificar problemas em calçadas, rampas e comércios e propor soluções para a subprefeitura.',
+      location: 'Entorno da Escola Professor Cândido Duarte, Boa Viagem',
+      startDate: new Date('2025-09-03T09:00:00.000Z'),
+      endDate: new Date('2025-10-15T17:00:00.000Z'),
+      idealAge: ['ENSINO_MEDIO'],
+      neededResources:
+        'Trena, pranchetas, celulares para fotos, software para elaboração de mapas e relatórios.',
+      category: 'INCLUSAO',
+      photoUrl:
+        'https://images.pexels.com/photos/7718641/pexels-photo-7718641.jpeg',
+      ongId: 1,
+      managerId: 1,
+      checkpoint1Title: 'Estudo sobre as Normas de Acessibilidade (NBR 9050)',
+      checkpoint2Title: 'Mapeamento em Campo: Coleta de Dados e Fotos',
+      checkpoint3Title:
+        'Elaboração e Apresentação do Relatório Final de Sugestões',
+    },
+    {
+      title: 'Recicla-Arte: Transformando Lixo em Luxo',
+      description:
+        'Oficinas de arte para criar esculturas, objetos de decoração e brinquedos a partir de materiais que seriam descartados, como garrafas PET, papelão e latas.',
+      location: 'Pátio da Escola Municipal da Mangabeira',
+      startDate: new Date('2025-08-20T13:00:00.000Z'),
+      endDate: new Date('2025-10-22T15:00:00.000Z'),
+      idealAge: ['ENSINO_FUNDAMENTAL_II'],
+      neededResources:
+        'Material reciclável coletado pelos alunos, cola quente, tesouras, tintas, pincéis.',
+      category: 'SUSTENTABILIDADE',
+      photoUrl:
+        'https://images.pexels.com/photos/3913426/pexels-photo-3913426.jpeg',
+      ongId: 1,
+      managerId: 1,
+      checkpoint1Title:
+        'Campanha de Coleta e Separação de Materiais Recicláveis',
+      checkpoint2Title: 'Oficinas de Criação e Produção das Peças de Arte',
+      checkpoint3Title: 'Exposição Final das Obras para a Comunidade Escolar',
+    },
+  ];
+
+  for (const challengeData of challengesToCreate) {
+    const {
+      checkpoint1Title,
+      checkpoint2Title,
+      checkpoint3Title,
+      ongId,
+      managerId,
+      ...restOfChallengeData
+    } = challengeData;
+
+    await prisma.challenge.create({
+      data: {
+        ...restOfChallengeData,
+        ong: {
+          connect: { id: ongId }
+        },
+        schoolManager: {
+          connect: { id: managerId }
+        },
+        checkpoints: {
+          create: [
+            { title: checkpoint1Title, checkpointNumber: 1 },
+            { title: checkpoint2Title, checkpointNumber: 2 },
+            { title: checkpoint3Title, checkpointNumber: 3 },
+          ],
+        },
+      },
+    });
+  }
+
+  console.log('Challenges created successfully');
+}
 seed().then(() => {
   console.log('Database successfully seeded');
   prisma.$disconnect();
