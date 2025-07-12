@@ -3,13 +3,21 @@ import prisma from '@database';
 
 class SchoolManagerRepository {
     async create(data: Prisma.SchoolManagerCreateInput): Promise<SchoolManager> {
-        const schoolManager = await prisma.schoolManager.create({ data });
+        const schoolManager = await prisma.schoolManager.create({ 
+            data,
+            include: {
+                schoolChallenges: true,
+            }
+        });
         return schoolManager;
     }
 
     async findById(id: number): Promise<SchoolManager | null> {
         const schoolManager = await prisma.schoolManager.findUnique({
             where: { id: id },
+            include: {
+                schoolChallenges: true,
+            }
         });
         return schoolManager;
     }
@@ -17,6 +25,9 @@ class SchoolManagerRepository {
     async findByEmail(email: string): Promise<SchoolManager | null> {
         const schoolManager = await prisma.schoolManager.findUnique({
             where: { email: email },
+            include: {
+                schoolChallenges: true,
+            }
         });
         return schoolManager;
     }
@@ -24,12 +35,19 @@ class SchoolManagerRepository {
     async findByInepCode(inepCode: string): Promise<SchoolManager | null> {
         const schoolManager = await prisma.schoolManager.findUnique({
             where: { inepCode: inepCode },
+            include: {
+                schoolChallenges: true,
+            }
         });
         return schoolManager;
     }
 
     async findAll(): Promise<SchoolManager[]> {
-        const schoolManagers = await prisma.schoolManager.findMany();
+        const schoolManagers = await prisma.schoolManager.findMany({
+            include: {
+                schoolChallenges: true,
+            }
+        });
         return schoolManagers;
     }
 
@@ -37,6 +55,9 @@ class SchoolManagerRepository {
         const schoolManager = await prisma.schoolManager.update({
             where: { id: id },
             data: data,
+            include: {
+                schoolChallenges: true,
+            }
         });
         return schoolManager;
     }
