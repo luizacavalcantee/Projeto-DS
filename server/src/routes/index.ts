@@ -1,6 +1,5 @@
 import { Router } from 'express';
 
-import UserRouter from './UserRoutes';
 import AuthRouter from './AuthRoutes';
 import FileRouter from './FileRoutes';
 import OngRouter from './OngRoutes';
@@ -9,7 +8,6 @@ import ChallengeRouter from './ChallengeRoutes';
 import CheckpointRouter from './CheckpointRoutes';
 const router = Router();
 
-router.use('/user', UserRouter);
 router.use('/ong', OngRouter);
 router.use('/manager', SchoolManagerRouter);
 router.use('/sessions', AuthRouter);
