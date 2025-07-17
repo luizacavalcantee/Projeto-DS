@@ -1,6 +1,5 @@
 'use client';
 
-import { cn } from "@/lib/utils"; // Importe a função 'cn' se você a tiver (padrão do shadcn/ui)
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
 
 interface ChallengePaginationProps {

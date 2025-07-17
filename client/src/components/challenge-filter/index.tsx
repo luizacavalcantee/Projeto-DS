@@ -6,7 +6,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Filter, Lupa } from "@/assets";
 import { ChallengeStatus } from "@/services/challenge.services";
 
-// Tipos para as props do componente
 interface ChallengeFiltersProps {
   filterOptions: {
     ongs: string[];
@@ -25,9 +24,11 @@ interface ChallengeFiltersProps {
     setSelectedOng: (value: string) => void;
     setSelectedSchool: (value: string) => void;
   };
+  // Nova prop para esconder filtros. É um array opcional.
+  hideFilters?: ('ong' | 'school')[];
 }
 
-export default function ChallengeFilters({ filterOptions, filters, setFilters }: ChallengeFiltersProps) {
+export default function ChallengeFilters({ filterOptions, filters, setFilters, hideFilters = [] }: ChallengeFiltersProps) {
   return (
     <div className="flex flex-wrap items-center gap-4 mb-8">
       <div className="flex items-center gap-2">
@@ -49,31 +50,35 @@ export default function ChallengeFilters({ filterOptions, filters, setFilters }:
           </SelectContent>
         </Select>
 
-        {/* Filtro ONG */}
-        <Select value={filters.selectedOng} onValueChange={setFilters.setSelectedOng}>
-          <SelectTrigger className="w-48 h-8 bg-white rounded-full text-primary text-sm border-2 border-primary">
-            <SelectValue placeholder="ONG" />
-          </SelectTrigger>
-          <SelectContent className="bg-white">
-            <SelectItem value="all">Todas as ONGs</SelectItem>
-            {filterOptions.ongs.map((ong) => (
-              <SelectItem key={ong} value={ong}>{ong}</SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+        {/* Renderização condicional do filtro de ONG */}
+        {!hideFilters.includes('ong') && (
+          <Select value={filters.selectedOng} onValueChange={setFilters.setSelectedOng}>
+            <SelectTrigger className="w-48 h-8 bg-white rounded-full text-primary text-sm border-2 border-primary">
+              <SelectValue placeholder="ONG" />
+            </SelectTrigger>
+            <SelectContent className="bg-white">
+              <SelectItem value="all">Todas as ONGs</SelectItem>
+              {filterOptions.ongs.map((ong) => (
+                <SelectItem key={ong} value={ong}>{ong}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        )}
 
-        {/* Filtro Escola */}
-        <Select value={filters.selectedSchool} onValueChange={setFilters.setSelectedSchool}>
-          <SelectTrigger className="w-48 h-8 bg-white rounded-full text-primary text-sm border-2 border-primary">
-            <SelectValue placeholder="Escola" />
-          </SelectTrigger>
-          <SelectContent className="bg-white">
-            <SelectItem value="all">Todas as Escolas</SelectItem>
-            {filterOptions.schools.map((school) => (
-              <SelectItem key={school} value={school}>{school}</SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+        {/* Renderização condicional do filtro de Escola */}
+        {!hideFilters.includes('school') && (
+          <Select value={filters.selectedSchool} onValueChange={setFilters.setSelectedSchool}>
+            <SelectTrigger className="w-48 h-8 bg-white rounded-full text-primary text-sm border-2 border-primary">
+              <SelectValue placeholder="Escola" />
+            </SelectTrigger>
+            <SelectContent className="bg-white">
+              <SelectItem value="all">Todas as Escolas</SelectItem>
+              {filterOptions.schools.map((school) => (
+                <SelectItem key={school} value={school}>{school}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        )}
       </div>
 
       <div className="w-full sm:w-1/3 ml-auto">
