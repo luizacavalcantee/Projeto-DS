@@ -54,7 +54,7 @@ async function seed() {
         addressNumber: '227',
         addressComplement: 'Bloco A',
         schoolNumber: '424',
-        schoolImageUrl: 'https://exemplo.com/imagem-escola-1.jpg',
+        schoolImageUrl: 'https://randomuser.me/api/portraits/women/75.jpg',
       },
       {
         id: 2,
@@ -71,7 +71,7 @@ async function seed() {
         addressNumber: '109',
         addressComplement: 'Sala 2',
         schoolNumber: '150',
-        schoolImageUrl: 'https://exemplo.com/imagem-escola-2.jpg',
+        schoolImageUrl: 'https://randomuser.me/api/portraits/women/76.jpg',
       },
       {
         id: 3,
@@ -91,7 +91,7 @@ async function seed() {
         addressNumber: '236',
         addressComplement: 'Prédio novo',
         schoolNumber: '112',
-        schoolImageUrl: 'https://exemplo.com/imagem-escola-3.jpg',
+        schoolImageUrl: 'https://randomuser.me/api/portraits/women/77.jpg',
       },
       {
         id: 4,
@@ -108,7 +108,7 @@ async function seed() {
         addressNumber: '1040',
         addressComplement: 'Subsolo',
         schoolNumber: '121',
-        schoolImageUrl: 'https://exemplo.com/imagem-escola-4.jpg',
+        schoolImageUrl: 'https://randomuser.me/api/portraits/women/78.jpg',
       },
       {
         id: 5,
@@ -124,7 +124,7 @@ async function seed() {
         address: 'DANCING DAYS',
         addressNumber: '21',
         schoolNumber: '070',
-        schoolImageUrl: 'https://exemplo.com/imagem-escola-5.jpg',
+        schoolImageUrl: 'https://randomuser.me/api/portraits/women/79.jpg',
       },
       {
         id: 6,
@@ -140,7 +140,7 @@ async function seed() {
         address: 'SILVA JARDIM',
         addressNumber: '145',
         schoolNumber: '348',
-        schoolImageUrl: 'https://exemplo.com/imagem-escola-6.jpg',
+        schoolImageUrl: 'https://randomuser.me/api/portraits/women/80.jpg',
       },
       {
         id: 7,
@@ -156,7 +156,7 @@ async function seed() {
         address: 'JORNALISTA EDSOU REGIS',
         addressNumber: '216',
         schoolNumber: '491',
-        schoolImageUrl: 'https://exemplo.com/imagem-escola-7.jpg',
+        schoolImageUrl: 'https://randomuser.me/api/portraits/women/81.jpg',
       },
       {
         id: 8,
@@ -172,7 +172,7 @@ async function seed() {
         address: 'DR ALVARO FERRAZ',
         addressNumber: '594',
         schoolNumber: '106',
-        schoolImageUrl: 'https://exemplo.com/imagem-escola-8.jpg',
+        schoolImageUrl: 'https://randomuser.me/api/portraits/women/82.jpg',
       },
       {
         id: 9,
@@ -188,7 +188,7 @@ async function seed() {
         address: 'ENCANTA MOCA',
         addressNumber: '377',
         schoolNumber: '928',
-        schoolImageUrl: 'https://exemplo.com/imagem-escola-9.jpg',
+        schoolImageUrl: 'https://randomuser.me/api/portraits/women/83.jpg',
       },
       {
         id: 10,
@@ -208,7 +208,7 @@ async function seed() {
         address: 'DAS PANELAS',
         addressNumber: '28',
         schoolNumber: '164',
-        schoolImageUrl: 'https://exemplo.com/imagem-escola-10.jpg',
+        schoolImageUrl: 'https://randomuser.me/api/portraits/women/84.jpg',
       },
     ],
   });

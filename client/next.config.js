@@ -23,10 +23,17 @@ module.exports = {
       },
       {
         protocol: 'https',
+        hostname: 'randomuser.me',
+        port: '',
+        pathname: '/api/portraits/**',
+      },
+            {
+        protocol: 'https',
         hostname: 'exemplo.com',
         port: '',
         pathname: '/**',
       }
+
     ],
   },
 };
