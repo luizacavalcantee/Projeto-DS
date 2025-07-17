@@ -20,7 +20,7 @@ export default function CheckpointModal() {
     <Dialog>
       <form>
         <DialogTrigger asChild>
-          <NewButton variant={'lightBlue'} size={'sm'} className="mt-4">
+          <NewButton variant={'lightBlue'} size={'sm'} className="mt-2">
             Adicionar checkpoint
           </NewButton>
         </DialogTrigger>

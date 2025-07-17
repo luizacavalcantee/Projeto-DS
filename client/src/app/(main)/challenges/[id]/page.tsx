@@ -1,15 +1,15 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import { getChallengeById, ChallengeData } from "@/services/challenge.services";
+import { useEffect, useState } from 'react';
+import { getChallengeById, ChallengeData } from '@/services/challenge.services';
 
 // Importando os novos componentes
-import ChallengeHeader from "@/components/challenge-header";
-import ChallengeStats from "@/components/challenge-status";
-import CheckpointTimeline from "@/components/checkpoint-timeline";
-import SupportMaterials from "@/components/suported-materials";
-import OngCard from "@/components/ong-card";
-import ImpactGallery from "@/components/impact-gallery";
+import ChallengeHeader from '@/components/challenge-header';
+import ChallengeStats from '@/components/challenge-status';
+import CheckpointTimeline from '@/components/checkpoint-timeline';
+import SupportMaterials from '@/components/suported-materials';
+import OngCard from '@/components/ong-card';
+import ImpactGallery from '@/components/impact-gallery';
 
 // Props que a página recebe, incluindo os parâmetros do URL
 interface PageProps {
@@ -33,10 +33,10 @@ export default function ChallengeDetailsPage({ params }: PageProps) {
         if (data) {
           setChallenge(data);
         } else {
-          setError("Desafio não encontrado.");
+          setError('Desafio não encontrado.');
         }
       } catch (err) {
-        setError("Não foi possível carregar os detalhes do desafio.");
+        setError('Não foi possível carregar os detalhes do desafio.');
         console.error(err);
       } finally {
         setLoading(false);
@@ -47,7 +47,9 @@ export default function ChallengeDetailsPage({ params }: PageProps) {
   }, [params.id]); // O efeito é re-executado se o ID mudar
 
   if (loading) {
-    return <div className="text-center p-12">A carregar detalhes do desafio...</div>;
+    return (
+      <div className="text-center p-12">A carregar detalhes do desafio...</div>
+    );
   }
 
   if (error) {
@@ -66,7 +68,7 @@ export default function ChallengeDetailsPage({ params }: PageProps) {
         <article className="mt-8 text-textBlack">
           <header>
             <h1 className="text-3xl font-bold">{challenge.title}</h1>
-            <ChallengeStats 
+            <ChallengeStats
               idealAge={challenge.idealAge}
               endDate={challenge.endDate}
               schoolName={challenge.schoolManager?.schoolName || 'N/A'}
@@ -86,7 +88,7 @@ export default function ChallengeDetailsPage({ params }: PageProps) {
 
           <SupportMaterials urls={challenge.documentUrls} />
           <OngCard ong={challenge.ong} />
-          <ImpactGallery checkpoints={challenge.checkpoints} /> 
+          <ImpactGallery checkpoints={challenge.checkpoints} />
         </article>
       </div>
     </main>
