@@ -14,7 +14,7 @@ type ChallengeSeedData = {
   category: ChallengeCategory; 
   photoUrl: string;
   ongId: number;
-  managerId: number;
+  managerId?: number;
   checkpoint1Title: string;
   checkpoint2Title: string;
   checkpoint3Title: string;
@@ -305,7 +305,6 @@ async function seed() {
       photoUrl:
         'https://images.pexels.com/photos/8566472/pexels-photo-8566472.jpeg',
       ongId: 1,
-      managerId: 3,
       checkpoint1Title:
         'Oficina de Eletrônica Básica e Desmontagem de Equipamentos',
       checkpoint2Title: 'Construção dos Protótipos dos Robôs',
@@ -459,23 +458,26 @@ async function seed() {
     } = challengeData;
 
     await prisma.challenge.create({
-      data: {
-        ...restOfChallengeData,
-        ong: {
-          connect: { id: ongId }
-        },
+    data: {
+      ...restOfChallengeData,
+      ong: {
+        connect: { id: ongId }
+      },
+      // Condição para conectar a escola apenas se managerId for fornecido
+      ...(managerId && {
         schoolManager: {
           connect: { id: managerId }
-        },
-        checkpoints: {
-          create: [
-            { title: checkpoint1Title, checkpointNumber: 1 },
-            { title: checkpoint2Title, checkpointNumber: 2 },
-            { title: checkpoint3Title, checkpointNumber: 3 },
-          ],
-        },
+        }
+      }),
+      checkpoints: {
+        create: [
+          { title: checkpoint1Title, checkpointNumber: 1 },
+          { title: checkpoint2Title, checkpointNumber: 2 },
+          { title: checkpoint3Title, checkpointNumber: 3 },
+        ],
       },
-    });
+    },
+  });
   }
 
   console.log('Challenges created successfully');

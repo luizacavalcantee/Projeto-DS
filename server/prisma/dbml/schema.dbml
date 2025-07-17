@@ -50,9 +50,9 @@ Table Challenge {
   photoUrl String [not null]
   status ChallengeStatus [not null, default: 'PENDING']
   ongId Int [not null]
-  managerId Int [not null]
+  managerId Int
   ong Ong [not null]
-  schoolManager SchoolManager [not null]
+  schoolManager SchoolManager
   checkpoints Checkpoint [not null]
 }
 

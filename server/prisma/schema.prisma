@@ -86,10 +86,10 @@ model Challenge {
   status                  ChallengeStatus     @default(PENDING)         
 
   ongId                   Int    
-  managerId               Int             
+  managerId               Int?        
 
   ong                     Ong                 @relation(fields: [ongId], references: [id])
-  schoolManager           SchoolManager       @relation(fields: [managerId], references: [id])
+  schoolManager           SchoolManager?       @relation(fields: [managerId], references: [id])
   checkpoints             Checkpoint[]        // Um desafio sempre terá 3 checkpoints
 }
 
