@@ -32,6 +32,14 @@ import Check from './Check.svg';
 import Facebook from './facebook.svg';
 import Instagram from './Instagram.svg';
 import Upload from './upload.svg';
+import Cidadania from './cidadania.jpg';
+import Cultura from './cultura.jpg';
+import Educacao from './educacao.jpg';
+import Esportes from './esportes.jpg'
+import MeioAmbiente from './meio-ambiente.jpg';
+import Inclusao from './inclusao.jpg';
+import Saude from './saude.jpg';
+import Tecnologia from './tecnologia.jpg';
 
 export {
   Logo,
@@ -67,5 +75,13 @@ export {
   Check,
   Facebook,
   Instagram,
-  Upload
+  Upload,
+  Cidadania,
+  Cultura,
+  Educacao,
+  Esportes,
+  MeioAmbiente,
+  Inclusao,
+  Saude,
+  Tecnologia
 };
