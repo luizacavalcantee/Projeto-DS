@@ -38,6 +38,12 @@ module.exports = {
         hostname: 'picsum.photos',
         port: '',
         pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'fake-storage.com',
+        port: '',
+        pathname: '/**',
       }
     ],
   },
