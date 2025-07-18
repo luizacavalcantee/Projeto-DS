@@ -1,72 +1,115 @@
 'use client';
 
-import Title from '@/components/title';
-import ChallengeFilters from '@/components/challenge-filter';
-import ChallengeGrid from '@/components/challenge-grid';
-import ChallengePagination from '@/components/challenge-pagination';
-import { useChallenges } from '@/hooks/useChallenges';
+import { useEffect, useState } from 'react';
+import { getChallengeById, ChallengeData } from '@/services/challenge.services';
+
+// Componentes
+import ChallengeHeader from '@/components/challenge-header';
+import ChallengeStats from '@/components/challenge-status';
+import CheckpointTimeline from '@/components/checkpoint-timeline';
+import SupportMaterials from '@/components/suported-materials';
+import OngCard from '@/components/ong-card';
+import ImpactGallery from '@/components/impact-gallery';
+import { useAuth } from '@/hooks/useAuth';
 import { NewButton } from '@/components/ui/new-button';
 import Link from 'next/link';
+import CheckpointModal from '@/components/checkpoint-modal';
 
-export default function ManagerChallengesPage() {
-  const {
-    loading,
-    error,
-    currentChallenges,
-    filterOptions,
-    filters,
-    setFilters,
-    pagination
-  } = useChallenges();
+interface PageProps {
+  params: { id: string };
+}
 
-  if (loading) {
-    return (
-      <div className="p-8 text-center min-h-screen">Carregando desafios...</div>
-    );
-  }
+export default function ChallengeDetailsManager({ params }: PageProps) {
+  const [challenge, setChallenge] = useState<ChallengeData | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const { user } = useAuth();
 
-  if (error) {
-    return (
-      <div className="p-8 text-red-600 text-center min-h-screen">
-        <strong>Erro:</strong> {error}
-      </div>
-    );
-  }
+  // ✅ Extraímos a lógica de busca para poder chamá-la novamente
+  const fetchChallengeDetails = async () => {
+    if (!params.id) return;
+    try {
+      // Não reseta o loading se já tivermos dados, para um refresh suave
+      if (!challenge) setLoading(true); 
+      const data = await getChallengeById(Number(params.id));
+      if (data) {
+        setChallenge(data);
+      } else {
+        setError('Desafio não encontrado.');
+      }
+    } catch (err) {
+      setError('Não foi possível carregar os detalhes do desafio.');
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+  
+  useEffect(() => {
+    fetchChallengeDetails();
+  }, [params.id]);
+
+  if (loading) return <div className="text-center p-12">A carregar...</div>;
+  if (error) return <div className="text-center text-red-500 p-12">{error}</div>;
+  if (!challenge) return <div className="text-center p-12">Desafio não encontrado.</div>;
+
+  const hasAnOwner = challenge.managerId != null;
+  const isOwner = challenge.managerId === user?.id;
+
+  // ✅ Encontra o próximo checkpoint que ainda não foi concluído
+  const nextCheckpointToUpdate = challenge.checkpoints?.find(
+    (cp) => !cp.completionDate
+  );
 
   return (
-    <main className="min-h-screen flex flex-col">
-      <div className="flex-grow">
-        <Title pageTitle="Todos os desafios" />
-        <div className="container mx-auto px-8 py-8">
-          <div className="mb-8">
-            <h2 className="text-2xl font-bold mb-4">
-              Acompanhe como estão os desafios em andamento
-            </h2>
-            <p className="text-gray-600 mb-8">
-                            Uma atitude que ensina mais do que qualquer aula. E agora é a sua escola que pode fazer a diferença, unindo aprendizado e ação para transformar vidas de verdade.
-                            Veja seus desafios atuais no botão abaixo.
+    <main className="pb-16">
+      <ChallengeHeader title={challenge.title} imageUrl={challenge.photoUrl} />
+
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <article className="mt-8 text-textBlack">
+          <header>
+            <div className="flex justify-between items-center">
+              <h1 className="text-3xl font-bold">{challenge.title}</h1>
+              {!hasAnOwner && (
+                <Link href={`/ong/challenges/${params.id}/edit`}>
+                  <NewButton size={'lg'}>Participar do desafio</NewButton>
+                </Link>
+              )}
+            </div>
+            <ChallengeStats
+              idealAge={challenge.idealAge}
+              endDate={challenge.endDate}
+              schoolName={challenge.schoolManager?.schoolName || 'N/A'}
+            />
+          </header>
+
+          <section className="mt-10">
+            <h2 className="text-2xl font-semibold">Detalhes do desafio</h2>
+            <p className="mt-3 text-justify font-light text-lg">
+              {challenge.description}
             </p>
-          <Link href={'/manager/my-challenges'}>
-            <NewButton className="bg-secondary h-[44px]">
-              Ver meus desafios
-            </NewButton>
-          </Link>
+          </section>
 
-          </div>
-          <ChallengeFilters
-            filterOptions={filterOptions}
-            filters={filters}
-            setFilters={setFilters}
-          />
+          {challenge.checkpoints && (
+            <div className="mt-10">
+              <CheckpointTimeline checkpoints={challenge.checkpoints} />
+              
+              {/* ✅ Renderiza o modal apenas se o usuário for o dono E existir um checkpoint para atualizar */}
+              {isOwner && nextCheckpointToUpdate && (
+                <div className="text-center">
+                  <CheckpointModal
+                    checkpoint={nextCheckpointToUpdate}
+                    onUpdateSuccess={fetchChallengeDetails} // Passa a função de recarregar
+                  />
+                </div>
+              )}
+            </div>
+          )}
 
-          <ChallengeGrid challenges={currentChallenges} />
-
-          <ChallengePagination
-            currentPage={pagination.currentPage}
-            totalPages={pagination.totalPages}
-            setCurrentPage={pagination.setCurrentPage}
-          />
-        </div>
+          <SupportMaterials urls={challenge.documentUrls} />
+          <OngCard ong={challenge.ong} />
+          <ImpactGallery checkpoints={challenge.checkpoints} />
+        </article>
       </div>
     </main>
   );
