@@ -27,8 +27,7 @@
     "zod": "^3.22.4"
   },
   "scripts": {
-    "build": "swc src --extensions \".js,.ts\" --out-dir dist --copy-files && swc prisma --extensions \".js,.ts\" --out-dir dist/prisma --copy-files",    "start": "npm run build && node dist/server.js",
-    "dev": "concurrently \"ts-node-dev --poll --exit-child -r tsconfig-paths/register --respawn --transpile-only --ignore-watch node_modules --no-notify src/server.ts\" \"prisma generate --watch\"",
+"build": "swc src --extensions \".js,.ts\" --out-dir dist --copy-files && swc prisma/seed.ts -o dist/seed.js",    "dev": "concurrently \"ts-node-dev --poll --exit-child -r tsconfig-paths/register --respawn --transpile-only --ignore-watch node_modules --no-notify src/server.ts\" \"prisma generate --watch\"",
     "crud": "plop --plopfile generators/crud-plop/plopfile.js",
     "prod": "npm run migration:deploy && npm run start",
     "migration": "cross-env DATABASE_HOST='localhost' prisma migrate dev",
@@ -42,7 +41,7 @@
     "lint:fix": "eslint ./src --ext .ts --fix",
     "push": "cross-env DATABASE_HOST='localhost' prisma db push",
     "typecheck": "tsc --noEmit --skipLibCheck",
-    "seed:prod": "node dist/prisma/seed.js"
+    "seed:prod": "node dist/seed.js"
   },
   "devDependencies": {
     "@google/generative-ai": "^0.21.0",
