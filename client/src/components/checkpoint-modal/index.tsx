@@ -1,3 +1,9 @@
+// src/components/checkpoint-modal.tsx
+
+'use client';
+
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { NewButton } from '@/components/ui/new-button';
 import { Button } from '@/components/ui/button';
 import {
@@ -7,75 +13,151 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger
+  DialogTrigger,
+  DialogClose
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Nuvem } from '@/assets';
 import Image from 'next/image';
+import { Loader2 } from 'lucide-react';
+import { CheckpointData } from '@/services/challenge.services';
+import { updateCheckpoint } from '@/services/checkpoint.services';
 
-export default function CheckpointModal() {
+// O mock de upload pode ser movido para um arquivo de 'utils' para ser reutilizado
+const mockUploadFile = async (file: File): Promise<string> => {
+  console.log(`Simulando upload do arquivo: ${file.name}`);
+  await new Promise((resolve) => setTimeout(resolve, 1000));
+  return `https://fake-storage.com/uploads/photo-${file.name}`;
+};
+
+// Props que o modal vai receber
+interface CheckpointModalProps {
+  checkpoint: CheckpointData;
+  onUpdateSuccess: () => void;
+}
+
+type FormData = {
+  description: string;
+  photo: FileList;
+};
+
+export default function CheckpointModal({
+  checkpoint,
+  onUpdateSuccess
+}: CheckpointModalProps) {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const { register, handleSubmit, watch } = useForm<FormData>();
+
+  const selectedFile = watch('photo');
+
+  const onSubmit = async (data: FormData) => {
+     if (!data.photo || data.photo.length === 0) {
+      setError('Por favor, selecione uma foto para o checkpoint.');
+      return;
+    }
+
+    setIsSubmitting(true);
+    setError(null);
+
+    try {
+      // 1. Fazer upload do arquivo
+      const photoUrl = await mockUploadFile(data.photo[0]);
+
+      // 2. Chamar a API para atualizar o checkpoint
+      await updateCheckpoint(checkpoint.id, {
+        description: data.description,
+        photoUrl: photoUrl,
+        // 👇 ADIÇÃO ESSENCIAL: Envia a data atual para marcar como concluído
+        completionDate: new Date().toISOString()
+      });
+
+      alert('Checkpoint salvo com sucesso!');
+      onUpdateSuccess();
+    } catch (err: any) {
+      setError(err.message || 'Falha ao salvar o checkpoint.');
+      console.error(err);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <Dialog>
-      <form>
-        <DialogTrigger asChild>
-          <NewButton variant={'lightBlue'} size={'sm'} className="mt-2">
-            Adicionar checkpoint
-          </NewButton>
-        </DialogTrigger>
-        <DialogContent className="sm:max-w-1/3 sm:max-h-1/3 px-[40px] py-[40px]">
-          <DialogHeader>
-            <DialogTitle className="mb-2 text-center">
-              Como está o andamento do seu projeto?
-            </DialogTitle>
-            <DialogDescription className="text-center">
-              Já conseguiu concluir o Checkpoint? Registre com uma foto e uma
-              breve descrição como foi.
-            </DialogDescription>
-          </DialogHeader>
-          <div className="grid gap-4 mt-[32px]">
+      <DialogTrigger asChild>
+        <NewButton variant={'lightBlue'} size={'sm'} className="mt-2">
+          Adicionar checkpoint
+        </NewButton>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-md px-10 py-10">
+        <DialogHeader>
+          <DialogTitle className="mb-2 text-center text-xl">
+            {`Como está o "${checkpoint.title}"?`}
+          </DialogTitle>
+          <DialogDescription className="text-center text-balance">
+            Registre a conclusão com uma foto e uma breve descrição de como foi.
+          </DialogDescription>
+        </DialogHeader>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <div className="grid gap-4 mt-8">
             <div className="grid gap-3">
               <Label htmlFor="description">Descrição do checkpoint</Label>
               <Textarea
                 id="description"
-                name="description"
-                placeholder="Digite aqui"
+                placeholder="Ex: Realizamos a palestra e os alunos adoraram..."
                 rows={4}
+                {...register('description', { required: true })}
               />
             </div>
             <div className="grid gap-3">
-              <Label htmlFor="description">Faça upload de uma foto</Label>
+              <Label htmlFor="file-upload">Faça upload de uma foto</Label>
               <div className="relative">
                 <Input
                   id="file-upload"
                   type="file"
-                  className="absolute inset-0 opacity-0 w-full h-[74px] cursor-pointer z-10"
+                  accept="image/*"
+                  className="absolute inset-0 z-10 h-full w-full cursor-pointer opacity-0"
+                  {...register('photo', { required: true })}
                 />
                 <Button
                   type="button"
-                  className="w-full h-[74px] border-dashed border-2 bg-transparent"
+                  variant="outline"
+                  className="h-[74px] w-full border-2 border-dashed bg-transparent"
                 >
                   <div className="flex flex-col items-center">
                     <div className="flex items-center gap-2">
                       <Image src={Nuvem} alt="Upload" className="h-5 w-5" />
-                      <span>Clique para fazer upload</span>
+                      <span>
+                        {selectedFile && selectedFile.length > 0
+                          ? selectedFile[0].name
+                          : 'Clique para fazer upload'}
+                      </span>
                     </div>
-                    <p className="text-xs text-gray-500 mt-1">
-                      SVG, PNG, JPG or GIF
-                    </p>
+                    <p className="mt-1 text-xs text-gray-500">SVG, PNG, JPG</p>
                   </div>
                 </Button>
               </div>
             </div>
           </div>
-          <DialogFooter className="mt-[32px]">
-            <NewButton type="submit" className="w-full">
-              Salvar Checkpoint
+          {error && (
+            <p className="text-sm text-red-500 text-center mt-4">{error}</p>
+          )}
+          <DialogFooter className="mt-8">
+            <DialogClose asChild>
+              <NewButton type="button" size={'fit'}>Cancelar</NewButton>
+            </DialogClose>
+            <NewButton type="submit" size={'fit'} disabled={isSubmitting}>
+              {isSubmitting ? (
+                <Loader2 className="h-4 w-4 animate-spin" />
+              ) : (
+                'Salvar Checkpoint'
+              )}
             </NewButton>
           </DialogFooter>
-        </DialogContent>
-      </form>
+        </form>
+      </DialogContent>
     </Dialog>
   );
 }
