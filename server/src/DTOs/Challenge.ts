@@ -65,7 +65,7 @@ export const CreateChallenge = z.object({
   managerId: z.number({
     invalid_type_error: 'O ID do gestor deve ser um número',
     required_error: 'O ID do gestor é obrigatório',
-  }).int().positive(),
+  }).int().positive().optional(),
 
   // Campos para a criação inicial dos checkpoints
   checkpoint1Title: z.string({ required_error: 'O título do checkpoint 1 é obrigatório' }),
