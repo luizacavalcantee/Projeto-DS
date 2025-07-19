@@ -30,6 +30,12 @@ export default function OngMyChallengesPage() {
   // Combina os estados de carregamento
   const loading = authLoading || challengesLoading;
 
+  const cleanFilterOptions = {
+    ...filterOptions,
+    ongs: filterOptions.ongs.filter(Boolean) as string[],
+    schools: filterOptions.schools.filter(Boolean) as string[],
+  };
+
   if (loading) {
     return (
       <div className="p-8 text-center min-h-screen">Carregando desafios...</div>
@@ -65,7 +71,7 @@ export default function OngMyChallengesPage() {
           
           {/* 4. Passar a prop para esconder o filtro de ONG */}
           <ChallengeFilters
-            filterOptions={filterOptions}
+            filterOptions={cleanFilterOptions}
             filters={filters}
             setFilters={setFilters}
             hideFilters={['ong']}

@@ -29,6 +29,11 @@ interface ChallengeFiltersProps {
 }
 
 export default function ChallengeFilters({ filterOptions, filters, setFilters, hideFilters = [] }: ChallengeFiltersProps) {
+  const statusLabels: { [key in ChallengeStatus]: string } = {
+    PENDING: "Pendente",
+    IN_PROGRESS: "Em Andamento",
+    COMPLETED: "Concluído",
+  };
   return (
     <div className="flex flex-wrap items-center gap-4 mb-8">
       <div className="flex items-center gap-2">
@@ -45,7 +50,9 @@ export default function ChallengeFilters({ filterOptions, filters, setFilters, h
           <SelectContent className="bg-white">
             <SelectItem value="all">Todas as Situações</SelectItem>
             {filterOptions.statuses.map((status) => (
-              <SelectItem key={status} value={status}>{status}</SelectItem>
+              <SelectItem key={status} value={status}>
+                {statusLabels[status]} 
+              </SelectItem>
             ))}
           </SelectContent>
         </Select>

@@ -10,8 +10,6 @@ import { useAuth } from '@/hooks/useAuth';
 export default function ManagerMyChallengesPage() {
   const { user, loading: authLoading } = useAuth();
 
-  // O hook é chamado com o filtro do managerId,
-  // pré-filtrando a lista de desafios.
   const {
     loading: challengesLoading,
     error,
@@ -25,6 +23,12 @@ export default function ManagerMyChallengesPage() {
   );
 
   const loading = authLoading || challengesLoading;
+
+  const cleanFilterOptions = {
+    ...filterOptions,
+    ongs: filterOptions.ongs.filter(Boolean) as string[],
+    schools: filterOptions.schools.filter(Boolean) as string[],
+  };
 
   if (loading) {
     return (
@@ -55,7 +59,7 @@ export default function ManagerMyChallengesPage() {
           </div>
           
           <ChallengeFilters
-            filterOptions={filterOptions}
+            filterOptions={cleanFilterOptions}
             filters={filters}
             setFilters={setFilters}
             hideFilters={['school']}

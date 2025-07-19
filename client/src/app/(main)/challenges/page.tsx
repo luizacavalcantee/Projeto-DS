@@ -17,6 +17,12 @@ export default function ChallengePage() {
     pagination,
   } = useChallenges();
 
+  const cleanFilterOptions = {
+    ...filterOptions,
+    ongs: filterOptions.ongs.filter(Boolean) as string[],
+    schools: filterOptions.schools.filter(Boolean) as string[],
+  };
+
   if (loading) {
     return <div className="p-8 text-center min-h-screen">Carregando desafios...</div>;
   }
@@ -40,7 +46,7 @@ export default function ChallengePage() {
           </div>
 
           <ChallengeFilters 
-            filterOptions={filterOptions}
+            filterOptions={cleanFilterOptions}
             filters={filters}
             setFilters={setFilters}
           />
