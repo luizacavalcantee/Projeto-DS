@@ -1,3 +1,5 @@
+"use client";
+
 import Hero from '@/components/hero';
 import ImpactNumbers from '@/components/impact-numbers';
 import ImpactSection from '@/components/impact-section';
@@ -8,20 +10,11 @@ import { ChallengesCarousel } from '@/components/challenges-carousel';
 import { NewButton } from '@/components/ui/new-button';
 import Image from 'next/image';
 import Link from 'next/link';
-
-//dados que foram mockados para demonstração
-const mockRankingData = [
-  { escola: 'Escola Municipal Oswaldo Lima Filho', desafios: 25 },
-  { escola: 'Escola Estadual João da Silva', desafios: 22 },
-  { escola: 'Colégio São José', desafios: 20 },
-  { escola: 'Escola Municipal Maria Santos', desafios: 18 },
-  { escola: 'Instituto Educacional Progresso', desafios: 15 },
-  { escola: 'Escola Municipal Pedro Alves', desafios: 12 },
-  { escola: 'Colégio Santa Clara', desafios: 10 },
-  { escola: 'Colégio Santa Clara', desafios: 10 }
-];
+import { useAuth } from '@/hooks/useAuth';
 
 export default function HomePage() {
+    const { user } = useAuth();
+
   return (
     <main className="min-h-screen">
       {/* Hero Section */}
@@ -35,11 +28,11 @@ export default function HomePage() {
         <div className="mx-auto">
           <div className="flex flex-col items-center justify-center mb-14">
             <h2 className="text-4xl font-bold leading-tight text-center">
-              Confira abaixo todos os{' '}
+              Confira abaixo o andamento{' '}
             </h2>
             <span className="text-4xl font-bold leading-tight relative inline-block">
               <span className="relative z-10 text-secondary">
-                desafios das escolas
+                dos seus desafios
               </span>
               <span className="absolute z-10 -bottom-1 left-0">
                 <Image src={UnderlinedDark} alt="Sublinhado" />
@@ -47,7 +40,9 @@ export default function HomePage() {
             </span>
           </div>
 
-          <ChallengesCarousel />
+          <ChallengesCarousel 
+            filter={user?.type === 'ong' ? { ongId: user.id } : undefined} 
+          />
             <div className="flex justify-center gap-4 mt-10">
               <Link href="/challenges">
                 <NewButton className="px-10 py-3">Ver Todos</NewButton>
@@ -81,7 +76,7 @@ export default function HomePage() {
           </div>
           <div className="flex gap-32 items-center justify-center mx-16 mb-20">
             <Ranking />
-            <RankingTable data={mockRankingData} actionType="viewFullRanking" />
+            <RankingTable actionType="viewFullRanking" />
           </div>
         </div>
       </section>

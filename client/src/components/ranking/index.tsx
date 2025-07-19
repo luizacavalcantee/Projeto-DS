@@ -1,54 +1,82 @@
-import { Second, Third, Trophy, School } from '@/assets';
-import Image from 'next/image';
+'use client';
+
+import { useEffect, useState } from 'react';
+import { Second, Third, Trophy } from '@/assets';
+import PodiumPosition from '../podium-position';
+import { getSchoolRanking, RankedSchool } from '@/services/ranking.services';
 
 export default function Ranking() {
+  const [topSchools, setTopSchools] = useState<RankedSchool[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchRanking = async () => {
+      try {
+        const rankingData = await getSchoolRanking();
+        // Pegamos apenas as 3 primeiras escolas para o pódio
+        setTopSchools(rankingData.slice(0, 3));
+      } catch (err) {
+        setError("Não foi possível carregar o ranking.");
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchRanking();
+  }, []);
+
+  if (loading) {
+    return <div className="text-center p-10">Carregando ranking...</div>;
+  }
+
+  if (error) {
+    return <div className="text-center text-red-500 p-10">{error}</div>;
+  }
+  
+  if (topSchools.length === 0) {
+    return <div className="text-center p-10">Nenhuma escola no ranking ainda.</div>;
+  }
+
+  // Mapeia as posições para os dados corretos
+  const firstPlace = topSchools[0];
+  const secondPlace = topSchools[1];
+  const thirdPlace = topSchools[2];
+
   return (
-    <div className="flex gap-10 items-end">
-      <div className="flex flex-col items-center gap-6">
-        <div className="relative w-32">
-          <Image
-            src={School}
-            alt="Escola"
-            className="w-32 h-32 rounded-full drop-shadow-lg border border-lightBlueRanking/20 object-cover"
-          />
-          <h1 className="absolute bottom-0 w-full bg-darkBlueRanking text-white p-1 text-xs font-semibold rounded text-center transform translate-y-1/3">
-            Escola Municipal Oswaldo Lima Filho
-          </h1>
-        </div>
-        <div className="bg-lightBlueRanking h-52 w-full rounded-lg py-3 px-8">
-          <Image src={Second} alt="Second" className="w-16" />
-        </div>
-      </div>
-      <div className="flex flex-col items-center gap-6">
-        <div className="relative w-32">
-          <Image
-            src={School}
-            alt="Escola"
-            className="w-32 h-32 rounded-full drop-shadow-lg border border-lightBlueRanking/20 object-cover"
-          />
-          <h1 className="absolute bottom-0 w-full bg-darkBlueRanking text-white p-1 text-xs font-semibold rounded text-center transform translate-y-1/3">
-            Escola Municipal Oswaldo Lima Filho
-          </h1>
-        </div>
-        <div className="bg-lightBlueRanking h-60 w-full rounded-lg py-3 px-8">
-          <Image src={Trophy} alt="Trophy" className="w-16" />
-        </div>
-      </div>
-      <div className="flex flex-col items-center gap-6">
-        <div className="relative w-32">
-          <Image
-            src={School}
-            alt="Escola"
-            className="w-32 h-32 rounded-full drop-shadow-lg border border-lightBlueRanking/20 object-cover"
-          />
-          <h1 className="absolute bottom-0 w-full bg-darkBlueRanking text-white p-1 text-xs font-semibold rounded text-center transform translate-y-1/3">
-            Escola Municipal Oswaldo Lima Filho
-          </h1>
-        </div>
-        <div className="bg-lightBlueRanking h-[11.25rem] w-full rounded-lg py-3 px-8">
-          <Image src={Third} alt="Third" className="w-16" />
-        </div>
-      </div>
+    <div className="flex gap-10 items-end justify-center">
+      {/* 2º Lugar */}
+      {secondPlace && (
+        <PodiumPosition
+          schoolName={secondPlace.schoolName}
+          schoolImage={secondPlace.schoolImageUrl}
+          podiumIcon={Second}
+          podiumIconAlt="2º Lugar"
+          barHeightClass="h-52"
+        />
+      )}
+
+      {/* 1º Lugar */}
+      {firstPlace && (
+        <PodiumPosition
+          schoolName={firstPlace.schoolName}
+          schoolImage={firstPlace.schoolImageUrl}
+          podiumIcon={Trophy}
+          podiumIconAlt="1º Lugar"
+          barHeightClass="h-60"
+        />
+      )}
+
+      {/* 3º Lugar */}
+      {thirdPlace && (
+        <PodiumPosition
+          schoolName={thirdPlace.schoolName}
+          schoolImage={thirdPlace.schoolImageUrl}
+          podiumIcon={Third}
+          podiumIconAlt="3º Lugar"
+          barHeightClass="h-[11.25rem]"
+        />
+      )}
     </div>
   );
 }

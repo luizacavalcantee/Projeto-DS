@@ -2,18 +2,18 @@
 
 import React from 'react';
 import Image from 'next/image';
-import { Logo, UserProfile } from '@/assets';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { Logo, UserProfile } from '@/assets';
 import { NewButton } from '@/components/ui/new-button';
 
-import { useSession, signIn, signOut } from 'next-auth/react'; 
+import { useAuth } from '@/hooks/useAuth';
 
 export default function Header() {
-  const { data: session, status } = useSession();
-  const isAuthenticated = status === 'authenticated';
-  console.log(isAuthenticated, session);
+  const { user, isAuthenticated, loading, logout } = useAuth();
+  const router = useRouter();
 
-  if (status === 'loading') {
+  if (loading) {
     return (
         <header className="fixed z-50 w-full flex items-center bg-primary py-4 px-10 text-white drop-shadow-lg">
             <div className="mr-auto">
@@ -26,22 +26,31 @@ export default function Header() {
     );
   }
   
-  const isOng = session?.user?.role === 'ong';
+  // --- CORREÇÃO PRINCIPAL: DEFININDO O PREFIXO DA ROTA ---
+  // Se o usuário estiver autenticado, o prefixo será '/ong' ou '/manager'.
+  // Se não, será uma string vazia, levando às páginas públicas.
+  const routePrefix = isAuthenticated ? (user.type === 'ong' ? '/ong' : '/manager') : '';
 
   const navLinks = [
-    { label: 'Início', href: '/' },
-    { label: 'Desafios', href: isOng ? '/ong/challenges' : '/challenges' },
-    { label: 'Ranking', href: isOng ? '/ong/ranking' : '/ranking' },
+    { label: 'Início', href: '/' }, // A página inicial é sempre a mesma
+    { label: 'Desafios', href: `${routePrefix}/challenges` },
+    { label: 'Ranking', href: `${routePrefix}/ranking` },
   ];
 
-  if (isOng) {
-    navLinks.push({ label: 'Criar Desafio', href: '/ong/my-challenges/create' });
+  // Adiciona o link "Criar Desafio" apenas se for uma ONG autenticada
+  if (isAuthenticated && user?.type === 'ong') {
+    navLinks.push({ label: 'Criar Desafio', href: '/ong/my-challenges/create-challenge' });
   }
 
-  const profileLink = isOng ? '/ong/profile' : '/profile';
+  // Define o link de perfil dinamicamente
+  const profileLink = `${routePrefix}/profile`;
 
-  const handleLogin = () => signIn();
-  const handleLogout = () => signOut({ callbackUrl: '/' });
+  const handleLogin = () => router.push('/login');
+  const handleLogout = () => logout();
+
+  // Variáveis seguras para nome e imagem, evitando erros de tipo
+  const userName = user ? (user.type === 'ong' ? user.name : user.fullName) : 'Ver meu perfil';
+  const userImage = user ? (user.type === 'ong' ? user.logoPhotoUrl : user.schoolImageUrl) : UserProfile;
 
   return (
     <header className="fixed z-50 w-full flex items-center bg-primary py-4 px-10 text-white drop-shadow-lg">
@@ -66,18 +75,18 @@ export default function Header() {
       </nav>
 
       <div className="flex items-center">
-        {isAuthenticated ? (
+        {isAuthenticated && user ? (
           <div className="flex items-center gap-4">
             <Link href={profileLink}>
               <NewButton size={'sm'} variant={'transparent'} className="flex items-center">
                 <Image
-                  src={session.user?.image || UserProfile}
-                  alt={session.user?.name || 'Perfil'}
-                  className="h-10 w-10 mr-3 rounded-full"
+                  src={userImage || UserProfile}
+                  alt={userName || 'Perfil'}
+                  className="h-10 w-10 mr-3 rounded-full object-cover"
                   width={40}
                   height={40}
                 />
-                {session.user?.name || 'Ver meu perfil'}
+                {userName}
               </NewButton>
             </Link>
             <NewButton onClick={handleLogout} size={'sm'} className="min-w-0">

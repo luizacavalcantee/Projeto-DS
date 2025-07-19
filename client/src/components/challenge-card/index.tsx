@@ -1,5 +1,11 @@
+'use client'; // 1. Adicionar a diretiva para poder usar hooks
+
 import Image, { StaticImageData } from "next/image";
 import Link from "next/link";
+import { useMemo } from "react";
+
+// 2. Importar o hook de autenticação
+import { useAuth } from "@/hooks/useAuth";
 
 interface ChallengeCardProps {
   id: string;
@@ -18,16 +24,33 @@ export default function ChallengeCard({
   description,
   progress,
 }: ChallengeCardProps) {
+  // 3. Usar o hook para obter o estado de autenticação do utilizador
+  const { user, isAuthenticated } = useAuth();
+
+  // 4. Construir o URL de detalhe dinamicamente
+  // useMemo otimiza a performance, evitando que o URL seja recalculado em cada renderização
+  const detailUrl = useMemo(() => {
+    // Se o utilizador não estiver autenticado ou se os dados ainda não carregaram, usa a rota pública
+    if (!isAuthenticated || !user) {
+      return `/challenges/${id}`;
+    }
+    
+    // Se estiver autenticado, constrói o prefixo com base no tipo de utilizador
+    const prefix = user.type === 'ong' ? '/ong' : '/manager';
+    return `${prefix}/challenges/${id}`;
+
+  }, [isAuthenticated, user, id]);
+
   return (
-    <Link href={`/challenges/${id}`} className="block hover:scale-[1.02] transition-transform duration-200 ease-in-out">
-      <div className="flex bg-white rounded-md overflow-hidden drop-shadow-md max-w-[600px] cursor-pointer">
-        <div className="w-2/5">
+    // 5. Usar a variável com o URL dinâmico no Link
+    <Link href={detailUrl} className="block hover:scale-[1.02] transition-transform duration-200 ease-in-out h-full">
+      <div className="flex bg-white rounded-md overflow-hidden drop-shadow-md max-w-[600px] cursor-pointer h-full">
+        <div className="w-2/5 relative"> 
           <Image
             src={imageSrc}
             alt={imageAlt}
-            className="object-cover h-full w-full"
-            quality={100}
-            unoptimized
+            fill 
+            className="object-cover" 
           />
         </div>
 

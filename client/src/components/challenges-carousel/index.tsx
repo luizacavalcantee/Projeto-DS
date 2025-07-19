@@ -1,4 +1,4 @@
-import * as React from 'react';
+'use client';
 
 import ChallengeCard from '@/components/challenge-card';
 import {
@@ -8,154 +8,97 @@ import {
   CarouselNext,
   CarouselPrevious
 } from '@/components/ui/carousel';
-import { Challenge } from '@/assets';
+import { useEffect, useState, useMemo } from 'react';
+import { getAllChallenges, ChallengeData } from '@/services/challenge.services'; 
 
-const mockChallenges = [
-  {
-    id: 1,
-    imageSrc: Challenge,
-    imageAlt: 'Imagem do projeto Horta Comunitária',
-    title: 'Horta Comunitária na Escola',
-    description:
-      'Projeto para criar uma horta comunitária que possa fornecer alimentos para a escola e comunidade local.',
-    progress: 75,
-    link: '/challenges/1',
-    linkLabel: 'Ver detalhes',
-    situacao: 'Em andamento',
-    ong: 'ONG Verde',
-    escola: 'Escola Municipal João Silva'
-  },
-  {
-    id: 2,
-    imageSrc: Challenge,
-    imageAlt: 'Imagem do projeto Horta Comunitária',
-    title: 'Reciclagem de Materiais',
-    description:
-      'Iniciativa para coletar e reciclar materiais, promovendo a consciência ambiental entre os alunos.',
-    progress: 100,
-    link: '/challenges/2',
-    linkLabel: 'Ver detalhes',
-    situacao: 'Finalizado',
-    ong: 'ONG Recicla',
-    escola: 'Escola Estadual Maria Santos'
-  },
-  {
-    id: 3,
-    imageSrc: Challenge,
-    imageAlt: 'Imagem do projeto Horta Comunitária',
-    title: 'Aulas de Reforço',
-    description:
-      'Alunos mais avançados ajudam colegas com dificuldades em determinadas matérias através de aulas de reforço.',
-    progress: 90,
-    link: '/challenges/3',
-    linkLabel: 'Ver detalhes',
-    situacao: 'Pausado',
-    ong: 'ONG Educação',
-    escola: 'Escola Estadual Maria Santos'
-  },
-  {
-    id: 4,
-    imageSrc: Challenge,
-    imageAlt: 'Imagem do projeto Horta Comunitária',
-    title: 'Campanha de Arrecadação',
-    description:
-      'Organização de campanha para arrecadar alimentos e roupas para famílias carentes da comunidade.',
-    progress: 60,
-    link: '/challenges/4',
-    linkLabel: 'Ver detalhes',
-    situacao: 'Pausado',
-    ong: 'ONG Educação',
-    escola: 'Escola Municipal Ana Luisa'
-  },
-  {
-    id: 5,
-    imageSrc: Challenge,
-    imageAlt: 'Imagem do projeto Horta Comunitária',
-    title: 'Festival Cultural',
-    description:
-      'Evento para celebrar a diversidade cultural, com apresentações artísticas e culinária de diferentes regiões.',
-    progress: 30,
-    link: '/challenges/5',
-    linkLabel: 'Ver detalhes',
-    situacao: 'Em andamento',
-    ong: 'ONG Educação',
-    escola: 'Escola Municipal Luiza Cavalcante'
-  },
-  {
-    id: 6,
-    imageSrc: Challenge,
-    imageAlt: 'Imagem do projeto Horta Comunitária',
-    title: 'Campanha de Doação de Livros',
-    description:
-      'Projeto para conscientizar sobre a importância da preservação do meio ambiente e recursos naturais.',
-    progress: 85,
-    link: '/challenges/6',
-    linkLabel: 'Ver detalhes',
-    situacao: 'Em andamento',
-    ong: 'ONG Educação',
-    escola: 'Escola Municipal João Silva'
-  },
-  {
-    id: 7,
-    imageSrc: Challenge,
-    imageAlt: 'Imagem do projeto Horta Comunitária',
-    title: 'Ação de Limpeza de Praias',
-    description:
-      'Projeto para conscientizar sobre a importância da preservação do meio ambiente e recursos naturais.',
-    progress: 85,
-    link: '/challenges/6',
-    linkLabel: 'Ver detalhes',
-    situacao: 'Em andamento',
-    ong: 'ONG Educação',
-    escola: 'Escola Municipal João Silva'
-  },
-  {
-    id: 8,
-    imageSrc: Challenge,
-    imageAlt: 'Imagem do projeto Horta Comunitária',
-    title: 'Ajuda a Animais Abandonados',
-    description:
-      'Projeto para conscientizar sobre a importância da preservação do meio ambiente e recursos naturais.',
-    progress: 85,
-    link: '/challenges/6',
-    linkLabel: 'Ver detalhes',
-    situacao: 'Em andamento',
-    ong: 'ONG Educação',
-    escola: 'Escola Municipal João Silva'
-  },
-  {
-    id: 9,
-    imageSrc: Challenge,
-    imageAlt: 'Imagem do projeto Horta Comunitária',
-    title: 'Doe Livros para Crianças',
-    description:
-      'Projeto para conscientizar sobre a importância da preservação do meio ambiente e recursos naturais.',
-    progress: 85,
-    link: '/challenges/6',
-    linkLabel: 'Ver detalhes',
-    situacao: 'Em andamento',
-    ong: 'ONG Educação',
-    escola: 'Escola Municipal David'
-  },
-  {
-    id: 10,
-    imageSrc: Challenge,
-    imageAlt: 'Arrecadação de Alimentos',
-    title: 'Ajuda a Animais Abandonados',
-    description:
-      'Projeto para conscientizar sobre a importância da preservação do meio ambiente e recursos naturais.',
-    progress: 85,
-    link: '/challenges/6',
-    linkLabel: 'Ver detalhes',
-    situacao: 'Em andamento',
-    ong: 'ONG Educação',
-    escola: 'Escola Municipal Kiev Gama'
+// 1. Definindo o tipo para a prop de filtro
+// Podemos filtrar por ONG (ongId) ou por Escola (managerId)
+type ChallengesCarouselProps = {
+  filter?: {
+    ongId?: number;
+    managerId?: number;
   }
-];
+}
 
-export function ChallengesCarousel() {
+export function ChallengesCarousel({ filter }: ChallengesCarouselProps) {
+  // Estado para armazenar TODOS os desafios buscados da API
+  const [allChallenges, setAllChallenges] = useState<ChallengeData[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchChallenges = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        // A busca continua a mesma: pegamos todos os desafios uma única vez.
+        const data = await getAllChallenges();
+        setAllChallenges(data);
+      } catch (err) {
+        console.error('Falha ao carregar desafios:', err);
+        setError(
+          'Não foi possível carregar a lista de desafios. Verifique se a API está no ar.'
+        );
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchChallenges();
+  }, []);
+
+  // 2. Lógica de filtragem usando useMemo para performance
+  // O carrossel agora exibirá apenas os desafios que passam pelo filtro.
+  const filteredChallenges = useMemo(() => {
+    if (!filter) {
+      // Se nenhum filtro for fornecido, retorna todos os desafios.
+      return allChallenges;
+    }
+
+    return allChallenges.filter(challenge => {
+      // Se um ongId for fornecido, verifica se o ID da ONG do desafio corresponde.
+      if (filter.ongId && challenge.ongId !== filter.ongId) {
+        return false;
+      }
+      // Se um managerId for fornecido, verifica se o ID do gestor do desafio corresponde.
+      if (filter.managerId && challenge.managerId !== filter.managerId) {
+        return false;
+      }
+      // Se passar por todas as verificações, o desafio é incluído.
+      return true;
+    });
+  }, [allChallenges, filter]);
+
+
+  if (loading) {
+    return (
+      <div className='p-8 text-center'>
+        <p>Carregando desafios...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className='p-8 text-red-600 text-center'>
+        <p>
+          <strong>Erro:</strong> {error}
+        </p>
+      </div>
+    );
+  }
+
+  // Adicionado um estado para quando não há desafios a serem exibidos após o filtro
+  if (filteredChallenges.length === 0) {
+    return (
+      <div className='p-8 text-center text-gray-500'>
+        <p>Nenhum desafio para exibir no momento.</p>
+      </div>
+    );
+  }
+
   return (
-    <div className='flex justify-center items-center'>
+    <div className="flex justify-center items-center">
       <Carousel
         opts={{
           align: 'start'
@@ -163,20 +106,27 @@ export function ChallengesCarousel() {
         className="w-full max-w-6xl h-fit"
       >
         <CarouselContent>
-          {mockChallenges.map((challenge) => (
-            <CarouselItem key={challenge.id} className="basis-1/2">
-              <div className="p-1 h-full">
-                <ChallengeCard
-                  imageSrc={challenge.imageSrc}
-                  imageAlt={challenge.imageAlt}
-                  title={challenge.title}
-                  description={challenge.description}
-                  progress={challenge.progress}
-                  id="undefined"
-                />
-              </div>
-            </CarouselItem>
-          ))}
+          {/* 3. Mapeia a lista JÁ FILTRADA */}
+          {filteredChallenges.map((challenge) => {
+            const totalCheckpoints = challenge.checkpoints?.length || 0;
+            const completedCheckpoints = challenge.checkpoints?.filter(cp => cp.completionDate).length || 0;
+            const progress = totalCheckpoints > 0 ? (completedCheckpoints / totalCheckpoints) * 100 : 0;
+
+            return (
+              <CarouselItem key={challenge.id} className="basis-1/2">
+                <div className="p-1 h-full">
+                  <ChallengeCard
+                    imageSrc={challenge.photoUrl}
+                    imageAlt={challenge.title}
+                    title={challenge.title}
+                    description={challenge.description}
+                    progress={progress}
+                    id={challenge.id.toString()}
+                  />
+                </div>
+              </CarouselItem>
+            )
+          })}
         </CarouselContent>
         <CarouselPrevious />
         <CarouselNext />

@@ -1,4 +1,3 @@
-import Challenge from './card_desafio.png';
 import Logo from './logo-prefeitura.svg';
 import BoraImpactar from './bora-impactar.svg';
 import Home_work from './home_work.svg';
@@ -9,7 +8,6 @@ import Second from './second.svg';
 import Third from './third.svg';
 import Trophy from './trophy.svg';
 import School from './school.png';
-import Artesenato from './artesanato.svg';
 import UserProfile from './user.svg';
 import HeroBackgroung from './hero.png';
 import BoraImpactarWhite from './bora-impactar-white.svg';
@@ -23,15 +21,19 @@ import Filter from './filter.svg';
 import ArrowDown from './arrow-down.svg';
 import Lupa from './Lupa.svg';
 import UnderlinedDark from './underlined-dark.svg';
-import Checkpoint1 from './checkpoint1.png';
-import Checkpoint2 from './checkpoint2.png';
-import Checkpoint3 from './checkpoint3.png';
 import CoracaoQuentinho from './coracao-quentinho.png';
-import ChallengeCover from './challenge-cover.png';
 import Check from './Check.svg';
 import Facebook from './facebook.svg';
 import Instagram from './Instagram.svg';
 import Upload from './upload.svg';
+import Cidadania from './cidadania.jpg';
+import Cultura from './cultura.jpg';
+import Educacao from './educacao.jpg';
+import Esportes from './esportes.jpg'
+import MeioAmbiente from './meio-ambiente.jpg';
+import Inclusao from './inclusao.jpg';
+import Saude from './saude.jpg';
+import Tecnologia from './tecnologia.jpg';
 
 export {
   Logo,
@@ -44,8 +46,6 @@ export {
   Third,
   Trophy,
   School,
-  Challenge,
-  Artesenato,
   UserProfile,
   HeroBackgroung,
   BoraImpactarWhite,
@@ -59,13 +59,17 @@ export {
   ArrowDown,
   Lupa,
   UnderlinedDark,
-  Checkpoint1,
-  Checkpoint2,
-  Checkpoint3,
   CoracaoQuentinho,
-  ChallengeCover,
   Check,
   Facebook,
   Instagram,
-  Upload
+  Upload,
+  Cidadania,
+  Cultura,
+  Educacao,
+  Esportes,
+  MeioAmbiente,
+  Inclusao,
+  Saude,
+  Tecnologia
 };

@@ -3,34 +3,63 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import Link from 'next/link';
 
+// 1. Importar o serviço e os tipos necessários da API
+import { getSchoolRanking, RankedSchool } from '@/services/ranking.services';
+
+// Este é o tipo de dados que o componente usa internamente
 interface SchoolData {
     escola: string;
     desafios: number;
 }
 
+// As props agora não incluem 'data', pois o componente buscará os seus próprios dados
 interface TableProps {
-    data: SchoolData[];
     actionType: 'loadMore' | 'viewFullRanking';
     customLimit?: number;
 }
 
-export default function RankingTable({ data, actionType, customLimit }: TableProps) {
+export default function RankingTable({ actionType, customLimit }: TableProps) {
+    // 2. Adicionar estados para os dados da API, carregamento e erros
+    const [allData, setAllData] = useState<SchoolData[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+
+    // 3. Usar o useEffect para buscar e formatar os dados quando o componente montar
+    useEffect(() => {
+        const fetchAndFormatRanking = async () => {
+            try {
+                setLoading(true);
+                const apiData: RankedSchool[] = await getSchoolRanking();
+
+                // Mapeia os dados da API para o formato que a tabela precisa
+                const formattedData: SchoolData[] = apiData.map(school => ({
+                    escola: school.schoolName,
+                    desafios: school.completedChallengesCount,
+                }));
+
+                setAllData(formattedData);
+            } catch (err) {
+                setError("Não foi possível carregar o ranking. Tente novamente mais tarde.");
+                console.error(err);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchAndFormatRanking();
+    }, []); // O array vazio garante que a busca só acontece uma vez
+
+    // O resto da sua lógica permanece quase igual, apenas usando 'allData'
     const sortedData = useMemo(() => {
-        return data.slice().sort((a, b) => b.desafios - a.desafios);
-    }, [data]);
+        return allData.slice().sort((a, b) => b.desafios - a.desafios);
+    }, [allData]);
 
     const itemsPerLoad = 5;
 
     const getInitialLimit = useCallback(() => {
-        if (customLimit !== undefined) {
-            return customLimit;
-        }
-        if (actionType === 'loadMore') {
-            return 10;
-        }
-        if (actionType === 'viewFullRanking') {
-            return 7;
-        }
+        if (customLimit !== undefined) return customLimit;
+        if (actionType === 'loadMore') return 10;
+        if (actionType === 'viewFullRanking') return 7;
         return sortedData.length;
     }, [customLimit, actionType, sortedData]);
 
@@ -47,6 +76,15 @@ export default function RankingTable({ data, actionType, customLimit }: TablePro
     const hasMoreItemsForLoadMore = actionType === 'loadMore' && itemsToShow < sortedData.length;
     const showActionButton = hasMoreItemsForLoadMore || actionType === 'viewFullRanking';
 
+    // 4. Adicionar renderização para os estados de carregamento e erro
+    if (loading) {
+        return <div className="text-center p-8">A carregar o ranking...</div>;
+    }
+
+    if (error) {
+        return <div className="text-center text-red-500 p-8"><strong>Erro:</strong> {error}</div>;
+    }
+
     return (
         <div className="w-full max-w-4xl mx-auto rounded-lg shadow-lg overflow-hidden">
             <table className="table-auto w-full">
@@ -54,7 +92,7 @@ export default function RankingTable({ data, actionType, customLimit }: TablePro
                     <tr className="bg-[#294BB6] w-full h-12">
                         <th className="text-white font-semibold">Posição</th>
                         <th className="text-white font-semibold">Escolas</th>
-                        <th className="text-white font-semibold">Desafios</th>
+                        <th className="text-white font-semibold">Desafios Concluídos</th>
                     </tr>
                 </thead>
                 <tbody className="bg-white">
@@ -84,7 +122,6 @@ export default function RankingTable({ data, actionType, customLimit }: TablePro
                             Ver mais
                         </button>
                     )}
-
                     {actionType === 'viewFullRanking' && (
                         <Link href="/ranking">
                             <button className="text-[#294BB6] font-semibold hover:underline">

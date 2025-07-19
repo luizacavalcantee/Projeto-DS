@@ -12,14 +12,6 @@ generator dbml {
   provider = "prisma-dbml-generator"
 }
 
-model User {
-  id       String  @id @default(uuid())
-  name     String
-  phone    String?
-  email    String  @unique
-  password String
-}
-
 model Ong {
   id              Int       @id @default(autoincrement())
   name            String    @unique
@@ -50,13 +42,11 @@ model SchoolManager {
   password            String          
   schoolName          String              @map("school_name")
   teachingStages      TeachingStage[]     @default([])
-  estimatedStudents   Int                 @map("estimated_students")
   inepCode            String              @unique @map("inep_code")
   cep                 String             
   address             String     
   addressNumber       String              @map("address_number")
   addressComplement   String?             @map("address_complement")
-  schoolNumber        String?             @map("school_number")
   schoolImageUrl      String?             @map("school_image_url")
   schoolChallenges    Challenge[]
 }
@@ -94,10 +84,10 @@ model Challenge {
   status                  ChallengeStatus     @default(PENDING)         
 
   ongId                   Int    
-  managerId               Int             
+  managerId               Int?        
 
   ong                     Ong                 @relation(fields: [ongId], references: [id])
-  schoolManager           SchoolManager       @relation(fields: [managerId], references: [id])
+  schoolManager           SchoolManager?       @relation(fields: [managerId], references: [id])
   checkpoints             Checkpoint[]        // Um desafio sempre terá 3 checkpoints
 }
 

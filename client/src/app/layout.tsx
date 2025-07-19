@@ -1,7 +1,10 @@
 import type { Metadata } from 'next';
 import 'styles/globals.css';
-import NextAuthSessionProvider from '@/providers/sessionProvider';
 
+// 1. Importe o novo componente que criamos
+import AppInitializer from '@/components/app-initializer';
+
+// 2. Agora você pode exportar metadata sem erros, pois este é um Server Component
 export const metadata: Metadata = {
   title: 'Bora Impactar!',
   description: 'Projeto Bora Impactar',
@@ -23,9 +26,10 @@ export default function RootLayout({
   return (
     <html>
       <body className='font-dmSans bg-background overflow-x-hidden'>
-        <NextAuthSessionProvider>
+        {/* 3. Use o AppInitializer para envolver os filhos */}
+        <AppInitializer>
           {children}
-        </NextAuthSessionProvider>
+        </AppInitializer>
       </body>
     </html>
   );
