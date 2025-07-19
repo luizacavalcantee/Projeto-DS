@@ -141,26 +141,34 @@ export default function Login() {
           </div>
 
           {error && <p className="text-sm text-red-600 text-center">{error}</p>}
-          <div className="text-center">
-            <a
-              href="#"
-              className="text-sm text-[#1474FF] hover:text-indigo-500"
-            >
-              Esqueceu a senha?
-            </a>
-          </div>
           <NewButton type="submit" size={'fit'} disabled={loading}>
             {loading ? 'Entrando...' : 'Entrar'}
           </NewButton>
         </form>
-        <div className="mt-8 text-center">
-          <p className="mb-4 text-sm text-black">Não possui cadastro?</p>
-          <Link href="/manager-registration">
-            <NewButton variant="white" size="fit" type="button">
+        {userType === 'manager' && (
+          <div className="mt-8 text-center">
+            <p className="mb-4 text-sm text-black">Não possui cadastro?</p>
+            <Link href="/manager-registration">
+              <NewButton variant="white" size="fit" type="button">
+                Criar conta
+              </NewButton>
+            </Link>
+          </div>
+        )}
+        {userType === 'ong' && (
+          <div className="mt-8 text-center">
+            <p className="mb-4 text-sm text-black">Não possui cadastro?</p>
+            <a
+              href="https://boraimpactar.recife.pe.gov.br/register"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <NewButton variant="white" size="fit" type="button">
               Criar conta
-            </NewButton>
-          </Link>
-        </div>
+              </NewButton>
+            </a>
+          </div>
+        )}
       </div>
     </div>
   );
