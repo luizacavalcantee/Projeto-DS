@@ -25,13 +25,11 @@ Table SchoolManager {
   password String [not null]
   schoolName String [not null]
   teachingStages TeachingStage[] [not null]
-  estimatedStudents Int [not null]
   inepCode String [unique, not null]
   cep String [not null]
   address String [not null]
   addressNumber String [not null]
   addressComplement String
-  schoolNumber String
   schoolImageUrl String
   schoolChallenges Challenge [not null]
 }

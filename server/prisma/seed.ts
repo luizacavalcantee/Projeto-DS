@@ -47,13 +47,11 @@ async function seed() {
         password: await hash('senha123', saltRounds),
         schoolName: 'MILTON ALMEIDA DOS SANTOS',
         teachingStages: [TeachingStage.ENSINO_FUNDAMENTAL_I],
-        estimatedStudents: 144,
         inepCode: '26419726',
         cep: '51200-000',
         address: 'ITAUBA 2',
         addressNumber: '227',
         addressComplement: 'Bloco A',
-        schoolNumber: '424',
         schoolImageUrl: 'https://randomuser.me/api/portraits/women/75.jpg',
       },
       {
@@ -64,13 +62,11 @@ async function seed() {
         password: await hash('senha123', saltRounds),
         schoolName: 'NOSSA SENHORA DA PENHA',
         teachingStages: [TeachingStage.EDUCACAO_INFANTIL],
-        estimatedStudents: 225,
         inepCode: '26134049',
         cep: '51020-100',
         address: 'FRANCISCO DE BARROS BARRETO',
         addressNumber: '109',
         addressComplement: 'Sala 2',
-        schoolNumber: '150',
         schoolImageUrl: 'https://randomuser.me/api/portraits/women/76.jpg',
       },
       {
@@ -84,13 +80,11 @@ async function seed() {
           TeachingStage.ENSINO_FUNDAMENTAL_I,
           TeachingStage.ENSINO_FUNDAMENTAL_II,
         ],
-        estimatedStudents: 455,
         inepCode: '26119994',
         cep: '51011-000',
         address: 'EURICO VITRUVIO',
         addressNumber: '236',
         addressComplement: 'Prédio novo',
-        schoolNumber: '112',
         schoolImageUrl: 'https://randomuser.me/api/portraits/women/77.jpg',
       },
       {
@@ -101,13 +95,11 @@ async function seed() {
         password: await hash('senha123', saltRounds),
         schoolName: 'OSWALDO LIMA FILHO',
         teachingStages: [TeachingStage.ENSINO_FUNDAMENTAL_II],
-        estimatedStudents: 624,
         inepCode: '26125510',
         cep: '51011-001',
         address: 'ENGENHEIRO DOMINGOS FERREIRA',
         addressNumber: '1040',
         addressComplement: 'Subsolo',
-        schoolNumber: '121',
         schoolImageUrl: 'https://randomuser.me/api/portraits/women/78.jpg',
       },
       {
@@ -118,12 +110,10 @@ async function seed() {
         password: await hash('senha123', saltRounds),
         schoolName: 'PAIS E FILHOS',
         teachingStages: [TeachingStage.EDUCACAO_INFANTIL],
-        estimatedStudents: 351,
         inepCode: '26125528',
         cep: '51200-001',
         address: 'DANCING DAYS',
         addressNumber: '21',
-        schoolNumber: '070',
         schoolImageUrl: 'https://randomuser.me/api/portraits/women/79.jpg',
       },
       {
@@ -134,12 +124,10 @@ async function seed() {
         password: await hash('senha123', saltRounds),
         schoolName: 'PASTOR JOSE MUNGUBA SOBRINHO',
         teachingStages: [TeachingStage.ENSINO_FUNDAMENTAL_I],
-        estimatedStudents: 295,
         inepCode: '26157888',
         cep: '51190-000',
         address: 'SILVA JARDIM',
         addressNumber: '145',
-        schoolNumber: '348',
         schoolImageUrl: 'https://randomuser.me/api/portraits/women/80.jpg',
       },
       {
@@ -150,12 +138,10 @@ async function seed() {
         password: await hash('senha123', saltRounds),
         schoolName: 'PAZ E AMOR',
         teachingStages: [TeachingStage.EDUCACAO_INFANTIL],
-        estimatedStudents: 134,
         inepCode: '26187957',
         cep: '51210-000',
         address: 'JORNALISTA EDSOU REGIS',
         addressNumber: '216',
-        schoolNumber: '491',
         schoolImageUrl: 'https://randomuser.me/api/portraits/women/81.jpg',
       },
       {
@@ -166,12 +152,10 @@ async function seed() {
         password: await hash('senha123', saltRounds),
         schoolName: 'PINTOR LULA CARDOSO AYRES',
         teachingStages: [TeachingStage.ENSINO_FUNDAMENTAL_II],
-        estimatedStudents: 299,
         inepCode: '26132249',
         cep: '51191-000',
         address: 'DR ALVARO FERRAZ',
         addressNumber: '594',
-        schoolNumber: '106',
         schoolImageUrl: 'https://randomuser.me/api/portraits/women/82.jpg',
       },
       {
@@ -182,12 +166,10 @@ async function seed() {
         password: await hash('senha123', saltRounds),
         schoolName: 'POETA JOAO CABRAL DE MELO NETO',
         teachingStages: [TeachingStage.ENSINO_FUNDAMENTAL_I],
-        estimatedStudents: 305,
         inepCode: '26168138',
         cep: '51012-000',
         address: 'ENCANTA MOCA',
         addressNumber: '377',
-        schoolNumber: '928',
         schoolImageUrl: 'https://randomuser.me/api/portraits/women/83.jpg',
       },
       {
@@ -202,12 +184,10 @@ async function seed() {
           TeachingStage.ENSINO_FUNDAMENTAL_I,
           TeachingStage.ENSINO_FUNDAMENTAL_II,
         ],
-        estimatedStudents: 485,
         inepCode: '26125544',
         cep: '51500-000',
         address: 'DAS PANELAS',
         addressNumber: '28',
-        schoolNumber: '164',
         schoolImageUrl: 'https://randomuser.me/api/portraits/women/84.jpg',
       },
     ],
@@ -481,6 +461,29 @@ async function seed() {
   }
 
   console.log('Challenges created successfully');
+
+  console.log('Resetting autoincrement sequences...');
+
+  // Atualiza o contador da tabela "SchoolManager"
+  await prisma.$queryRawUnsafe(
+    `SELECT setval(pg_get_serial_sequence('"SchoolManager"', 'id'), coalesce(max(id), 1), max(id) IS NOT null) FROM "SchoolManager";`
+  );
+
+  // Atualiza o contador da tabela "Ong"
+  await prisma.$queryRawUnsafe(
+    `SELECT setval(pg_get_serial_sequence('"Ong"', 'id'), coalesce(max(id), 1), max(id) IS NOT null) FROM "Ong";`
+  );
+
+  // Faça o mesmo para as tabelas "Challenge" e "Checkpoint" que também usam autoincrement
+  await prisma.$queryRawUnsafe(
+    `SELECT setval(pg_get_serial_sequence('"Challenge"', 'id'), coalesce(max(id), 1), max(id) IS NOT null) FROM "Challenge";`
+  );
+
+  await prisma.$queryRawUnsafe(
+    `SELECT setval(pg_get_serial_sequence('"Checkpoint"', 'id'), coalesce(max(id), 1), max(id) IS NOT null) FROM "Checkpoint";`
+  );
+
+  console.log('Sequences reset successfully.');
 }
 seed().then(() => {
   console.log('Database successfully seeded');

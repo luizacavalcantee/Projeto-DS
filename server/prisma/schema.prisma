@@ -42,13 +42,11 @@ model SchoolManager {
   password            String          
   schoolName          String              @map("school_name")
   teachingStages      TeachingStage[]     @default([])
-  estimatedStudents   Int                 @map("estimated_students")
   inepCode            String              @unique @map("inep_code")
   cep                 String             
   address             String     
   addressNumber       String              @map("address_number")
   addressComplement   String?             @map("address_complement")
-  schoolNumber        String?             @map("school_number")
   schoolImageUrl      String?             @map("school_image_url")
   schoolChallenges    Challenge[]
 }
