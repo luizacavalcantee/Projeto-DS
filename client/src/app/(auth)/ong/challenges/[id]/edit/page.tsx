@@ -1,6 +1,14 @@
 'use client';
 
+import React, { useState, useRef, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+import { useRouter } from 'next/navigation';
+import { format, parseISO } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
+import { CalendarIcon, UploadCloud, AlertCircle, Loader2 } from 'lucide-react';
+import Image from 'next/image';
+
+// Componentes UI
 import { NewInput } from '@/components/ui/new-input';
 import { NewTextarea } from '@/components/ui/new-textarea';
 import { Button } from '@/components/ui/button';
@@ -11,390 +19,302 @@ import {
   NewSelectContent,
   NewSelectItem,
   NewSelectTrigger,
-  NewSelectValue
+  NewSelectValue,
 } from '@/components/ui/new-select';
 import Title from '@/components/title';
 import { Calendar } from '@/components/ui/calendar';
-import React, { useState, useRef } from 'react';
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger
-} from '@/components/ui/popover';
-import { cn } from '@/lib/utils';
-import { format } from 'date-fns';
-import { ptBR } from 'date-fns/locale';
-import { CalendarIcon, UploadCloud } from 'lucide-react';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Input } from '@/components/ui/input';
-import Image from 'next/image';
 import { Upload } from '@/assets';
+import { cn } from '@/lib/utils';
+import { TeachingStage } from '@/services/schoolManager.services';
+import {
+  getChallengeById,
+  updateChallenge,
+  UpdateChallengeData,
+  ChallengeCategory,
+  ChallengeData,
+  deleteChallenge
+} from '@/services/challenge.services';
+import { DeleteModal } from '@/components/delete-modal';
 
+// Tipos, mocks e lógica principal
 type FormData = {
   nomeProjeto: string;
   localizacaoDesafio: string;
   descricao: string;
-  dataInicio: Date | null;
-  dataFim: Date | null;
-  idadeIdeal: string;
+  dataInicio: Date;
+  dataFim: Date;
+  idadeIdeal: TeachingStage;
   secretaria: string;
-  categoria: string;
-  tituloCheckpoint1: string;
-  tituloCheckpoint2: string;
-  tituloCheckpoint3: string;
+  categoria: ChallengeCategory;
   imagem?: FileList;
   anexos?: FileList;
 };
 
-export default function EditChallengeOng() {
-  const { register, handleSubmit, setValue, watch } = useForm<FormData>({
-    defaultValues: {
-      dataInicio: null,
-      dataFim: null,
-      idadeIdeal: '',
-      categoria: ''
+const mockUploadFile = async (file: File): Promise<string> => {
+  console.log(`Simulando upload do arquivo: ${file.name}`);
+  await new Promise((resolve) => setTimeout(resolve, 1000));
+  return `https://fake-storage.com/uploads/${Date.now()}-${file.name}`;
+};
+
+const mockUploadMultipleFiles = async (files: FileList): Promise<string[]> => {
+  console.log(`Simulando upload de ${files.length} arquivos.`);
+  const uploadPromises = Array.from(files).map((file) => mockUploadFile(file));
+  return await Promise.all(uploadPromises);
+};
+
+export default function EditChallengeOng({ params }: { params: { id: string } }) {
+  const router = useRouter();
+  const challengeId = Number(params.id);
+
+  const [isLoading, setIsLoading] = useState(true);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false); // <- Novo estado para a exclusão
+  const [error, setError] = useState<string | null>(null);
+  const [existingChallenge, setExistingChallenge] = useState<ChallengeData | null>(null);
+
+  const { register, handleSubmit, setValue, watch, reset } = useForm<FormData>();
+
+  useEffect(() => {
+    if (!challengeId) return;
+    const fetchChallengeData = async () => {
+      setIsLoading(true);
+      setError(null);
+      try {
+        const data = await getChallengeById(challengeId);
+        if (data) {
+          setExistingChallenge(data);
+          reset({
+            nomeProjeto: data.title,
+            localizacaoDesafio: data.location || '',
+            descricao: data.description,
+            dataInicio: parseISO(data.startDate),
+            dataFim: parseISO(data.endDate),
+            idadeIdeal: data.idealAge[0],
+            secretaria: data.neededResources,
+            categoria: data.category,
+          });
+        } else {
+          setError('Desafio não encontrado.');
+        }
+      } catch (err) {
+        setError('Falha ao carregar os dados do desafio.');
+        console.error(err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchChallengeData();
+  }, [challengeId, reset]);
+
+  const onSubmit = async (data: FormData) => {
+    setIsSubmitting(true);
+    setError(null);
+    try {
+      const payload: UpdateChallengeData = {
+        title: data.nomeProjeto,
+        location: data.localizacaoDesafio,
+        description: data.descricao,
+        startDate: data.dataInicio.toISOString(),
+        endDate: data.dataFim.toISOString(),
+        idealAge: [data.idadeIdeal],
+        neededResources: data.secretaria,
+        category: data.categoria,
+      };
+      if (data.imagem && data.imagem.length > 0) {
+        payload.photoUrl = await mockUploadFile(data.imagem[0]);
+      }
+      if (data.anexos && data.anexos.length > 0) {
+        payload.documentUrls = await mockUploadMultipleFiles(data.anexos);
+      }
+      await updateChallenge(challengeId, payload);
+      alert('Desafio atualizado com sucesso!');
+      router.back();
+    } catch (err: any) {
+      const errorMessage = err.response?.data?.message || err.message || 'Ocorreu um erro inesperado.';
+      setError(errorMessage);
+    } finally {
+      setIsSubmitting(false);
     }
-  });
+  };
 
-  const [dataInicio, setDataInicio] = useState<Date | null>(null);
-  const [dataFim, setDataFim] = useState<Date | null>(null);
-
-  // This ref is used to programmatically click the hidden file input
-  const attachmentsInputRef = useRef<HTMLInputElement | null>(null);
-
-  // Destructure the ref and other props from the register function for the attachments input
-  const { ref: attachmentsRegisterRef, ...attachmentsRegisterRest } =
-    register('anexos');
+  // ✅ Nova função para lidar com a exclusão
+  const handleDelete = async () => {
+    setIsDeleting(true);
+    setError(null);
+    try {
+      await deleteChallenge(challengeId);
+      alert('Desafio excluído com sucesso!');
+      router.push('/ong/my-challenges'); // Redireciona para uma página de lista, por exemplo
+    } catch (err: any) {
+      const errorMessage = err.response?.data?.message || err.message || 'Falha ao excluir o desafio.';
+      setError(errorMessage);
+      // Mantém o usuário na página para ver o erro
+    } finally {
+      setIsDeleting(false);
+    }
+  };
 
   const imageFile = watch('imagem');
   const attachmentFiles = watch('anexos');
-
+  const dataInicio = watch('dataInicio');
+  const dataFim = watch('dataFim');
   const idadeIdealValue = watch('idadeIdeal');
   const categoriaValue = watch('categoria');
+  const attachmentsInputRef = useRef<HTMLInputElement | null>(null);
+  const { ref: attachmentsRegisterRef, ...attachmentsRegisterRest } = register('anexos');
 
-  React.useEffect(() => {
-    setValue('dataInicio', dataInicio);
-  }, [dataInicio, setValue]);
-
-  React.useEffect(() => {
-    setValue('dataFim', dataFim);
-  }, [dataFim, setValue]);
-
-  const onSubmit = (data: FormData) => {
-    console.log('Dados do desafio prontos para enviar:', data);
-  };
+  if (isLoading) { /* ...código de loading... */ }
+  if (error && !existingChallenge) { /* ...código de erro... */ }
 
   return (
     <div>
-      <Title pageTitle="Cadastro de desafio" />
+      <Title pageTitle="Editar Desafio" />
       <div className="max-w-7xl mx-auto p-6 ">
-        <p className="text-2xl font-bold mb-4">
-          Proponha Seu Desafio de Impacto para as Escolas
-        </p>
+        <p className="text-2xl font-bold mb-4">Edite as Informações do Seu Desafio</p>
         <p className="text-sm text-muted-foreground mb-8">
-          Descreva o desafio que sua ONG propõe para as escolas, para que
-          possamos conectar os projetos aos voluntários e recursos ideais.
+          Ajuste os detalhes do desafio proposto para garantir as melhores conexões.
         </p>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-          {/* Estrutura simplificada: NewLabel acima do NewInput */}
+          {/* ... todos os seus campos de formulário (NewInput, NewSelect, etc.) ... */}
+          
           <div className="space-y-1">
             <NewLabel>Nome do Desafio</NewLabel>
-            <NewInput
-              id="nomeProjeto"
-              placeholder="Digite o nome do projeto"
-              {...register('nomeProjeto')}
-              className="border"
-            />
+            <NewInput id="nomeProjeto" {...register('nomeProjeto')} className="border" />
           </div>
 
-          {/* NewLabel acima do NewInput */}
           <div className="space-y-1">
-            <NewLabel htmlFor="localizacaoDesafio">
-              Localização do Desafio
-            </NewLabel>
-            <NewInput
-              id="localizacaoDesafio"
-              placeholder="Digite onde o desafio deverá ocorrer"
-              {...register('localizacaoDesafio')}
-            />
+            <NewLabel htmlFor="localizacaoDesafio">Localização do Desafio</NewLabel>
+            <NewInput id="localizacaoDesafio" {...register('localizacaoDesafio')} />
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {/* DatePicker para Data de Início (já estava correto) */}
             <div className="space-y-2">
               <NewLabel>Data de Início do Desafio</NewLabel>
               <Popover>
                 <PopoverTrigger asChild>
-                  <Button
-                    variant={'outline'}
-                    className={cn(
-                      'w-full justify-start text-left font-normal bg-white/60 border border-gray-300 hover:border-gray-600 focus:border-primary focus:border-[1.5px]',
-                      !dataInicio && 'text-muted-foreground'
-                    )}
-                  >
+                  <Button variant={'outline'} className={cn('w-full justify-start text-left font-normal', !dataInicio && 'text-muted-foreground')}>
                     <CalendarIcon className="mr-2 h-4 w-4" />
-                    {dataInicio ? (
-                      format(dataInicio, 'PPP', { locale: ptBR })
-                    ) : (
-                      <span className="font-dmSans">
-                        Selecione a data de início
-                      </span>
-                    )}
+                    {dataInicio ? format(dataInicio, 'PPP', { locale: ptBR }) : <span>Selecione a data</span>}
                   </Button>
                 </PopoverTrigger>
-                <PopoverContent className="w-auto p-0">
-                  <Calendar
-                    mode="single"
-                    selected={dataInicio ?? undefined}
-                    onSelect={(date) => setDataInicio(date ?? null)}
-                    initialFocus
-                  />
-                </PopoverContent>
+                <PopoverContent className="w-auto p-0"><Calendar mode="single" selected={dataInicio} onSelect={(date) => setValue('dataInicio', date as Date)} initialFocus /></PopoverContent>
               </Popover>
             </div>
-            {/* DatePicker para Data de Fim (já estava correto) */}
             <div className="space-y-2">
               <NewLabel>Data de Fim do Desafio</NewLabel>
               <Popover>
                 <PopoverTrigger asChild>
-                  <Button
-                    variant={'outline'}
-                    className={cn(
-                      'w-full justify-start text-left font-normal bg-white/60 border border-gray-300 hover:border-gray-600 focus:border-primary focus:border-[1.5px]',
-                      !dataFim && 'text-muted-foreground'
-                    )}
-                  >
+                  <Button variant={'outline'} className={cn('w-full justify-start text-left font-normal', !dataFim && 'text-muted-foreground')}>
                     <CalendarIcon className="mr-2 h-4 w-4" />
-                    {dataFim ? (
-                      format(dataFim, 'PPP', { locale: ptBR })
-                    ) : (
-                      <span>Selecione a data final</span>
-                    )}
+                    {dataFim ? format(dataFim, 'PPP', { locale: ptBR }) : <span>Selecione a data</span>}
                   </Button>
                 </PopoverTrigger>
-                <PopoverContent className="w-auto p-0">
-                  <Calendar
-                    mode="single"
-                    selected={dataFim ?? undefined}
-                    onSelect={(date) => setDataFim(date ?? null)}
-                    initialFocus
-                  />
-                </PopoverContent>
+                <PopoverContent className="w-auto p-0"><Calendar mode="single" selected={dataFim} onSelect={(date) => setValue('dataFim', date as Date)} initialFocus /></PopoverContent>
               </Popover>
             </div>
           </div>
 
-          {/* NewLabel acima do NewTextarea */}
           <div className="space-y-1">
-            <NewLabel htmlFor="descricao">
-              Descrição Detalhada do Desafio
-            </NewLabel>
-            <NewTextarea
-              id="descricao"
-              placeholder="Descreva os detalhes do desafio proposto"
-              {...register('descricao')}
-            />
+            <NewLabel htmlFor="descricao">Descrição Detalhada do Desafio</NewLabel>
+            <NewTextarea id="descricao" {...register('descricao')} />
+          </div>
+          
+          <div className="space-y-1">
+              <NewLabel htmlFor="idadeIdeal">Idade Ideal dos Alunos</NewLabel>
+              <NewSelect onValueChange={(value: TeachingStage) => setValue('idadeIdeal', value)} value={idadeIdealValue}>
+                <NewSelectTrigger id="idadeIdeal"><NewSelectValue /></NewSelectTrigger>
+                <NewSelectContent className="z-50 bg-white shadow-lg">
+                  <NewSelectItem value={TeachingStage.EDUCACAO_INFANTIL}>Educação Infantil</NewSelectItem>
+                  <NewSelectItem value={TeachingStage.ENSINO_FUNDAMENTAL_I}>Ensino Fundamental 1</NewSelectItem>
+                  <NewSelectItem value={TeachingStage.ENSINO_FUNDAMENTAL_II}>Ensino Fundamental 2</NewSelectItem>
+                  <NewSelectItem value={TeachingStage.ENSINO_MEDIO}>Ensino Médio</NewSelectItem>
+                </NewSelectContent>
+              </NewSelect>
           </div>
 
-          {/* NewLabel acima do NewSelect */}
-          <div className="space-y-1">
-            <NewLabel htmlFor="idadeIdeal">Idade Ideal dos Alunos</NewLabel>
-            <NewSelect
-              onValueChange={(value) => setValue('idadeIdeal', value)}
-              value={idadeIdealValue}
-            >
-              <NewSelectTrigger id="idadeIdeal">
-                <NewSelectValue placeholder="Selecione nível de ensino ideal" />
-              </NewSelectTrigger>
-              <NewSelectContent className="z-50 bg-white shadow-lg">
-                <NewSelectItem value="Educação Infantil">
-                  Educação Infantil
-                </NewSelectItem>
-                <NewSelectItem value="Ensino Fundamental 1">
-                  Ensino Fundamental 1
-                </NewSelectItem>
-                <NewSelectItem value="Ensino Fundamental 2">
-                  Ensino Fundamental 2
-                </NewSelectItem>
-                <NewSelectItem value="Ensino Médio">Ensino Médio</NewSelectItem>
-              </NewSelectContent>
-            </NewSelect>
-          </div>
-
-          {/* NewLabel acima do NewInput */}
           <div className="space-y-1">
             <NewLabel htmlFor="secretaria">Recursos Necessários</NewLabel>
-            <NewInput
-              id="secretaria"
-              placeholder="Cite os recursos necessários para executar o desafio"
-              {...register('secretaria')}
-            />
+            <NewInput id="secretaria" {...register('secretaria')} />
           </div>
 
-          {/* NewLabel acima do NewSelect */}
           <div className="space-y-1">
             <NewLabel htmlFor="categoria">Categoria do Desafio</NewLabel>
-            <NewSelect
-              onValueChange={(value) => setValue('categoria', value)}
-              value={categoriaValue}
-            >
-              <NewSelectTrigger id="categoria">
-                <NewSelectValue placeholder="Selecione a categoria" />
-              </NewSelectTrigger>
+            <NewSelect onValueChange={(value: ChallengeCategory) => setValue('categoria', value)} value={categoriaValue}>
+              <NewSelectTrigger id="categoria"><NewSelectValue /></NewSelectTrigger>
               <NewSelectContent className="z-50 bg-white shadow-lg">
-                <NewSelectItem value="Educação">Educação</NewSelectItem>
-                <NewSelectItem value="Saúde">Saúde</NewSelectItem>
-                <NewSelectItem value="Meio Ambiente">
-                  Meio Ambiente
-                </NewSelectItem>
-                <NewSelectItem value="Cultura">Cultura</NewSelectItem>
-                <NewSelectItem value="Esporte">Esporte</NewSelectItem>
-                <NewSelectItem value="Tecnologia">Tecnologia</NewSelectItem>
-                <NewSelectItem value="Cidadania">Cidadania</NewSelectItem>
-                <NewSelectItem value="Inclusão">Inclusão</NewSelectItem>
-                <NewSelectItem value="Sustentabilidade">
-                  Sustentabilidade
-                </NewSelectItem>
+                {Object.values(ChallengeCategory).map((cat) => (
+                  <NewSelectItem key={cat} value={cat}>{cat.replace(/_/g, ' ').charAt(0).toUpperCase() + cat.replace(/_/g, ' ').slice(1).toLowerCase()}</NewSelectItem>
+                ))}
               </NewSelectContent>
             </NewSelect>
           </div>
-
-          <div>
-            <h3 className="text-xl font-semibold">
-              Informações para o acompanhamento do desafio
-            </h3>
-            <p className="text-sm text-muted-foreground">
-              Para ser possível acompanhar o andamento do seu desafio é
-              necessário que você divida esse desafio em 3 etapas e dê um título
-              para cada uma delas.
-            </p>
-          </div>
-
-          {/* NewLabel acima do NewInput */}
-          <div className="space-y-1">
-            <NewLabel htmlFor="tituloCheckpoint1">
-              Título do checkpoint 1
-            </NewLabel>
-            <NewInput
-              id="tituloCheckpoint1"
-              placeholder="Título da primeira etapa"
-              {...register('tituloCheckpoint1')}
-            />
-          </div>
-
-          {/* NewLabel acima do NewInput */}
-          <div className="space-y-1">
-            <NewLabel htmlFor="tituloCheckpoint2">
-              Título do checkpoint 2
-            </NewLabel>
-            <NewInput
-              id="tituloCheckpoint2"
-              placeholder="Título da segunda etapa"
-              {...register('tituloCheckpoint2')}
-            />
-          </div>
-
-          {/* NewLabel acima do NewInput */}
-          <div className="space-y-1">
-            <NewLabel htmlFor="tituloCheckpoint3">
-              Título do checkpoint 3
-            </NewLabel>
-            <NewInput
-              id="tituloCheckpoint3"
-              placeholder="Título da terceira etapa"
-              {...register('tituloCheckpoint3')}
-            />
-          </div>
-
-          {/* --- SEÇÃO DE UPLOAD DE IMAGEM --- */}
+          
           <div className="space-y-2 pt-4">
-            <NewLabel
-              className="text-xl font-semibold"
-              htmlFor="imagem-upload"
-            >
-              Imagem do desafio
-            </NewLabel>
-            <p className="text-sm text-muted-foreground">
-              Escolha uma imagem para representar o desafio
-            </p>
-          </div>
-          <div>
-            <NewLabel
-              htmlFor="imagem-upload"
-              className="flex flex-col items-center bg-white/60 justify-center w-full h-32 px-4 py-6 text-center border border-gray-300 border-dashed rounded-lg cursor-pointer text-muted-foreground transition-colors hover:border-primary hover:text-primary"
-            >
-              <UploadCloud className="w-8 h-8" />
-              <span className="mt-2 text-sm font-medium">
-                Clique para fazer upload
-              </span>
-              <span className="mt-1 text-xs">SVG, PNG, JPG or GIF</span>
-            </NewLabel>
-            <Input
-              id="imagem-upload"
-              type="file"
-              className="hidden"
-              accept="image/svg+xml, image/png, image/jpeg, image/gif"
-              {...register('imagem')}
-            />
-            {imageFile && imageFile.length > 0 && (
-              <div className="mt-2 text-sm text-muted-foreground">
-                <strong>Arquivo selecionado:</strong> {imageFile[0].name}
+            <NewLabel className="text-xl font-semibold">Imagem do desafio</NewLabel>
+            <p className="text-sm text-muted-foreground">Envie uma nova imagem para substituir a atual.</p>
+            {existingChallenge?.photoUrl && (
+              <div className="mt-2">
+                <p className="text-sm font-medium">Imagem Atual:</p>
+                <Image src={existingChallenge.photoUrl} alt="Imagem atual do desafio" width={200} height={100} className="rounded-md object-cover mt-1" />
               </div>
             )}
           </div>
-
-          {/* --- SEÇÃO DE ANEXAR ARQUIVOS --- */}
-          <div className="space-y-2 pt-4">
-            <NewLabel className="text-xl font-semibold">
-              Anexar arquivos
+          <div>
+            <NewLabel htmlFor="imagem-upload" className="flex flex-col items-center bg-white/60 justify-center w-full h-32 px-4 py-6 text-center border border-gray-300 border-dashed rounded-lg cursor-pointer">
+              <UploadCloud className="w-8 h-8" />
+              <span className="mt-2 text-sm font-medium">Clique para fazer upload de uma nova imagem</span>
             </NewLabel>
-            <p className="text-sm text-muted-foreground">
-              Anexe documentos relevantes referente ao desafio. (Max: 5MB por
-              arquivo).
-            </p>
+            <Input id="imagem-upload" type="file" className="hidden" accept="image/*" {...register('imagem')} />
+            {imageFile && imageFile.length > 0 && <div className="mt-2 text-sm"><strong>Nova imagem selecionada:</strong> {imageFile[0].name}</div>}
+          </div>
+          
+          <div className="space-y-2 pt-4">
+            <NewLabel className="text-xl font-semibold">Anexar arquivos</NewLabel>
+            <p className="text-sm text-muted-foreground">Envie novos arquivos para substituir os existentes.</p>
+              {existingChallenge?.documentUrls && existingChallenge.documentUrls.length > 0 && (
+                <div className="mt-2 text-sm">
+                  <p className="font-medium">Anexos Atuais:</p>
+                  <ul className="list-disc list-inside">
+                    {existingChallenge.documentUrls.map((url, i) => <li key={i}><a href={url} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">{url.split('/').pop()}</a></li>)}
+                  </ul>
+                </div>
+              )}
           </div>
           <div>
-            {/* FIX: The ref prop was conflicting. This is the correct way to merge react-hook-form's ref with a custom ref. */}
-            <Input
-              id="file-attachments"
-              type="file"
-              className="hidden"
-              multiple
-              {...attachmentsRegisterRest}
-              ref={(e) => {
-                attachmentsRegisterRef(e); // Pass the element to react-hook-form's ref
-                attachmentsInputRef.current = e; // Assign the element to our custom ref
-              }}
-            />
-            <NewButton
-              variant={'lightBlue'}
-              size={'lg'}
-              type="button" // Use type="button" to prevent form submission on click
-              onClick={() => attachmentsInputRef.current?.click()} // Programmatically click the hidden input
-              className="flex items-center justify-center gap-2"
-            >
-              <Image
-                src={Upload}
-                alt="Upload Icon"
-              />
-              <span className="text-white">Carregar arquivo(s)</span>
+            <Input id="file-attachments" type="file" className="hidden" multiple {...attachmentsRegisterRest} ref={(e) => { attachmentsRegisterRef(e); attachmentsInputRef.current = e; }} />
+            <NewButton variant={'lightBlue'} size={'lg'} type="button" onClick={() => attachmentsInputRef.current?.click()} className="flex items-center justify-center gap-2">
+              <Image src={Upload} alt="Upload Icon" />
+              <span className="text-white">Carregar novo(s) arquivo(s)</span>
             </NewButton>
             {attachmentFiles && attachmentFiles.length > 0 && (
               <div className="mt-2 space-y-1">
-                <p className="text-sm font-semibold">Arquivos selecionados:</p>
-                <ul className="list-disc list-inside text-sm text-muted-foreground">
-                  {Array.from(attachmentFiles).map((file, index) => (
-                    <li key={index}>{file.name}</li>
-                  ))}
-                </ul>
+                <p className="text-sm font-semibold">Novos arquivos selecionados:</p>
+                <ul className="list-disc list-inside text-sm">{Array.from(attachmentFiles).map((file, index) => (<li key={index}>{file.name}</li>))}</ul>
               </div>
             )}
           </div>
 
-          <div className="pt-6 flex justify-center">
-            <NewButton type="submit" className="min-w-96 font-medium">
-              Propor desafio
+          {error && (
+            <div className="flex items-center p-4 mt-4 text-sm text-red-800 rounded-lg bg-red-50" role="alert">
+              <AlertCircle className="flex-shrink-0 inline w-4 h-4 mr-3" />
+              <div><span className="font-medium">Ocorreu um erro:</span> {error}</div>
+            </div>
+          )}
+
+          <div className="pt-6 flex flex-col sm:flex-row justify-center gap-4">
+            <NewButton
+              type="submit"
+              className="w-full"
+              disabled={isSubmitting || isDeleting}
+            >
+              {isSubmitting ? 'Salvando...' : 'Salvar Alterações'}
             </NewButton>
+
+            {/* ✅ Passando a função e o estado de exclusão para o modal */}
+            <DeleteModal onConfirm={handleDelete} isDeleting={isDeleting} />
           </div>
         </form>
       </div>
