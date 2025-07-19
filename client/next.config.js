@@ -23,6 +23,12 @@ module.exports = {
       },
       {
         protocol: 'https',
+        hostname: 'bora-impactar-dev.setd.rdmapps.com.br',
+        port: '',
+        pathname: '/rails/active_storage/**', 
+      },
+      {
+        protocol: 'https',
         hostname: 'randomuser.me',
         port: '',
         pathname: '/api/portraits/**',
