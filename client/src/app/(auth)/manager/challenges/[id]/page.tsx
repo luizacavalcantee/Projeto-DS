@@ -3,7 +3,6 @@
 import { useEffect, useState } from 'react';
 import { getChallengeById, ChallengeData } from '@/services/challenge.services';
 
-// Importando os novos componentes
 import ChallengeHeader from '@/components/challenge-header';
 import ChallengeStats from '@/components/challenge-status';
 import CheckpointTimeline from '@/components/checkpoint-timeline';
@@ -15,11 +14,8 @@ import { NewButton } from '@/components/ui/new-button';
 import Link from 'next/link';
 import CheckpointModal from '@/components/checkpoint-modal';
 
-// Props que a página recebe, incluindo os parâmetros do URL
 interface PageProps {
-  params: {
-    id: string;
-  };
+  params: { id: string };
 }
 
 export default function ChallengeDetailsManager({ params }: PageProps) {
@@ -28,46 +24,40 @@ export default function ChallengeDetailsManager({ params }: PageProps) {
   const [error, setError] = useState<string | null>(null);
   const { user } = useAuth();
 
-  useEffect(() => {
-    // Função para buscar os dados do desafio específico
-    const fetchChallengeDetails = async () => {
-      if (!params.id) return;
-      try {
-        setLoading(true);
-        const data = await getChallengeById(Number(params.id));
-        if (data) {
-          setChallenge(data);
-        } else {
-          setError('Desafio não encontrado.');
-        }
-      } catch (err) {
-        setError('Não foi possível carregar os detalhes do desafio.');
-        console.error(err);
-      } finally {
-        setLoading(false);
+  const fetchChallengeDetails = async () => {
+    if (!params.id) return;
+    try {
+      // Não reseta o loading se já tivermos dados, para um refresh suave
+      if (!challenge) setLoading(true); 
+      const data = await getChallengeById(Number(params.id));
+      if (data) {
+        setChallenge(data);
+      } else {
+        setError('Desafio não encontrado.');
       }
-    };
-
+    } catch (err) {
+      setError('Não foi possível carregar os detalhes do desafio.');
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+  
+  useEffect(() => {
     fetchChallengeDetails();
-  }, [params.id]); // O efeito é re-executado se o ID mudar
+  }, [params.id]);
 
-  if (loading) {
-    return (
-      <div className="text-center p-12">A carregar detalhes do desafio...</div>
-    );
-  }
-
-  if (error) {
-    return <div className="text-center text-red-500 p-12">{error}</div>;
-  }
-
-  if (!challenge) {
-    return <div className="text-center p-12">Desafio não encontrado.</div>;
-  }
+  if (loading) return <div className="text-center p-12">A carregar...</div>;
+  if (error) return <div className="text-center text-red-500 p-12">{error}</div>;
+  if (!challenge) return <div className="text-center p-12">Desafio não encontrado.</div>;
 
   const hasAnOwner = challenge.managerId != null;
+  const isOwner = challenge.managerId === user?.id;
 
-  const owner = challenge.managerId === user?.id
+  // ✅ Encontra o próximo checkpoint que ainda não foi concluído
+  const nextCheckpointToUpdate = challenge.checkpoints?.find(
+    (cp) => !cp.completionDate
+  );
 
   return (
     <main className="pb-16">
@@ -76,7 +66,7 @@ export default function ChallengeDetailsManager({ params }: PageProps) {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <article className="mt-8 text-textBlack">
           <header>
-            <div className='flex justify-between items-center'>
+            <div className="flex justify-between items-center">
               <h1 className="text-3xl font-bold">{challenge.title}</h1>
               {!hasAnOwner && (
                 <Link href={`/ong/challenges/${params.id}/edit`}>
@@ -99,10 +89,17 @@ export default function ChallengeDetailsManager({ params }: PageProps) {
           </section>
 
           {challenge.checkpoints && (
-            <div>
+            <div className="mt-10">
               <CheckpointTimeline checkpoints={challenge.checkpoints} />
-              {owner && (
-                <CheckpointModal/>
+              
+              {/* ✅ Renderiza o modal apenas se o usuário for o dono E existir um checkpoint para atualizar */}
+              {isOwner && nextCheckpointToUpdate && (
+                <div className="text-center">
+                  <CheckpointModal
+                    checkpoint={nextCheckpointToUpdate}
+                    onUpdateSuccess={fetchChallengeDetails} // Passa a função de recarregar
+                  />
+                </div>
               )}
             </div>
           )}
