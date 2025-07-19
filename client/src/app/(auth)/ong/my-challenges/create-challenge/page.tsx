@@ -128,8 +128,7 @@ export default function CreateChallenge() {
         checkpoint1Title: data.tituloCheckpoint1,
         checkpoint2Title: data.tituloCheckpoint2,
         checkpoint3Title: data.tituloCheckpoint3,
-        ongId: 1,
-        managerId: 1
+        ongId: user.id
       };
 
       console.log(payload)

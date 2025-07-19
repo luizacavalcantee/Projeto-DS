@@ -43,7 +43,7 @@ export interface ChallengeData {
   photoUrl: string;
   status: ChallengeStatus;
   ongId: number;
-  managerId: number;
+  managerId?: number;
   ong?: OngData;
   schoolManager?: SchoolManagerData;
   checkpoints?: CheckpointData[];
