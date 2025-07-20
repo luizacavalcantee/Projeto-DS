@@ -24,7 +24,7 @@ RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
 
 COPY . .
 
-RUN pnpm generate --generator client && pnpm prisma migrate deploy && pnpm build && pnpm run seed:prod
+RUN pnpm build
 
 ################################################################################
 
