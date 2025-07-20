@@ -24,7 +24,7 @@ RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
 
 COPY . .
 
-RUN pnpm build
+RUN pnpm build && pnpm generate --generator client
 
 ################################################################################
 
