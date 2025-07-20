@@ -63,9 +63,9 @@ const teachingStageOptions = [
 ];
 
 const mockUploadFile = async (file: File): Promise<string> => {
-  console.log(Simulando upload do arquivo: ${file.name});
+  console.log(`Simulando upload do arquivo: ${file.name}`);
   await new Promise((resolve) => setTimeout(resolve, 1000));
-  return https://fake-storage.com/uploads/${Date.now()}-${file.name};
+  return `https://fake-storage.com/uploads/${Date.now()}-${file.name}`;
 };
 
 export default function SchoolManagerProfile() {
