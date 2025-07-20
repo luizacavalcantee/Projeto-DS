@@ -400,9 +400,9 @@ export default function SchoolManagerRegistration() {
                 accept="image/svg+xml, image/png, image/jpeg"
                 {...register('image')}
               />
-              {errors.image && (
+              {errors.image?.message && (
                 <p className="text-red-500 text-sm mt-2">
-                  {errors.image.message}
+                  {String(errors.image.message)}
                 </p>
               )}
               {imageFile && imageFile.length > 0 && (
