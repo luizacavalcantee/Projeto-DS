@@ -15,7 +15,7 @@ app.use(helmet());
 app.use(express.json());
 app.use(
   cors({
-    origin: 'http://localhost:3000',
+    origin: ['http://localhost:3000', 'https://projeto-ds-nine.vercel.app'],
   }),
 );
 app.use(cookieParser());
