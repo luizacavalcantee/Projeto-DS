@@ -21,7 +21,6 @@ import Filter from './filter.svg';
 import ArrowDown from './arrow-down.svg';
 import Lupa from './Lupa.svg';
 import UnderlinedDark from './underlined-dark.svg';
-import CoracaoQuentinho from './coracao-quentinho.png';
 import Check from './Check.svg';
 import Facebook from './facebook.svg';
 import Instagram from './Instagram.svg';
@@ -34,6 +33,7 @@ import MeioAmbiente from './meio-ambiente.jpg';
 import Inclusao from './inclusao.jpg';
 import Saude from './saude.jpg';
 import Tecnologia from './tecnologia.jpg';
+import ImagemPadrao from './imagem-padrao.png';
 
 export {
   Logo,
@@ -59,7 +59,6 @@ export {
   ArrowDown,
   Lupa,
   UnderlinedDark,
-  CoracaoQuentinho,
   Check,
   Facebook,
   Instagram,
@@ -71,5 +70,6 @@ export {
   MeioAmbiente,
   Inclusao,
   Saude,
-  Tecnologia
+  Tecnologia,
+  ImagemPadrao
 };

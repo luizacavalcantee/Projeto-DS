@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { Facebook, Instagram, CoracaoQuentinho } from '@/assets'; // Usando CoracaoQuentinho como fallback
+import { Facebook, Instagram, BoraImpactar } from '@/assets'; // Usando CoracaoQuentinho como fallback
 import { OngData } from '@/services/ong.services';
 
 interface OngCardProps {
@@ -21,7 +21,7 @@ export default function OngCard({ ong }: OngCardProps) {
       <div className="mt-4 bg-white/60 p-6 rounded-lg shadow flex flex-col md:flex-row items-center gap-6">
         <div className='w-48 h-48 flex-shrink-0'>
           <Image
-            src={ong.logoPhotoUrl || CoracaoQuentinho}
+            src={ong.logoPhotoUrl || BoraImpactar }
             alt={`Logo da ONG ${ong.name}`}
             width={192}
             height={192}
