@@ -2,7 +2,11 @@
   "compilerOptions": {
     "baseUrl": "./src",
     "target": "es5",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -14,14 +18,26 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "preserve",
+    "jsx": "react",
     "paths": {
-      "@/*": ["*"], 
-      "@/components/*": ["components/*"],
-      "@/assets/*": ["assets/*"],
-      "@/lib/*": ["lib/*"],
-      "@/utils/*": ["lib/utils/*"],
-      "@/app/*": ["app/*"],
+      "@/*": [
+        "*"
+      ],
+      "@/components/*": [
+        "components/*"
+      ],
+      "@/assets/*": [
+        "assets/*"
+      ],
+      "@/lib/*": [
+        "lib/*"
+      ],
+      "@/utils/*": [
+        "lib/utils/*"
+      ],
+      "@/app/*": [
+        "app/*"
+      ]
     },
     "plugins": [
       {
@@ -36,6 +52,10 @@
     ".next/types/**/*.ts",
     "tailwind.config.js"
   ],
-  "exclude": ["node_modules"],
-  "types": ["@testing-library/jest-dom"]
+  "exclude": [
+    "node_modules"
+  ],
+  "types": [
+    "@testing-library/jest-dom"
+  ]
 }
