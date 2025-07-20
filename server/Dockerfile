@@ -32,8 +32,6 @@ FROM base AS runner
 
 ENV NODE_ENV=production
 
-COPY --from=builder /home/node/app/package.json /home/node/app/package.json
-
 COPY --from=builder /home/node/app/node_modules /home/node/app/node_modules
 
 COPY --from=builder /home/node/app/dist /home/node/app/dist
