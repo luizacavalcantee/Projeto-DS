@@ -14,6 +14,7 @@
       "./node_modules/@types",
       "./src/@types"
     ],
+    "types": ["node"],
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "experimentalDecorators": true,

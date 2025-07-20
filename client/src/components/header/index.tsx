@@ -6,7 +6,6 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Logo, UserProfile } from '@/assets';
 import { NewButton } from '@/components/ui/new-button';
-
 import { useAuth } from '@/hooks/useAuth';
 
 export default function Header() {
@@ -25,32 +24,40 @@ export default function Header() {
         </header>
     );
   }
-  
-  // --- CORREÇÃO PRINCIPAL: DEFININDO O PREFIXO DA ROTA ---
-  // Se o usuário estiver autenticado, o prefixo será '/ong' ou '/manager'.
-  // Se não, será uma string vazia, levando às páginas públicas.
-  const routePrefix = isAuthenticated ? (user.type === 'ong' ? '/ong' : '/manager') : '';
 
-  const navLinks = [
-    { label: 'Início', href: '/' }, // A página inicial é sempre a mesma
-    { label: 'Desafios', href: `${routePrefix}/challenges` },
-    { label: 'Ranking', href: `${routePrefix}/ranking` },
+  // 1. Valores padrão para quando o usuário não está logado
+  let userName: string = 'Ver meu perfil';
+  let userImage: string | any = UserProfile;
+  let profileLink: string = '/login';
+  let navLinks = [
+    { label: 'Início', href: '/' },
+    { label: 'Desafios', href: '/challenges' },
+    { label: 'Ranking', href: '/ranking' },
   ];
 
-  // Adiciona o link "Criar Desafio" apenas se for uma ONG autenticada
-  if (isAuthenticated && user?.type === 'ong') {
-    navLinks.push({ label: 'Criar Desafio', href: '/ong/my-challenges/create-challenge' });
-  }
+  if (isAuthenticated && user) {
+    const routePrefix = user.type === 'ong' ? '/ong' : '/manager';
 
-  // Define o link de perfil dinamicamente
-  const profileLink = `${routePrefix}/profile`;
+    navLinks = [
+      { label: 'Início', href: '/' },
+      { label: 'Desafios', href: `${routePrefix}/challenges` },
+      { label: 'Ranking', href: `${routePrefix}/ranking` },
+    ];
+    
+    if (user.type === 'ong') {
+      userName = user.name;
+      userImage = user.logoPhotoUrl;
+      navLinks.push({ label: 'Criar Desafio', href: '/ong/my-challenges/create-challenge' });
+    } else {
+      userName = user.fullName;
+      userImage = user.schoolImageUrl;
+    }
+
+    profileLink = `${routePrefix}/profile`;
+  }
 
   const handleLogin = () => router.push('/login');
   const handleLogout = () => logout();
-
-  // Variáveis seguras para nome e imagem, evitando erros de tipo
-  const userName = user ? (user.type === 'ong' ? user.name : user.fullName) : 'Ver meu perfil';
-  const userImage = user ? (user.type === 'ong' ? user.logoPhotoUrl : user.schoolImageUrl) : UserProfile;
 
   return (
     <header className="fixed z-50 w-full flex items-center bg-primary py-4 px-10 text-white drop-shadow-lg">
@@ -75,7 +82,7 @@ export default function Header() {
       </nav>
 
       <div className="flex items-center">
-        {isAuthenticated && user ? (
+        {isAuthenticated ? (
           <div className="flex items-center gap-4">
             <Link href={profileLink}>
               <NewButton size={'sm'} variant={'transparent'} className="flex items-center">
