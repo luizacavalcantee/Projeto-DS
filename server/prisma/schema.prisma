@@ -80,7 +80,6 @@ model Challenge {
   neededResources         String
   category                ChallengeCategory
   documentUrls            String[]            @default([])
-  photoUrl                String?     
   status                  ChallengeStatus     @default(PENDING)         
 
   ongId                   Int    
