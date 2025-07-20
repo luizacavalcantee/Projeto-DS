@@ -1,6 +1,18 @@
 import api from './api';
 import { OngData } from './ong.services';
 import { SchoolManagerData, TeachingStage } from './schoolManager.services';
+import {
+  Cidadania,
+  Cultura,
+  Educacao,
+  Esportes,
+  MeioAmbiente,
+  Inclusao,
+  Saude,
+  Tecnologia,
+  ImagemPadrao 
+} from '@/assets';
+
 
 export enum ChallengeCategory {
   EDUCACAO = 'EDUCACAO',
@@ -40,7 +52,7 @@ export interface ChallengeData {
   neededResources: string;
   category: ChallengeCategory;
   documentUrls: string[];
-  photoUrl: string;
+  photoUrl?: string;
   status: ChallengeStatus;
   ongId: number;
   managerId?: number;
@@ -61,6 +73,23 @@ export type CreateChallengeData = Omit<
 export type UpdateChallengeData = Partial<
   Omit<CreateChallengeData, 'ongId' | 'managerId'>
 >;
+
+const categoryImageMap: Record<ChallengeCategory, any> = {
+  [ChallengeCategory.CIDADANIA]: Cidadania,
+  [ChallengeCategory.CULTURA]: Cultura,
+  [ChallengeCategory.EDUCACAO]: Educacao,
+  [ChallengeCategory.ESPORTE]: Esportes,
+  [ChallengeCategory.MEIO_AMBIENTE]: MeioAmbiente,
+  [ChallengeCategory.INCLUSAO]: Inclusao,
+  [ChallengeCategory.SAUDE]: Saude,
+  [ChallengeCategory.TECNOLOGIA]: Tecnologia,
+  [ChallengeCategory.SUSTENTABILIDADE]: MeioAmbiente
+};
+
+export const getChallengeCategoryImage = (category: ChallengeCategory) => {
+  return categoryImageMap[category] || ImagemPadrao;
+};
+
 
 export const getAllChallenges = async (): Promise<ChallengeData[]> => {
   try {

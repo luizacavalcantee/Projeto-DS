@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
-import { CalendarIcon, UploadCloud, AlertCircle } from 'lucide-react';
+import { CalendarIcon, AlertCircle } from 'lucide-react';
 import Image from 'next/image';
 
 import { NewInput } from '@/components/ui/new-input';
@@ -77,7 +77,6 @@ export default function CreateChallenge() {
     formState: { errors }
   } = useForm<FormData>();
 
-  const imageFile = watch('imagem');
   const attachmentFiles = watch('anexos');
   const dataInicio = watch('dataInicio');
   const dataFim = watch('dataFim');
@@ -102,13 +101,6 @@ export default function CreateChallenge() {
     setError(null);
 
     try {
-      let photoUrl = '';
-      if (data.imagem && data.imagem.length > 0) {
-        photoUrl = await mockUploadFile(data.imagem[0]);
-      } else {
-        throw new Error('A imagem do desafio é obrigatória.');
-      }
-
       let documentUrls: string[] = [];
       if (data.anexos && data.anexos.length > 0) {
         documentUrls = await mockUploadMultipleFiles(data.anexos);
@@ -123,7 +115,6 @@ export default function CreateChallenge() {
         idealAge: [data.idadeIdeal],
         neededResources: data.secretaria,
         category: data.categoria,
-        photoUrl: photoUrl,
         documentUrls: documentUrls,
         checkpoint1Title: data.tituloCheckpoint1,
         checkpoint2Title: data.tituloCheckpoint2,
@@ -148,10 +139,6 @@ export default function CreateChallenge() {
     } finally {
       setIsLoading(false);
     }
-  };
-
-  const handleReturn = () => {
-    router.back();
   };
 
   return (
@@ -313,23 +300,7 @@ export default function CreateChallenge() {
             />
             {errors.tituloCheckpoint3 && <p className="text-red-500 text-sm">{errors.tituloCheckpoint3.message}</p>}
           </div>
-          
-          <div className="space-y-2 pt-4">
-            <NewLabel className="text-xl font-semibold" htmlFor="imagem-upload">Imagem do desafio</NewLabel>
-            <p className="text-sm text-muted-foreground">Escolha uma imagem para representar o desafio</p>
-          </div>
-          <div>
-            <NewLabel htmlFor="imagem-upload" className="flex flex-col items-center bg-white/60 justify-center w-full h-32 px-4 py-6 text-center border border-gray-300 border-dashed rounded-lg cursor-pointer text-muted-foreground transition-colors hover:border-primary hover:text-primary">
-              <UploadCloud className="w-8 h-8" />
-              <span className="mt-2 text-sm font-medium">Clique para fazer upload</span>
-              <span className="mt-1 text-xs">SVG, PNG, JPG or GIF</span>
-            </NewLabel>
-            <Input id="imagem-upload" type="file" className="hidden" accept="image/svg+xml, image/png, image/jpeg, image/gif" {...register('imagem')} />
-            {imageFile && imageFile.length > 0 && (
-              <div className="mt-2 text-sm text-muted-foreground"><strong>Arquivo selecionado:</strong> {imageFile[0].name}</div>
-            )}
-          </div>
-          
+                    
           <div className="space-y-2 pt-4">
             <NewLabel className="text-xl font-semibold">Anexar arquivos</NewLabel>
             <p className="text-sm text-muted-foreground">Anexe documentos relevantes referente ao desafio. (Max: 5MB por arquivo).</p>

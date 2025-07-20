@@ -1,7 +1,7 @@
 'use client';
 
 import ChallengeCard from '@/components/challenge-card';
-import { ChallengeData } from '@/services/challenge.services';
+import { ChallengeData, getChallengeCategoryImage } from '@/services/challenge.services';
 
 interface ChallengeGridProps {
   challenges: ChallengeData[];
@@ -25,7 +25,7 @@ export default function ChallengeGrid({ challenges }: ChallengeGridProps) {
             <ChallengeCard
               key={challenge.id}
               id={challenge.id.toString()}
-              imageSrc={challenge.photoUrl}
+              imageSrc={getChallengeCategoryImage(challenge.category)}
               imageAlt={challenge.title}
               title={challenge.title}
               description={challenge.description}

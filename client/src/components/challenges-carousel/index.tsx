@@ -9,7 +9,7 @@ import {
   CarouselPrevious
 } from '@/components/ui/carousel';
 import { useEffect, useState, useMemo } from 'react';
-import { getAllChallenges, ChallengeData } from '@/services/challenge.services'; 
+import { getAllChallenges, ChallengeData, getChallengeCategoryImage } from '@/services/challenge.services'; 
 
 // 1. Definindo o tipo para a prop de filtro
 // Podemos filtrar por ONG (ongId) ou por Escola (managerId)
@@ -116,7 +116,7 @@ export function ChallengesCarousel({ filter }: ChallengesCarouselProps) {
               <CarouselItem key={challenge.id} className="basis-1/2">
                 <div className="p-1 h-full">
                   <ChallengeCard
-                    imageSrc={challenge.photoUrl}
+                    imageSrc={getChallengeCategoryImage(challenge.category)}
                     imageAlt={challenge.title}
                     title={challenge.title}
                     description={challenge.description}

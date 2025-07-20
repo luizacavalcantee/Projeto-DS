@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { getChallengeById, ChallengeData } from '@/services/challenge.services';
+import { getChallengeById, ChallengeData, getChallengeCategoryImage } from '@/services/challenge.services';
 
 import ChallengeHeader from '@/components/challenge-header';
 import ChallengeStats from '@/components/challenge-status';
@@ -61,7 +61,7 @@ export default function ChallengeDetailsManager({ params }: PageProps) {
 
   return (
     <main className="pb-16">
-      <ChallengeHeader title={challenge.title} imageUrl={challenge.photoUrl} />
+      <ChallengeHeader title={challenge.title} imageUrl={getChallengeCategoryImage(challenge.category)} />
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <article className="mt-8 text-textBlack">

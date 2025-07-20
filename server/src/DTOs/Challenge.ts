@@ -49,9 +49,8 @@ export const CreateChallenge = z.object({
   photoUrl: z
     .string({
       invalid_type_error: 'A URL da foto deve ser uma string',
-      required_error: 'A foto do desafio é obrigatória',
     })
-    .url({ message: 'A URL da foto é inválida' }),
+    .url({ message: 'A URL da foto é inválida' }).optional(),
 
   documentUrls: z
     .array(z.string().url({ message: 'URL de documento inválida' }))
