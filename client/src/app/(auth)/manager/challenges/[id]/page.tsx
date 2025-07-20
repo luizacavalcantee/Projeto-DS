@@ -88,6 +88,13 @@ export default function ChallengeDetailsManager({ params }: PageProps) {
             </p>
           </section>
 
+          <section className="mt-10">
+            <h2 className="text-2xl font-semibold">Recursos necessários</h2>
+            <p className="mt-3 text-justify font-light text-lg">
+              {challenge.neededResources}
+            </p>
+          </section>
+
           {challenge.checkpoints && (
             <div className="mt-10">
               <CheckpointTimeline checkpoints={challenge.checkpoints} />

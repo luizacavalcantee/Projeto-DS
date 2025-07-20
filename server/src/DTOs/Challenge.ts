@@ -9,10 +9,6 @@ export const CreateChallenge = z.object({
     })
     .min(3, { message: 'O título deve ter no mínimo 3 caracteres' }),
 
-  location: z
-    .string({ invalid_type_error: 'A localização deve ser uma string' })
-    .optional(),
-
   description: z
     .string({
       invalid_type_error: 'A descrição deve ser uma string',

@@ -22,7 +22,6 @@ model Ong {
   instagramLink   String?   @map("instagram_link")
   facebookLink    String?   @map("facebook_link")
   site            String?
-  coverPhotoUrl   String?   @map("cover_photo_url")
   logoPhotoUrl    String?   @map("logo_photo_url")
   challenges      Challenge[]
 }
@@ -60,7 +59,7 @@ enum ChallengeCategory {
   TECNOLOGIA
   CIDADANIA
   INCLUSAO
-  SUSTENTABILIDADE
+  OUTRO
 }
 
 enum ChallengeStatus {
@@ -72,7 +71,6 @@ enum ChallengeStatus {
 model Challenge {
   id                      Int                 @id @default(autoincrement())
   title                   String
-  location                String?
   description             String
   startDate               DateTime
   endDate                 DateTime
@@ -99,9 +97,6 @@ model Checkpoint {
 
   checkpointNumber  Int       
   challengeId       Int      
-
-  createdAt         DateTime  @default(now())
-  updatedAt         DateTime  @updatedAt
 
   challenge         Challenge @relation(fields: [challengeId], references: [id])
 

@@ -52,7 +52,6 @@ export interface ChallengeData {
   neededResources: string;
   category: ChallengeCategory;
   documentUrls: string[];
-  photoUrl?: string;
   status: ChallengeStatus;
   ongId: number;
   managerId?: number;
