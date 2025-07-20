@@ -1,4 +1,3 @@
-import React from 'react';
 import Image from 'next/image';
 import { Grid1, Grid2, Grid3, Underline } from '@/assets';
 

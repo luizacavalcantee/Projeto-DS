@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import { format, parseISO } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
-import { CalendarIcon, UploadCloud, AlertCircle, Loader2 } from 'lucide-react';
+import { CalendarIcon, UploadCloud, AlertCircle } from 'lucide-react';
 import Image from 'next/image';
 
 // Componentes UI

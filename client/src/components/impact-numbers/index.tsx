@@ -1,5 +1,3 @@
-import React from "react";
-
 export default function ImpactNumbers() {
   return (
     <section className="w-full bg-gradient-to-r from-[#26BDE2] to-[#009FE3] py-12 mb-12">
