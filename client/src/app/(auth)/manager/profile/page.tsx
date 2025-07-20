@@ -41,7 +41,7 @@ const updateFormSchema = z
     address: z.string().min(1, 'O endereço é obrigatório'),
     addressNumber: z.string().min(1, 'O número é obrigatório'),
     addressComplement: z.string().optional(),
-    image: z.instanceof(FileList).optional(),
+    image: z.any(),
   })
   .refine(
     (data) => {
