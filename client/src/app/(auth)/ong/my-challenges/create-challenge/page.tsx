@@ -37,7 +37,6 @@ import { useAuth } from '@/hooks/useAuth';
 
 type FormData = {
   nomeProjeto: string;
-  localizacaoDesafio: string;
   descricao: string;
   dataInicio: Date;
   dataFim: Date;
@@ -108,7 +107,6 @@ export default function CreateChallenge() {
 
       const payload: CreateChallengeData = {
         title: data.nomeProjeto,
-        location: data.localizacaoDesafio,
         description: data.descricao,
         startDate: data.dataInicio.toISOString(),
         endDate: data.dataFim.toISOString(),
@@ -163,15 +161,6 @@ export default function CreateChallenge() {
               className="border"
             />
             {errors.nomeProjeto && <p className="text-red-500 text-sm">{errors.nomeProjeto.message}</p>}
-          </div>
-
-          <div className="space-y-1">
-            <NewLabel htmlFor="localizacaoDesafio">Localização do Desafio</NewLabel>
-            <NewInput
-              id="localizacaoDesafio"
-              placeholder="Digite onde o desafio deverá ocorrer"
-              {...register('localizacaoDesafio')}
-            />
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
