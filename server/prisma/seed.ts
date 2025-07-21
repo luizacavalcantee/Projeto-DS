@@ -6,7 +6,6 @@ const prisma = new PrismaClient();
 type ChallengeSeedData = {
   title: string;
   description: string;
-  location: string;
   startDate: Date;
   endDate: Date;
   idealAge: TeachingStage[];
@@ -209,7 +208,6 @@ async function seed() {
         instagramLink: null,
         facebookLink: null,
         site: null,
-        coverPhotoUrl: null,
         logoPhotoUrl: null,
       },
       {
@@ -222,7 +220,6 @@ async function seed() {
         instagramLink: null,
         facebookLink: null,
         site: null,
-        coverPhotoUrl: null,
         logoPhotoUrl: null,
       },
     ],
@@ -236,7 +233,6 @@ async function seed() {
       title: 'Horta Escolar Comunitária',
       description:
         'Criar e manter uma horta orgânica na escola, ensinando sobre segurança alimentar, compostagem e trabalho em equipe. Os alimentos colhidos serão doados para a comunidade.',
-      location: 'Área externa da Escola Municipal Ariano Suassuna',
       startDate: new Date('2025-08-01T09:00:00.000Z'),
       endDate: new Date('2025-12-15T17:00:00.000Z'),
       idealAge: ['ENSINO_FUNDAMENTAL_I'],
@@ -255,7 +251,6 @@ async function seed() {
       title: 'Guardiões da Memória Local',
       description:
         'Projeto de pesquisa e documentação da história do bairro. Os alunos irão entrevistar moradores antigos, coletar fotos e criar um documentário ou exposição final.',
-      location: 'Bairro de Santo Antônio, Recife',
       startDate: new Date('2025-09-02T09:00:00.000Z'),
       endDate: new Date('2025-11-28T17:00:00.000Z'),
       idealAge: ['ENSINO_MEDIO'],
@@ -274,8 +269,6 @@ async function seed() {
       title: 'Olimpíada de Robótica Sustentável',
       description:
         'Construir robôs funcionais a partir de lixo eletrônico e materiais recicláveis para competir em desafios de agilidade e tarefas.',
-      location:
-        'Laboratório de Informática da Escola Técnica Estadual Cícero Dias',
       startDate: new Date('2025-08-15T14:00:00.000Z'),
       endDate: new Date('2025-11-20T18:00:00.000Z'),
       idealAge: ['ENSINO_MEDIO'],
@@ -294,7 +287,6 @@ async function seed() {
       title: 'Campanha de Saúde e Bem-Estar',
       description:
         'Criar e divulgar uma campanha de conscientização sobre saúde mental e hábitos saudáveis (alimentação e exercícios) para a comunidade escolar.',
-      location: 'Escola de Referência em Ensino Médio Ginásio Pernambucano',
       startDate: new Date('2025-10-01T09:00:00.000Z'),
       endDate: new Date('2025-10-31T17:00:00.000Z'),
       idealAge: ['ENSINO_MEDIO'],
@@ -313,7 +305,6 @@ async function seed() {
       title: 'Inclusão Digital para a Terceira Idade',
       description:
         'Alunos voluntários irão ensinar noções básicas de informática e uso de smartphones para idosos da comunidade, promovendo a cidadania e a conexão entre gerações.',
-      location: 'Centro Comunitário do Pina',
       startDate: new Date('2025-08-05T14:00:00.000Z'),
       endDate: new Date('2025-10-28T16:00:00.000Z'),
       idealAge: ['ENSINO_MEDIO'],
@@ -332,7 +323,6 @@ async function seed() {
       title: 'Festival de Curtas com Celular',
       description:
         "Produzir curtas-metragens de até 5 minutos usando apenas celulares, com o tema 'Minha Realidade'. O festival visa estimular a criatividade e o olhar crítico dos jovens.",
-      location: 'Online / Escola de Referência em Ensino Médio Oliveira Lima',
       startDate: new Date('2025-09-10T10:00:00.000Z'),
       endDate: new Date('2025-11-30T19:00:00.000Z'),
       idealAge: ['ENSINO_FUNDAMENTAL_II', 'ENSINO_MEDIO'],
@@ -351,7 +341,6 @@ async function seed() {
       title: 'Torneio Esportivo Interescolar Pela Paz',
       description:
         'Organizar um torneio de futsal e vôlei entre escolas da região para promover a integração, o respeito e o espírito esportivo.',
-      location: 'Ginásio de Esportes Geraldo Magalhães (Geraldão)',
       startDate: new Date('2025-10-20T08:00:00.000Z'),
       endDate: new Date('2025-10-25T18:00:00.000Z'),
       idealAge: ['ENSINO_FUNDAMENTAL_I', 'ENSINO_MEDIO'],
@@ -370,7 +359,6 @@ async function seed() {
       title: 'Alfabetização Financeira para Jovens',
       description:
         'Workshops interativos sobre como gerenciar o dinheiro, poupar, investir e evitar dívidas, preparando os jovens para a vida adulta.',
-      location: 'Auditório da Faculdade de Administração do Recife (FAR)',
       startDate: new Date('2025-08-18T18:30:00.000Z'),
       endDate: new Date('2025-09-22T20:30:00.000Z'),
       idealAge: ['ENSINO_MEDIO', 'ENSINO_FUNDAMENTAL_II'],
@@ -389,7 +377,6 @@ async function seed() {
       title: 'Acessibilidade em Foco',
       description:
         'Mapear a acessibilidade (ou a falta dela) no entorno da escola, identificar problemas em calçadas, rampas e comércios e propor soluções para a subprefeitura.',
-      location: 'Entorno da Escola Professor Cândido Duarte, Boa Viagem',
       startDate: new Date('2025-09-03T09:00:00.000Z'),
       endDate: new Date('2025-10-15T17:00:00.000Z'),
       idealAge: ['ENSINO_MEDIO'],
@@ -409,13 +396,12 @@ async function seed() {
       title: 'Recicla-Arte: Transformando Lixo em Luxo',
       description:
         'Oficinas de arte para criar esculturas, objetos de decoração e brinquedos a partir de materiais que seriam descartados, como garrafas PET, papelão e latas.',
-      location: 'Pátio da Escola Municipal da Mangabeira',
       startDate: new Date('2025-08-20T13:00:00.000Z'),
       endDate: new Date('2025-10-22T15:00:00.000Z'),
       idealAge: ['ENSINO_FUNDAMENTAL_II'],
       neededResources:
         'Material reciclável coletado pelos alunos, cola quente, tesouras, tintas, pincéis.',
-      category: 'SUSTENTABILIDADE',
+      category: 'MEIO_AMBIENTE',
       photoUrl:
         'https://images.pexels.com/photos/3913426/pexels-photo-3913426.jpeg',
       ongId: 1,
