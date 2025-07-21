@@ -44,7 +44,6 @@ export interface CheckpointData {
 export interface ChallengeData {
   id: number;
   title: string;
-  location?: string | null;
   description: string;
   startDate: string;
   endDate: string;

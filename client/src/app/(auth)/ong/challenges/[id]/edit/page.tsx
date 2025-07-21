@@ -19,11 +19,15 @@ import {
   NewSelectContent,
   NewSelectItem,
   NewSelectTrigger,
-  NewSelectValue,
+  NewSelectValue
 } from '@/components/ui/new-select';
 import Title from '@/components/title';
 import { Calendar } from '@/components/ui/calendar';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger
+} from '@/components/ui/popover';
 import { Input } from '@/components/ui/input';
 import { Upload } from '@/assets';
 import { cn } from '@/lib/utils';
@@ -41,7 +45,6 @@ import { DeleteModal } from '@/components/delete-modal';
 // Tipos, mocks e lógica principal
 type FormData = {
   nomeProjeto: string;
-  localizacaoDesafio: string;
   descricao: string;
   dataInicio: Date;
   dataFim: Date;
@@ -64,7 +67,11 @@ const mockUploadMultipleFiles = async (files: FileList): Promise<string[]> => {
   return await Promise.all(uploadPromises);
 };
 
-export default function EditChallengeOng({ params }: { params: { id: string } }) {
+export default function EditChallengeOng({
+  params
+}: {
+  params: { id: string };
+}) {
   const router = useRouter();
   const challengeId = Number(params.id);
 
@@ -72,9 +79,11 @@ export default function EditChallengeOng({ params }: { params: { id: string } })
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false); // <- Novo estado para a exclusão
   const [error, setError] = useState<string | null>(null);
-  const [existingChallenge, setExistingChallenge] = useState<ChallengeData | null>(null);
+  const [existingChallenge, setExistingChallenge] =
+    useState<ChallengeData | null>(null);
 
-  const { register, handleSubmit, setValue, watch, reset } = useForm<FormData>();
+  const { register, handleSubmit, setValue, watch, reset } =
+    useForm<FormData>();
 
   useEffect(() => {
     if (!challengeId) return;
@@ -87,13 +96,12 @@ export default function EditChallengeOng({ params }: { params: { id: string } })
           setExistingChallenge(data);
           reset({
             nomeProjeto: data.title,
-            localizacaoDesafio: data.location || '',
             descricao: data.description,
             dataInicio: parseISO(data.startDate),
             dataFim: parseISO(data.endDate),
             idadeIdeal: data.idealAge[0],
             secretaria: data.neededResources,
-            categoria: data.category,
+            categoria: data.category
           });
         } else {
           setError('Desafio não encontrado.');
@@ -114,17 +122,13 @@ export default function EditChallengeOng({ params }: { params: { id: string } })
     try {
       const payload: UpdateChallengeData = {
         title: data.nomeProjeto,
-        location: data.localizacaoDesafio,
         description: data.descricao,
         startDate: data.dataInicio.toISOString(),
         endDate: data.dataFim.toISOString(),
         idealAge: [data.idadeIdeal],
         neededResources: data.secretaria,
-        category: data.categoria,
+        category: data.categoria
       };
-      if (data.imagem && data.imagem.length > 0) {
-        payload.photoUrl = await mockUploadFile(data.imagem[0]);
-      }
       if (data.anexos && data.anexos.length > 0) {
         payload.documentUrls = await mockUploadMultipleFiles(data.anexos);
       }
@@ -132,7 +136,10 @@ export default function EditChallengeOng({ params }: { params: { id: string } })
       alert('Desafio atualizado com sucesso!');
       router.back();
     } catch (err: any) {
-      const errorMessage = err.response?.data?.message || err.message || 'Ocorreu um erro inesperado.';
+      const errorMessage =
+        err.response?.data?.message ||
+        err.message ||
+        'Ocorreu um erro inesperado.';
       setError(errorMessage);
     } finally {
       setIsSubmitting(false);
@@ -148,7 +155,10 @@ export default function EditChallengeOng({ params }: { params: { id: string } })
       alert('Desafio excluído com sucesso!');
       router.push('/ong/my-challenges'); // Redireciona para uma página de lista, por exemplo
     } catch (err: any) {
-      const errorMessage = err.response?.data?.message || err.message || 'Falha ao excluir o desafio.';
+      const errorMessage =
+        err.response?.data?.message ||
+        err.message ||
+        'Falha ao excluir o desafio.';
       setError(errorMessage);
       // Mantém o usuário na página para ver o erro
     } finally {
@@ -163,31 +173,46 @@ export default function EditChallengeOng({ params }: { params: { id: string } })
   const idadeIdealValue = watch('idadeIdeal');
   const categoriaValue = watch('categoria');
   const attachmentsInputRef = useRef<HTMLInputElement | null>(null);
-  const { ref: attachmentsRegisterRef, ...attachmentsRegisterRest } = register('anexos');
+  const { ref: attachmentsRegisterRef, ...attachmentsRegisterRest } =
+    register('anexos');
 
-  if (isLoading) { /* ...código de loading... */ }
-  if (error && !existingChallenge) { /* ...código de erro... */ }
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <p className="text-lg text-gray-500">Carregando desafio...</p>
+      </div>
+    );
+  }
+
+  if (error && !existingChallenge) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <p className="text-lg text-red-500">Desafio não encontrado.</p>
+      </div>
+    );
+  }
 
   return (
     <div>
       <Title pageTitle="Editar Desafio" />
       <div className="max-w-7xl mx-auto p-6 ">
-        <p className="text-2xl font-bold mb-4">Edite as Informações do Seu Desafio</p>
+        <p className="text-2xl font-bold mb-4">
+          Edite as Informações do Seu Desafio
+        </p>
         <p className="text-sm text-muted-foreground mb-8">
-          Ajuste os detalhes do desafio proposto para garantir as melhores conexões.
+          Ajuste os detalhes do desafio proposto para garantir as melhores
+          conexões.
         </p>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-          {/* ... todos os seus campos de formulário (NewInput, NewSelect, etc.) ... */}
-          
-          <div className="space-y-1">
-            <NewLabel>Nome do Desafio</NewLabel>
-            <NewInput id="nomeProjeto" {...register('nomeProjeto')} className="border" />
-          </div>
 
           <div className="space-y-1">
-            <NewLabel htmlFor="localizacaoDesafio">Localização do Desafio</NewLabel>
-            <NewInput id="localizacaoDesafio" {...register('localizacaoDesafio')} />
+            <NewLabel>Nome do Desafio</NewLabel>
+            <NewInput
+              id="nomeProjeto"
+              {...register('nomeProjeto')}
+              className="border"
+            />
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -195,44 +220,95 @@ export default function EditChallengeOng({ params }: { params: { id: string } })
               <NewLabel>Data de Início do Desafio</NewLabel>
               <Popover>
                 <PopoverTrigger asChild>
-                  <Button variant={'outline'} className={cn('w-full justify-start text-left font-normal', !dataInicio && 'text-muted-foreground')}>
+                  <Button
+                    variant={'outline'}
+                    className={cn(
+                      'w-full justify-start text-left font-normal',
+                      !dataInicio && 'text-muted-foreground'
+                    )}
+                  >
                     <CalendarIcon className="mr-2 h-4 w-4" />
-                    {dataInicio ? format(dataInicio, 'PPP', { locale: ptBR }) : <span>Selecione a data</span>}
+                    {dataInicio ? (
+                      format(dataInicio, 'PPP', { locale: ptBR })
+                    ) : (
+                      <span>Selecione a data</span>
+                    )}
                   </Button>
                 </PopoverTrigger>
-                <PopoverContent className="w-auto p-0"><Calendar mode="single" selected={dataInicio} onSelect={(date) => setValue('dataInicio', date as Date)} initialFocus /></PopoverContent>
+                <PopoverContent className="w-auto p-0">
+                  <Calendar
+                    mode="single"
+                    selected={dataInicio}
+                    onSelect={(date) => setValue('dataInicio', date as Date)}
+                    initialFocus
+                  />
+                </PopoverContent>
               </Popover>
             </div>
             <div className="space-y-2">
               <NewLabel>Data de Fim do Desafio</NewLabel>
               <Popover>
                 <PopoverTrigger asChild>
-                  <Button variant={'outline'} className={cn('w-full justify-start text-left font-normal', !dataFim && 'text-muted-foreground')}>
+                  <Button
+                    variant={'outline'}
+                    className={cn(
+                      'w-full justify-start text-left font-normal',
+                      !dataFim && 'text-muted-foreground'
+                    )}
+                  >
                     <CalendarIcon className="mr-2 h-4 w-4" />
-                    {dataFim ? format(dataFim, 'PPP', { locale: ptBR }) : <span>Selecione a data</span>}
+                    {dataFim ? (
+                      format(dataFim, 'PPP', { locale: ptBR })
+                    ) : (
+                      <span>Selecione a data</span>
+                    )}
                   </Button>
                 </PopoverTrigger>
-                <PopoverContent className="w-auto p-0"><Calendar mode="single" selected={dataFim} onSelect={(date) => setValue('dataFim', date as Date)} initialFocus /></PopoverContent>
+                <PopoverContent className="w-auto p-0">
+                  <Calendar
+                    mode="single"
+                    selected={dataFim}
+                    onSelect={(date) => setValue('dataFim', date as Date)}
+                    initialFocus
+                  />
+                </PopoverContent>
               </Popover>
             </div>
           </div>
 
           <div className="space-y-1">
-            <NewLabel htmlFor="descricao">Descrição Detalhada do Desafio</NewLabel>
+            <NewLabel htmlFor="descricao">
+              Descrição Detalhada do Desafio
+            </NewLabel>
             <NewTextarea id="descricao" {...register('descricao')} />
           </div>
-          
+
           <div className="space-y-1">
-              <NewLabel htmlFor="idadeIdeal">Idade Ideal dos Alunos</NewLabel>
-              <NewSelect onValueChange={(value: TeachingStage) => setValue('idadeIdeal', value)} value={idadeIdealValue}>
-                <NewSelectTrigger id="idadeIdeal"><NewSelectValue /></NewSelectTrigger>
-                <NewSelectContent className="z-50 bg-white shadow-lg">
-                  <NewSelectItem value={TeachingStage.EDUCACAO_INFANTIL}>Educação Infantil</NewSelectItem>
-                  <NewSelectItem value={TeachingStage.ENSINO_FUNDAMENTAL_I}>Ensino Fundamental 1</NewSelectItem>
-                  <NewSelectItem value={TeachingStage.ENSINO_FUNDAMENTAL_II}>Ensino Fundamental 2</NewSelectItem>
-                  <NewSelectItem value={TeachingStage.ENSINO_MEDIO}>Ensino Médio</NewSelectItem>
-                </NewSelectContent>
-              </NewSelect>
+            <NewLabel htmlFor="idadeIdeal">Idade Ideal dos Alunos</NewLabel>
+            <NewSelect
+              onValueChange={(value: TeachingStage) =>
+                setValue('idadeIdeal', value)
+              }
+              value={idadeIdealValue}
+            >
+              <NewSelectTrigger id="idadeIdeal">
+                <NewSelectValue />
+              </NewSelectTrigger>
+              <NewSelectContent className="z-50 bg-white shadow-lg">
+                <NewSelectItem value={TeachingStage.EDUCACAO_INFANTIL}>
+                  Educação Infantil
+                </NewSelectItem>
+                <NewSelectItem value={TeachingStage.ENSINO_FUNDAMENTAL_I}>
+                  Ensino Fundamental 1
+                </NewSelectItem>
+                <NewSelectItem value={TeachingStage.ENSINO_FUNDAMENTAL_II}>
+                  Ensino Fundamental 2
+                </NewSelectItem>
+                <NewSelectItem value={TeachingStage.ENSINO_MEDIO}>
+                  Ensino Médio
+                </NewSelectItem>
+              </NewSelectContent>
+            </NewSelect>
           </div>
 
           <div className="space-y-1">
@@ -242,65 +318,99 @@ export default function EditChallengeOng({ params }: { params: { id: string } })
 
           <div className="space-y-1">
             <NewLabel htmlFor="categoria">Categoria do Desafio</NewLabel>
-            <NewSelect onValueChange={(value: ChallengeCategory) => setValue('categoria', value)} value={categoriaValue}>
-              <NewSelectTrigger id="categoria"><NewSelectValue /></NewSelectTrigger>
+            <NewSelect
+              onValueChange={(value: ChallengeCategory) =>
+                setValue('categoria', value)
+              }
+              value={categoriaValue}
+            >
+              <NewSelectTrigger id="categoria">
+                <NewSelectValue />
+              </NewSelectTrigger>
               <NewSelectContent className="z-50 bg-white shadow-lg">
                 {Object.values(ChallengeCategory).map((cat) => (
-                  <NewSelectItem key={cat} value={cat}>{cat.replace(/_/g, ' ').charAt(0).toUpperCase() + cat.replace(/_/g, ' ').slice(1).toLowerCase()}</NewSelectItem>
+                  <NewSelectItem key={cat} value={cat}>
+                    {cat.replace(/_/g, ' ').charAt(0).toUpperCase() +
+                      cat.replace(/_/g, ' ').slice(1).toLowerCase()}
+                  </NewSelectItem>
                 ))}
               </NewSelectContent>
             </NewSelect>
           </div>
-          
+
           <div className="space-y-2 pt-4">
-            <NewLabel className="text-xl font-semibold">Imagem do desafio</NewLabel>
-            <p className="text-sm text-muted-foreground">Envie uma nova imagem para substituir a atual.</p>
-            {existingChallenge?.photoUrl && (
-              <div className="mt-2">
-                <p className="text-sm font-medium">Imagem Atual:</p>
-                <Image src={existingChallenge.photoUrl} alt="Imagem atual do desafio" width={200} height={100} className="rounded-md object-cover mt-1" />
-              </div>
-            )}
-          </div>
-          <div>
-            <NewLabel htmlFor="imagem-upload" className="flex flex-col items-center bg-white/60 justify-center w-full h-32 px-4 py-6 text-center border border-gray-300 border-dashed rounded-lg cursor-pointer">
-              <UploadCloud className="w-8 h-8" />
-              <span className="mt-2 text-sm font-medium">Clique para fazer upload de uma nova imagem</span>
+            <NewLabel className="text-xl font-semibold">
+              Anexar arquivos
             </NewLabel>
-            <Input id="imagem-upload" type="file" className="hidden" accept="image/*" {...register('imagem')} />
-            {imageFile && imageFile.length > 0 && <div className="mt-2 text-sm"><strong>Nova imagem selecionada:</strong> {imageFile[0].name}</div>}
-          </div>
-          
-          <div className="space-y-2 pt-4">
-            <NewLabel className="text-xl font-semibold">Anexar arquivos</NewLabel>
-            <p className="text-sm text-muted-foreground">Envie novos arquivos para substituir os existentes.</p>
-              {existingChallenge?.documentUrls && existingChallenge.documentUrls.length > 0 && (
+            <p className="text-sm text-muted-foreground">
+              Envie novos arquivos para substituir os existentes.
+            </p>
+            {existingChallenge?.documentUrls &&
+              existingChallenge.documentUrls.length > 0 && (
                 <div className="mt-2 text-sm">
                   <p className="font-medium">Anexos Atuais:</p>
                   <ul className="list-disc list-inside">
-                    {existingChallenge.documentUrls.map((url, i) => <li key={i}><a href={url} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">{url.split('/').pop()}</a></li>)}
+                    {existingChallenge.documentUrls.map((url, i) => (
+                      <li key={i}>
+                        <a
+                          href={url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-blue-600 hover:underline"
+                        >
+                          {url.split('/').pop()}
+                        </a>
+                      </li>
+                    ))}
                   </ul>
                 </div>
               )}
           </div>
           <div>
-            <Input id="file-attachments" type="file" className="hidden" multiple {...attachmentsRegisterRest} ref={(e) => { attachmentsRegisterRef(e); attachmentsInputRef.current = e; }} />
-            <NewButton variant={'lightBlue'} size={'lg'} type="button" onClick={() => attachmentsInputRef.current?.click()} className="flex items-center justify-center gap-2">
+            <Input
+              id="file-attachments"
+              type="file"
+              className="hidden"
+              multiple
+              {...attachmentsRegisterRest}
+              ref={(e) => {
+                attachmentsRegisterRef(e);
+                attachmentsInputRef.current = e;
+              }}
+            />
+            <NewButton
+              variant={'lightBlue'}
+              size={'lg'}
+              type="button"
+              onClick={() => attachmentsInputRef.current?.click()}
+              className="flex items-center justify-center gap-2"
+            >
               <Image src={Upload} alt="Upload Icon" />
               <span className="text-white">Carregar novo(s) arquivo(s)</span>
             </NewButton>
             {attachmentFiles && attachmentFiles.length > 0 && (
               <div className="mt-2 space-y-1">
-                <p className="text-sm font-semibold">Novos arquivos selecionados:</p>
-                <ul className="list-disc list-inside text-sm">{Array.from(attachmentFiles).map((file, index) => (<li key={index}>{file.name}</li>))}</ul>
+                <p className="text-sm font-semibold">
+                  Novos arquivos selecionados:
+                </p>
+                <ul className="list-disc list-inside text-sm">
+                  {Array.from(attachmentFiles).map((file, index) => (
+                    <li key={index}>{file.name}</li>
+                  ))}
+                </ul>
               </div>
             )}
           </div>
 
           {error && (
-            <div className="flex items-center p-4 mt-4 text-sm text-red-800 rounded-lg bg-red-50" role="alert">
+            <div
+              className="flex items-center p-4 mt-4 text-sm text-red-800 rounded-lg bg-red-50"
+              role="alert"
+            >
               <AlertCircle className="flex-shrink-0 inline w-4 h-4 mr-3" />
-              <div><span className="font-medium">Ocorreu um erro:</span> {error}</div>
+              <div>
+                <span className="font-medium">Ocorreu um erro:</span> {error}
+              </div>
             </div>
           )}
 
