@@ -29,9 +29,10 @@
   },
   "scripts": {
     "build": "swc src --extensions \".js,.ts\" --out-dir dist --copy-files && swc prisma/seed.ts -o dist/seed.js",
+    "start": "node dist/src/server.js",
     "dev": "concurrently \"ts-node-dev --poll --exit-child -r tsconfig-paths/register --respawn --transpile-only --ignore-watch node_modules --no-notify src/server.ts\" \"prisma generate --watch\"",
     "crud": "plop --plopfile generators/crud-plop/plopfile.js",
-    "prod": "npm run migration:deploy && npm run start",
+    "prod": "pnpm run migration:deploy && pnpm run start",
     "migration": "cross-env DATABASE_HOST='localhost' prisma migrate dev",
     "migration:deploy": "prisma migrate deploy",
     "migration:reset": "cross-env DATABASE_HOST='localhost' prisma migrate reset --force",
