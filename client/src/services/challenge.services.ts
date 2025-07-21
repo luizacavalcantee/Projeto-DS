@@ -68,6 +68,7 @@ export type CreateChallengeData = Omit<
   checkpoint3Title: string;
 };
 
+// Este tipo permanece o mesmo para não afetar sua tela de edição
 export type UpdateChallengeData = Partial<
   Omit<CreateChallengeData, 'ongId' | 'managerId'>
 >;
@@ -132,6 +133,22 @@ export const updateChallenge = async (
     challengeData
   );
   return response.data.data;
+};
+
+export const assignManagerToChallenge = async (
+  challengeId: number,
+  managerId: number
+): Promise<ChallengeData> => {
+  try {
+    const response = await api.patch<{ data: ChallengeData }>(
+      `/challenges/${challengeId}`,
+      { managerId }
+    );
+    return response.data.data;
+  } catch (error) {
+    console.error(`Erro ao atribuir manager ao desafio ${challengeId}:`, error);
+    throw error;
+  }
 };
 
 export const deleteChallenge = async (id: number): Promise<void> => {

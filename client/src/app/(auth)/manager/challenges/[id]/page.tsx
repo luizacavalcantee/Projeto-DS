@@ -1,7 +1,12 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { getChallengeById, ChallengeData, getChallengeCategoryImage } from '@/services/challenge.services';
+import {
+  getChallengeById,
+  ChallengeData,
+  getChallengeCategoryImage,
+  assignManagerToChallenge,
+} from '@/services/challenge.services';
 
 import ChallengeHeader from '@/components/challenge-header';
 import ChallengeStats from '@/components/challenge-status';
@@ -11,7 +16,6 @@ import OngCard from '@/components/ong-card';
 import ImpactGallery from '@/components/impact-gallery';
 import { useAuth } from '@/hooks/useAuth';
 import { NewButton } from '@/components/ui/new-button';
-import Link from 'next/link';
 import CheckpointModal from '@/components/checkpoint-modal';
 
 interface PageProps {
@@ -22,13 +26,13 @@ export default function ChallengeDetailsManager({ params }: PageProps) {
   const [challenge, setChallenge] = useState<ChallengeData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isJoining, setIsJoining] = useState(false);
   const { user } = useAuth();
 
   const fetchChallengeDetails = async () => {
     if (!params.id) return;
     try {
-      // Não reseta o loading se já tivermos dados, para um refresh suave
-      if (!challenge) setLoading(true); 
+      if (!challenge) setLoading(true);
       const data = await getChallengeById(Number(params.id));
       if (data) {
         setChallenge(data);
@@ -42,10 +46,31 @@ export default function ChallengeDetailsManager({ params }: PageProps) {
       setLoading(false);
     }
   };
-  
+
   useEffect(() => {
     fetchChallengeDetails();
   }, [params.id]);
+
+  const handleParticipate = async () => {
+    if (!user?.id || !challenge?.id) {
+      setError('Usuário ou desafio não identificado. Por favor, faça login novamente.');
+      return;
+    }
+
+    setIsJoining(true);
+    setError(null);
+
+    try {
+      await assignManagerToChallenge(challenge.id, user.id);
+
+      await fetchChallengeDetails();
+    } catch (err) {
+      console.error('Erro ao participar do desafio:', err);
+      setError('Não foi possível se registrar no desafio. Tente novamente mais tarde.');
+    } finally {
+      setIsJoining(false);
+    }
+  };
 
   if (loading) return <div className="text-center p-12">A carregar...</div>;
   if (error) return <div className="text-center text-red-500 p-12">{error}</div>;
@@ -54,7 +79,6 @@ export default function ChallengeDetailsManager({ params }: PageProps) {
   const hasAnOwner = challenge.managerId != null;
   const isOwner = challenge.managerId === user?.id;
 
-  // ✅ Encontra o próximo checkpoint que ainda não foi concluído
   const nextCheckpointToUpdate = challenge.checkpoints?.find(
     (cp) => !cp.completionDate
   );
@@ -68,10 +92,15 @@ export default function ChallengeDetailsManager({ params }: PageProps) {
           <header>
             <div className="flex justify-between items-center">
               <h1 className="text-3xl font-bold">{challenge.title}</h1>
+
               {!hasAnOwner && (
-                <Link href={`/ong/challenges/${params.id}/edit`}>
-                  <NewButton size={'lg'}>Participar do desafio</NewButton>
-                </Link>
+                <NewButton
+                  size={'lg'}
+                  onClick={handleParticipate}
+                  disabled={isJoining}
+                >
+                  {isJoining ? 'Aguarde...' : 'Participar do desafio'}
+                </NewButton>
               )}
             </div>
             <ChallengeStats
@@ -98,13 +127,12 @@ export default function ChallengeDetailsManager({ params }: PageProps) {
           {challenge.checkpoints && (
             <div className="mt-10">
               <CheckpointTimeline checkpoints={challenge.checkpoints} />
-              
-              {/* ✅ Renderiza o modal apenas se o usuário for o dono E existir um checkpoint para atualizar */}
+
               {isOwner && nextCheckpointToUpdate && (
                 <div className="text-center">
                   <CheckpointModal
                     checkpoint={nextCheckpointToUpdate}
-                    onUpdateSuccess={fetchChallengeDetails} // Passa a função de recarregar
+                    onUpdateSuccess={fetchChallengeDetails}
                   />
                 </div>
               )}
