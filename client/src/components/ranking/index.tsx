@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { Second, Third, Trophy } from '@/assets';
-import PodiumPosition from '../podium-position';
+import PodiumPosition from '@/components/podium-position';
 import { getSchoolRanking, RankedSchool } from '@/services/ranking.services';
 
 export default function Ranking() {
@@ -14,7 +14,6 @@ export default function Ranking() {
     const fetchRanking = async () => {
       try {
         const rankingData = await getSchoolRanking();
-        // Pegamos apenas as 3 primeiras escolas para o pódio
         setTopSchools(rankingData.slice(0, 3));
       } catch (err) {
         setError("Não foi possível carregar o ranking.");
@@ -38,14 +37,12 @@ export default function Ranking() {
     return <div className="text-center p-10">Nenhuma escola no ranking ainda.</div>;
   }
 
-  // Mapeia as posições para os dados corretos
   const firstPlace = topSchools[0];
   const secondPlace = topSchools[1];
   const thirdPlace = topSchools[2];
 
   return (
     <div className="flex gap-10 items-end justify-center">
-      {/* 2º Lugar */}
       {secondPlace && (
         <PodiumPosition
           schoolName={secondPlace.schoolName}
@@ -56,7 +53,6 @@ export default function Ranking() {
         />
       )}
 
-      {/* 1º Lugar */}
       {firstPlace && (
         <PodiumPosition
           schoolName={firstPlace.schoolName}
@@ -67,7 +63,6 @@ export default function Ranking() {
         />
       )}
 
-      {/* 3º Lugar */}
       {thirdPlace && (
         <PodiumPosition
           schoolName={thirdPlace.schoolName}

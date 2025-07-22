@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { Facebook, Instagram, BoraImpactar } from '@/assets'; // Usando CoracaoQuentinho como fallback
+import { Facebook, Instagram, BoraImpactar } from '@/assets';
 import { OngData } from '@/services/ong.services';
 
 interface OngCardProps {
@@ -10,7 +10,6 @@ interface OngCardProps {
 }
 
 export default function OngCard({ ong }: OngCardProps) {
-  // Se não houver dados da ONG, não renderiza nada
   if (!ong) {
     return null;
   }

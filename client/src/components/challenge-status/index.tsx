@@ -12,7 +12,6 @@ export default function ChallengeStats({ idealAge, endDate, schoolName }: Challe
     day: '2-digit', month: '2-digit', year: 'numeric'
   });
   
-  // Mapeia os enums para texto legível
   const ageMap: Record<TeachingStage, string> = {
     [TeachingStage.EDUCACAO_INFANTIL]: "Educação Infantil",
     [TeachingStage.ENSINO_FUNDAMENTAL_I]: "Fundamental I",

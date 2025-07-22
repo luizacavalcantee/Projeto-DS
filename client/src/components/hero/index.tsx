@@ -5,7 +5,6 @@ import React from 'react';
 import { NewButton } from '@/components/ui/new-button';
 import { BoraImpactarWhite, Destaque, HeroBackgroung } from '@/assets';
 
-// As interfaces e o componente DualActionButtons não precisam mudar
 interface ActionButtonProps {
   text: string;
   href: string;
@@ -29,18 +28,15 @@ const DualActionButtons: React.FC<DualActionButtonsProps> = ({ left, right, clas
   </div>
 );
 
-// --- AJUSTE NOS NOMES DAS PROPS ---
 interface HeroProps {
   showButtons?: boolean;
-  leftButton?: string; // Antes: leftButtonHref
-  rightButton?: string; // Antes: rightButtonHref
+  leftButton?: string; 
+  rightButton?: string;
 }
 
-// Componente Hero com as props renomeadas
 export default function Hero({ showButtons = false, leftButton, rightButton }: HeroProps) {
   return (
     <section className="relative w-full text-white h-[calc(100vh-80px)]">
-      {/* O resto do JSX continua igual */}
       <div className='bg-[#373737]/55 h-full w-1/2 absolute blur-lg'></div>
       <Image
         src={HeroBackgroung}
@@ -79,17 +75,16 @@ export default function Hero({ showButtons = false, leftButton, rightButton }: H
           </span>
         </p>
 
-        {/* Lógica de renderização usando os novos nomes de props */}
         {showButtons && leftButton && rightButton ? (
           <DualActionButtons
             left={{
               text: 'Ver todos os desafios',
-              href: leftButton, // Usando a prop 'leftButton'
+              href: leftButton, 
               variant: 'default'
             }}
             right={{
               text: 'Ver meus desafios',
-              href: rightButton, // Usando a prop 'rightButton'
+              href: rightButton, 
               variant: 'white'
             }}
             className="mt-2"

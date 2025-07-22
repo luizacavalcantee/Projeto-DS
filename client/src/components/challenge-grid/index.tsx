@@ -8,7 +8,6 @@ interface ChallengeGridProps {
 }
 
 export default function ChallengeGrid({ challenges }: ChallengeGridProps) {
-  // Cálculo do progresso movido para cá
   const calculateProgress = (challenge: ChallengeData) => {
     const totalCheckpoints = challenge.checkpoints?.length || 0;
     if (totalCheckpoints === 0) return 0;

@@ -25,14 +25,12 @@ import { Loader2 } from 'lucide-react';
 import { CheckpointData } from '@/services/challenge.services';
 import { updateCheckpoint } from '@/services/checkpoint.services';
 
-// O mock de upload pode ser movido para um arquivo de 'utils' para ser reutilizado
 const mockUploadFile = async (file: File): Promise<string> => {
   console.log(`Simulando upload do arquivo: ${file.name}`);
   await new Promise((resolve) => setTimeout(resolve, 1000));
   return `https://fake-storage.com/uploads/photo-${file.name}`;
 };
 
-// Props que o modal vai receber
 interface CheckpointModalProps {
   checkpoint: CheckpointData;
   onUpdateSuccess: () => void;
@@ -63,14 +61,11 @@ export default function CheckpointModal({
     setError(null);
 
     try {
-      // 1. Fazer upload do arquivo
       const photoUrl = await mockUploadFile(data.photo[0]);
 
-      // 2. Chamar a API para atualizar o checkpoint
       await updateCheckpoint(checkpoint.id, {
         description: data.description,
         photoUrl: photoUrl,
-        // 👇 ADIÇÃO ESSENCIAL: Envia a data atual para marcar como concluído
         completionDate: new Date().toISOString()
       });
 

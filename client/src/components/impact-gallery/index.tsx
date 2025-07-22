@@ -8,7 +8,6 @@ interface ImpactGalleryProps {
 }
 
 export default function ImpactGallery({ checkpoints }: ImpactGalleryProps) {
-  // Filtra apenas os checkpoints que têm uma URL de foto
   const checkpointsWithPhotos = checkpoints?.filter(cp => cp.photoUrl);
 
   if (!checkpointsWithPhotos || checkpointsWithPhotos.length === 0) {
@@ -23,7 +22,7 @@ export default function ImpactGallery({ checkpoints }: ImpactGalleryProps) {
           <figure key={cp.id}>
             <div className="relative w-full h-64">
               <Image
-                src={cp.photoUrl!} // Usamos '!' pois já filtramos os nulos
+                src={cp.photoUrl!} 
                 alt={`Imagem do ${cp.title}`}
                 layout="fill"
                 objectFit="cover"

@@ -25,7 +25,6 @@ export default function Header() {
     );
   }
 
-  // 1. Valores padrão para quando o usuário não está logado
   let userName: string = 'Ver meu perfil';
   let userImage: string | any = UserProfile;
   let profileLink: string = '/login';

@@ -20,7 +20,6 @@ import {
   TeachingStage
 } from '@/services/schoolManager.services';
 
-// Schema de validação Zod que espelha as regras do backend
 const formSchema = z
   .object({
     fullName: z
@@ -53,10 +52,8 @@ const formSchema = z
     path: ['confirmPassword']
   });
 
-// Tipo do formulário inferido a partir do schema Zod
 type FormData = z.infer<typeof formSchema>;
 
-// Opções para os checkboxes de etapas de ensino
 const teachingStageOptions = [
   { id: TeachingStage.EDUCACAO_INFANTIL, label: 'Educação Infantil' },
   { id: TeachingStage.ENSINO_FUNDAMENTAL_I, label: 'Ensino Fundamental I' },
@@ -64,7 +61,6 @@ const teachingStageOptions = [
   { id: TeachingStage.ENSINO_MEDIO, label: 'Ensino Médio' }
 ];
 
-// Função para simular o upload de um arquivo
 const mockUploadFile = async (file: File): Promise<string> => {
   console.log(`Simulando upload do arquivo: ${file.name}`);
   await new Promise((resolve) => setTimeout(resolve, 1000));

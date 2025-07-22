@@ -3,7 +3,6 @@
 import { useEffect, useState } from 'react';
 import { getChallengeById, ChallengeData, getChallengeCategoryImage } from '@/services/challenge.services';
 
-// Importando os novos componentes
 import ChallengeHeader from '@/components/challenge-header';
 import ChallengeStats from '@/components/challenge-status';
 import CheckpointTimeline from '@/components/checkpoint-timeline';
@@ -11,7 +10,6 @@ import SupportMaterials from '@/components/suported-materials';
 import OngCard from '@/components/ong-card';
 import ImpactGallery from '@/components/impact-gallery';
 
-// Props que a página recebe, incluindo os parâmetros do URL
 interface PageProps {
   params: {
     id: string;
@@ -24,7 +22,6 @@ export default function ChallengeDetailsPage({ params }: PageProps) {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    // Função para buscar os dados do desafio específico
     const fetchChallengeDetails = async () => {
       if (!params.id) return;
       try {
@@ -44,7 +41,7 @@ export default function ChallengeDetailsPage({ params }: PageProps) {
     };
 
     fetchChallengeDetails();
-  }, [params.id]); // O efeito é re-executado se o ID mudar
+  }, [params.id]); 
 
   if (loading) {
     return (

@@ -6,7 +6,6 @@ import { ArrowLeft } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 
-// 1. Importe o serviço de login que criamos, em vez do 'signIn'
 import { login, UserType } from '@/services/auth.services';
 import { BoraImpactar } from '@/assets';
 import { NewButton } from '@/components/ui/new-button';
@@ -18,37 +17,32 @@ export default function Login() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   
-  // 2. Adicione um estado para controlar o tipo de usuário
   const [userType, setUserType] = useState<UserType>('ong');
 
   const handleReturn = () => {
     router.back();
   };
 
-  // 3. Atualize a função handleLogin para usar nosso serviço
   const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setError('');
     setLoading(true);
 
     try {
-      // Chama a nossa função de login com as credenciais e o userType
       const { loggedUser } = await login({
         email,
-        password_hash: password, // O serviço já renomeia para 'password' internamente
+        password_hash: password,
         userType,
       });
 
-      // Se o login for bem-sucedido, redireciona para uma página de dashboard
       alert(`Bem-vindo(a), ${'name' in loggedUser ? loggedUser.name : loggedUser.fullName}!`);
       if (userType === 'ong') {
-        router.push('/ong'); // Crie uma página de dashboard para ONGs
+        router.push('/ong'); 
       } else { 
-        router.push('/manager'); // Crie uma página de dashboard para Gestores Escolares
+        router.push('/manager');
       }
 
     } catch (err: any) {
-      // Captura o erro da API e exibe uma mensagem amigável
       const errorMessage = err.response?.data?.message || 'Falha no login. Verifique suas credenciais.';
       setError(errorMessage);
     } finally {
@@ -76,7 +70,6 @@ export default function Login() {
           </h1>
         </div>
         <form className="space-y-6" onSubmit={handleLogin}>
-          {/* 4. Adicione o seletor de tipo de usuário */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">Eu sou:</label>
             <div className="flex items-center space-x-4">

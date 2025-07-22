@@ -8,7 +8,7 @@ interface PodiumPositionProps {
   schoolImage: string | StaticImageData | null;
   podiumIcon: StaticImageData;
   podiumIconAlt: string;
-  barHeightClass: string; // ex: 'h-52'
+  barHeightClass: string;
 }
 
 export default function PodiumPosition({ schoolName, schoolImage, podiumIcon, podiumIconAlt, barHeightClass }: PodiumPositionProps) {

@@ -8,7 +8,6 @@ interface SupportMaterialsProps {
 }
 
 export default function SupportMaterials({ urls }: SupportMaterialsProps) {
-  // Se não houver URLs, não renderiza nada
   if (!urls || urls.length === 0) {
     return null;
   }
