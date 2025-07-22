@@ -44,7 +44,10 @@
     "lint:fix": "eslint ./src --ext .ts --fix",
     "push": "cross-env DATABASE_HOST='localhost' prisma db push",
     "typecheck": "tsc --noEmit --skipLibCheck",
-    "seed:prod": "node dist/seed.js"
+    "seed:prod": "node dist/seed.js",
+    "test": "jest",
+    "test:watch": "jest --watchAll",
+    "test:coverage": "jest --coverage"
   },
   "devDependencies": {
     "@google/generative-ai": "^0.21.0",
@@ -53,6 +56,7 @@
     "@types/cookie-parser": "^1.4.6",
     "@types/cors": "^2.8.17",
     "@types/express": "^4.17.21",
+    "@types/jest": "^30.0.0",
     "@types/jsonwebtoken": "^9.0.5",
     "@types/multer": "^1.4.11",
     "@types/node": "20.11.16",
@@ -70,7 +74,9 @@
     "eslint-plugin-import": "^2.29.1",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-security": "^2.1.0",
+    "jest": "^30.0.5",
     "prisma-dbml-generator": "^0.10.0",
+    "ts-jest": "^29.4.0",
     "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",
     "tsconfig-paths": "^4.2.0",

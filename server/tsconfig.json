@@ -14,7 +14,7 @@
       "./node_modules/@types",
       "./src/@types"
     ],
-    "types": ["node"],
+    "types": ["node", "jest"],
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "experimentalDecorators": true,
@@ -39,7 +39,8 @@
     }
   },
   "include": [
-    "src/**/*"
+    "src/**/*", 
+    "tests"
   ],
   "exclude": [
     "tests"
