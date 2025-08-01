@@ -24,7 +24,6 @@ interface ChallengeFiltersProps {
     setSelectedOng: (value: string) => void;
     setSelectedSchool: (value: string) => void;
   };
-  // Nova prop para esconder filtros. É um array opcional.
   hideFilters?: ('ong' | 'school')[];
 }
 
@@ -36,31 +35,32 @@ export default function ChallengeFilters({ filterOptions, filters, setFilters, h
   };
   return (
     <div className="flex flex-wrap items-center gap-4 mb-8">
-      <div className="flex items-center gap-2">
+      
+      <div className="flex items-center gap-2 flex-wrap">
         <div className="px-4 rounded-full text-primary text-sm flex items-center gap-2">
           <Image src={Filter} alt="Filtros" className="h-4 w-4" />
           Filtros:
         </div>
+
         
-        {/* Filtro Situação */}
         <Select value={filters.selectedStatus} onValueChange={setFilters.setSelectedStatus}>
-          <SelectTrigger className="w-48 h-8 bg-white rounded-full text-primary text-sm border-2 border-primary">
+          <SelectTrigger className="w-full sm:w-48 h-8 bg-white rounded-full text-primary text-sm border-2 border-primary">
             <SelectValue placeholder="Situação" />
           </SelectTrigger>
           <SelectContent className="bg-white">
             <SelectItem value="all">Todas as Situações</SelectItem>
             {filterOptions.statuses.map((status) => (
               <SelectItem key={status} value={status}>
-                {statusLabels[status]} 
+                {statusLabels[status]}
               </SelectItem>
             ))}
           </SelectContent>
         </Select>
 
-        {/* Renderização condicional do filtro de ONG */}
+        
         {!hideFilters.includes('ong') && (
           <Select value={filters.selectedOng} onValueChange={setFilters.setSelectedOng}>
-            <SelectTrigger className="w-48 h-8 bg-white rounded-full text-primary text-sm border-2 border-primary">
+            <SelectTrigger className="w-full sm:w-48 h-8 bg-white rounded-full text-primary text-sm border-2 border-primary">
               <SelectValue placeholder="ONG" />
             </SelectTrigger>
             <SelectContent className="bg-white">
@@ -72,10 +72,10 @@ export default function ChallengeFilters({ filterOptions, filters, setFilters, h
           </Select>
         )}
 
-        {/* Renderização condicional do filtro de Escola */}
+       
         {!hideFilters.includes('school') && (
           <Select value={filters.selectedSchool} onValueChange={setFilters.setSelectedSchool}>
-            <SelectTrigger className="w-48 h-8 bg-white rounded-full text-primary text-sm border-2 border-primary">
+            <SelectTrigger className="w-full sm:w-48 h-8 bg-white rounded-full text-primary text-sm border-2 border-primary">
               <SelectValue placeholder="Escola" />
             </SelectTrigger>
             <SelectContent className="bg-white">
@@ -88,6 +88,7 @@ export default function ChallengeFilters({ filterOptions, filters, setFilters, h
         )}
       </div>
 
+      
       <div className="w-full sm:w-1/3 ml-auto">
         <div className="relative">
           <Input
