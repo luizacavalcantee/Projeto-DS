@@ -75,30 +75,32 @@ export default function RankingTable({ actionType, customLimit }: TableProps) {
 
     return (
         <div className="w-full max-w-4xl mx-auto rounded-lg shadow-lg overflow-hidden">
-            <table className="table-auto w-full">
-                <thead>
-                    <tr className="bg-[#294BB6] w-full h-12">
-                        <th className="text-white font-semibold">Posição</th>
-                        <th className="text-white font-semibold">Escolas</th>
-                        <th className="text-white font-semibold">Desafios Concluídos</th>
-                    </tr>
-                </thead>
-                <tbody className="bg-white">
-                    {sortedData.slice(0, itemsToShow).map((item, index) => (
-                        <tr key={index} className="h-10">
-                            <td className="border-b border-gray-200 text-center font-semibold">
-                                {index + 1}
-                            </td>
-                            <td className="border-b border-gray-200 text-center">
-                                {item.escola}
-                            </td>
-                            <td className="border-b border-gray-200 text-center font-semibold">
-                                {item.desafios}
-                            </td>
+            <div className="overflow-x-auto">
+                <table className="table-auto w-full">
+                    <thead>
+                        <tr className="bg-[#294BB6] w-full h-12">
+                            <th className="text-white font-semibold">Posição</th>
+                            <th className="text-white font-semibold">Escolas</th>
+                            <th className="text-white font-semibold">Desafios Concluídos</th>
                         </tr>
-                    ))}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody className="bg-white">
+                        {sortedData.slice(0, itemsToShow).map((item, index) => (
+                            <tr key={index} className="h-10">
+                                <td className="border-b border-gray-200 text-center font-semibold">
+                                    {index + 1}
+                                </td>
+                                <td className="border-b border-gray-200 text-center">
+                                    {item.escola}
+                                </td>
+                                <td className="border-b border-gray-200 text-center font-semibold">
+                                    {item.desafios}
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
 
             {showActionButton && (
                 <div className="w-full bg-white h-10 flex items-center justify-center text-center rounded-b-xl">
