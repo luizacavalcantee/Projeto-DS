@@ -11,8 +11,9 @@ export default function ChallengeHeader({ title, imageUrl }: ChallengeHeaderProp
   return (
     <>
       <Title pageTitle="Detalhes do desafio" />
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="w-full h-64 relative rounded-xl overflow-hidden shadow-lg mt-10">
+      <div>
+        
+        <div className="w-full h-48 md:h-64 relative rounded-xl overflow-hidden shadow-lg mt-10">
           <Image src={imageUrl} alt={title} layout="fill" objectFit="cover" />
         </div>
       </div>
