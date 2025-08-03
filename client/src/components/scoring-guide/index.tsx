@@ -3,7 +3,7 @@ import Image from 'next/image';
 
 export default function ScoringGuide() {
   return (
-    <section className="flex flex-col my-16 items-center justify-center shadow-md rounded-md px-40 py-14 w-full bg-gradient-to-r from-[#32B9F3] via-[#009FE3] to-[#029FE2]">
+    <section className="flex flex-col my-16 items-center justify-center shadow-md rounded-md p-8 md:py-14 md:px-20 lg:px-40 w-full bg-gradient-to-r from-[#32B9F3] via-[#009FE3] to-[#029FE2]">
       <h2 className="text-4xl font-bold text-center text-white mb-5">
         Como Pontuar e Subir no Ranking?
       </h2>
@@ -16,7 +16,7 @@ export default function ScoringGuide() {
             height={82}
             className="mb-4"
           />
-          <h3 className="text-base font-bold text-white mb-2 whitespace-nowrap">
+          <h3 className="text-base font-bold text-white mb-2">
             Conclua Projetos de Impacto
           </h3>
           <p className="text-sm text-white font-light">
@@ -32,7 +32,7 @@ export default function ScoringGuide() {
             height={82}
             className="mb-4"
           />
-          <h3 className="text-base font-bold text-white mb-2 whitespace-nowrap">
+          <h3 className="text-base font-bold text-white mb-2">
             Engaje Alunos e Voluntários
           </h3>
           <p className="text-sm text-white font-light">
@@ -49,7 +49,7 @@ export default function ScoringGuide() {
             height={82}
             className="mb-4"
           />
-          <h3 className="text-base font-bold text-white mb-2 whitespace-nowrap">
+          <h3 className="text-base font-bold text-white mb-2">
             Participe de Desafios Especiais
           </h3>
           <p className="text-sm text-white font-light">
@@ -66,7 +66,7 @@ export default function ScoringGuide() {
             height={82}
             className="mb-4"
           />
-          <h3 className="text-base font-bold text-white mb-2 whitespace-nowrap">
+          <h3 className="text-base font-bold text-white mb-2">
             Divulgue seu Impacto
           </h3>
           <p className="text-sm text-white font-light">
