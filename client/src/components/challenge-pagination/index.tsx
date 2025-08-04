@@ -28,7 +28,7 @@ export default function ChallengePagination({
   return (
     <div className="mt-16 justify-center flex">
       <Pagination>
-        <PaginationContent className="gap-2">
+        <PaginationContent className="gap-2 flex-wrap">
           <PaginationItem>
             <PaginationPrevious
               href="#"
