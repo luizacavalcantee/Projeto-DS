@@ -33,7 +33,7 @@ export default function Header() {
   let navLinks = [
     { label: 'Início', href: '/' },
     { label: 'Desafios', href: '/challenges' },
-    { label: 'Ranking', href: '/ranking' },
+    { label: 'Ranking', href: '/ranking' }
   ];
 
   if (isAuthenticated && user) {
@@ -42,13 +42,16 @@ export default function Header() {
     navLinks = [
       { label: 'Início', href: '/' },
       { label: 'Desafios', href: `${routePrefix}/challenges` },
-      { label: 'Ranking', href: `${routePrefix}/ranking` },
+      { label: 'Ranking', href: `${routePrefix}/ranking` }
     ];
 
     if (user.type === 'ong') {
       userName = user.name;
       userImage = user.logoPhotoUrl;
-      navLinks.push({ label: 'Criar Desafio', href: '/ong/my-challenges/create-challenge' });
+      navLinks.push({
+        label: 'Criar Desafio',
+        href: '/ong/my-challenges/create-challenge'
+      });
     } else {
       userName = user.fullName;
       userImage = user.schoolImageUrl;
@@ -62,7 +65,7 @@ export default function Header() {
 
   return (
     <>
-      <header className="fixed z-50 w-full flex items-center bg-primary py-4 px-10 text-white drop-shadow-lg">
+      <header className="fixed z-50 w-full flex items-center bg-primary py-4 px-4 md:px-12 lg:px-16 text-white drop-shadow-lg">
         <div className="mr-auto">
           <Link href="/">
             <Image src={Logo} alt="Logo" className="h-12 w-auto" />
@@ -95,7 +98,11 @@ export default function Header() {
           {isAuthenticated ? (
             <div className="flex items-center gap-4">
               <Link href={profileLink}>
-                <NewButton size={'sm'} variant={'transparent'} className="flex items-center">
+                <NewButton
+                  size={'sm'}
+                  variant={'transparent'}
+                  className="flex items-center"
+                >
                   <Image
                     src={userImage || UserProfile}
                     alt={userName || 'Perfil'}
@@ -137,7 +144,11 @@ export default function Header() {
             {isAuthenticated ? (
               <>
                 <Link href={profileLink} onClick={() => setIsMenuOpen(false)}>
-                  <NewButton size="lg" variant="transparent" className="flex items-center">
+                  <NewButton
+                    size="lg"
+                    variant="transparent"
+                    className="flex items-center"
+                  >
                     <Image
                       src={userImage || UserProfile}
                       alt={userName || 'Perfil'}
@@ -170,7 +181,7 @@ export default function Header() {
               </NewButton>
             )}
           </div>
-    
+
           <button
             className="absolute top-4 right-4 text-2xl font-bold"
             onClick={() => setIsMenuOpen(false)}
