@@ -74,17 +74,18 @@ export default function RankingTable({ actionType, customLimit }: TableProps) {
     }
 
     return (
-        <div className="w-full max-w-4xl mx-auto rounded-lg shadow-lg overflow-hidden">
+        <div className='w-full flex items-center justify-center px-4 md:px-12 lg:px-16'>
+        <div className="w-full lg:max-w-5xl rounded-lg shadow-lg overflow-hidden">
             <div className="overflow-x-auto">
                 <table className="table-auto w-full">
-                    <thead>
+                    <thead className='text-base md:text-lg uppercase'>
                         <tr className="bg-[#294BB6] w-full h-12">
                             <th className="text-white font-semibold">Posição</th>
                             <th className="text-white font-semibold">Escolas</th>
                             <th className="text-white font-semibold">Desafios Concluídos</th>
                         </tr>
                     </thead>
-                    <tbody className="bg-white">
+                    <tbody className="bg-white text-sm md:text-base">
                         {sortedData.slice(0, itemsToShow).map((item, index) => (
                             <tr key={index} className="h-10">
                                 <td className="border-b border-gray-200 text-center font-semibold">
@@ -121,6 +122,7 @@ export default function RankingTable({ actionType, customLimit }: TableProps) {
                     )}
                 </div>
             )}
+        </div>
         </div>
     );
 }

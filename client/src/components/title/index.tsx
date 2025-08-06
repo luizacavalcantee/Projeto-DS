@@ -19,7 +19,7 @@ export default function Title({ pageTitle }: TitleProps) {
 
   return (
     
-    <div className="w-full flex items-center justify-between pt-12 md:pt-20 bg-transparent">
+    <div className="w-full flex items-center justify-between pt-12 md:pt-20 bg-transparent px-4 md:px-12 lg:px-16">
       
       <div className="flex items-center gap-2 md:gap-4">
         <button onClick={handleBack} className="flex items-center">
