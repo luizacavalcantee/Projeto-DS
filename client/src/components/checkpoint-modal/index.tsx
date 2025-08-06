@@ -86,18 +86,18 @@ export default function CheckpointModal({
           Adicionar checkpoint
         </NewButton>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-md px-10 py-10">
+      <DialogContent className="max-w-[90%] sm:max-w-md px-4 sm:px-10 py-6 sm:py-10 rounded-lg">
         <DialogHeader>
-          <DialogTitle className="mb-2 text-center text-xl">
+          <DialogTitle className="mb-2 text-center text-lg sm:text-xl">
             {`Como está o "${checkpoint.title}"?`}
           </DialogTitle>
-          <DialogDescription className="text-center text-balance">
+          <DialogDescription className="text-center text-sm sm:text-base text-balance">
             Registre a conclusão com uma foto e uma breve descrição de como foi.
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="grid gap-4 mt-8">
-            <div className="grid gap-3">
+          <div className="grid gap-4 mt-6 sm:mt-8">
+            <div className="grid gap-2 sm:gap-3">
               <Label htmlFor="description">Descrição do checkpoint</Label>
               <Textarea
                 id="description"
@@ -106,7 +106,7 @@ export default function CheckpointModal({
                 {...register('description', { required: true })}
               />
             </div>
-            <div className="grid gap-3">
+            <div className="grid gap-2 sm:gap-3">
               <Label htmlFor="file-upload">Faça upload de uma foto</Label>
               <div className="relative">
                 <Input
@@ -139,13 +139,16 @@ export default function CheckpointModal({
           {error && (
             <p className="text-sm text-red-500 text-center mt-4">{error}</p>
           )}
-          <DialogFooter className="mt-8">
-            <DialogClose asChild>
-              <NewButton type="button" size={'fit'}>Cancelar</NewButton>
+          <DialogFooter className="flex flex-col xs:flex-row justify-center items-center gap-3 sm:gap-4 mt-6 sm:mt-8">
+            <DialogClose asChild className="w-full xs:w-auto">
+              <NewButton variant="white" type="button" size={'fit'} className="border-2 border-[#294BB6] w-full xs:w-auto">Cancelar</NewButton>
             </DialogClose>
-            <NewButton type="submit" size={'fit'} disabled={isSubmitting}>
+            <NewButton type="submit" size={'fit'} disabled={isSubmitting} className="bg-[#294BB6] hover:bg-[#3E5ED1] text-white w-full xs:w-auto">
               {isSubmitting ? (
-                <Loader2 className="h-4 w-4 animate-spin" />
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Salvando...
+                </>
               ) : (
                 'Salvar Checkpoint'
               )}
