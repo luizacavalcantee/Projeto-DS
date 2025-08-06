@@ -31,7 +31,7 @@ export function DeleteModal({ onConfirm, isDeleting }: DeleteModalProps) {
           Excluir desafio
         </NewButton>
       </AlertDialogTrigger>
-      <AlertDialogContent className="max-w-[90%] sm:max-w-sm text-center p-4 sm:p-10">
+      <AlertDialogContent className="max-w-[90%] sm:max-w-sm text-center p-4 sm:p-10 rounded-lg">
         <AlertDialogTitle className="text-lg sm:text-xl font-bold text-black">
           Excluir Desafio
         </AlertDialogTitle>

@@ -86,7 +86,7 @@ export default function CheckpointModal({
           Adicionar checkpoint
         </NewButton>
       </DialogTrigger>
-      <DialogContent className="max-w-[90%] sm:max-w-md px-4 sm:px-10 py-6 sm:py-10">
+      <DialogContent className="max-w-[90%] sm:max-w-md px-4 sm:px-10 py-6 sm:py-10 rounded-lg">
         <DialogHeader>
           <DialogTitle className="mb-2 text-center text-lg sm:text-xl">
             {`Como está o "${checkpoint.title}"?`}
