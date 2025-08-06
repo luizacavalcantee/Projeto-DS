@@ -70,7 +70,7 @@ export default function ChallengeDetailsOng({ params }: PageProps) {
     <main className="pb-16">
       <ChallengeHeader title={challenge.title} imageUrl={getChallengeCategoryImage(challenge.category)} />
 
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto px-4 md:px-12 lg:px-16">
         <article className="mt-8 text-textBlack">
           <header>
             <div className='flex justify-between items-center'>

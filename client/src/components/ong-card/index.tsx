@@ -27,7 +27,7 @@ export default function OngCard({ ong }: OngCardProps) {
             className="rounded-md object-contain w-full h-full"
           />
         </div>
-        <div>
+        <div className='w-full'>
           <h3 className="text-xl font-bold">{ong.name}</h3>
           <p className="mt-2 text-justify">{ong.description}</p>
           <div className='flex flex-col sm:flex-row justify-between sm:items-end mt-4'>
