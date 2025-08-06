@@ -43,7 +43,7 @@ export default function OngChallengesPage() {
     <main className="min-h-screen flex flex-col">
       <div className="flex-grow">
         <Title pageTitle="Todos os desafios" />
-        <div className="container mx-auto px-8 py-8">
+        <div className="px-4 md:px-12 lg:px-16 py-8">
           <div className="mb-8">
             <h2 className="text-2xl font-bold mb-4">
               Acompanhe como estão os desafios em andamento

@@ -7,13 +7,14 @@ import { useRouter } from 'next/navigation';
 import { Logo, UserProfile } from '@/assets';
 import { NewButton } from '@/components/ui/new-button';
 import { useAuth } from '@/hooks/useAuth';
-import { Menu } from 'lucide-react';
+import { Menu, X } from 'lucide-react'; // Ícone X adicionado
 
 export default function Header() {
   const { user, isAuthenticated, loading, logout } = useAuth();
   const router = useRouter();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+  // O bloco de carregamento permanece o mesmo
   if (loading) {
     return (
       <header className="fixed z-50 w-full flex items-center bg-primary py-4 px-10 text-white drop-shadow-lg">
@@ -27,6 +28,7 @@ export default function Header() {
     );
   }
 
+  // A lógica para definir as variáveis permanece a mesma
   let userName: string = 'Ver meu perfil';
   let userImage: string | any = UserProfile;
   let profileLink: string = '/login';
@@ -63,134 +65,82 @@ export default function Header() {
   const handleLogin = () => router.push('/login');
   const handleLogout = () => logout();
 
+  const handleLinkClick = (action?: () => void) => {
+    if (action) {
+      action();
+    }
+    setIsMenuOpen(false);
+  };
+
   return (
-    <>
-      <header className="fixed z-50 w-full flex items-center bg-primary py-4 px-4 md:px-12 lg:px-16 text-white drop-shadow-lg">
-        <div className="mr-auto">
-          <Link href="/">
-            <Image src={Logo} alt="Logo" className="h-12 w-auto" />
-          </Link>
-        </div>
+    <header className="fixed z-50 w-full flex items-center bg-primary gap-8 py-4 px-4 md:px-12 lg:px-16 text-white drop-shadow-lg">
+      <div className="mr-auto">
+        <Link href="/">
+          <Image src={Logo} alt="Logo" className="h-12 w-auto" />
+        </Link>
+      </div>
 
-        <button
-          className="md:hidden ml-auto p-2"
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
-          aria-label="Abrir menu"
-        >
-          <Menu size={32} />
-        </button>
-
-        <nav className="hidden md:flex">
-          <ul className="flex items-center space-x-2">
-            {navLinks.map((link) => (
-              <li key={link.href}>
-                <Link href={link.href}>
-                  <NewButton variant={'transparent'} size={'sm'}>
-                    {link.label}
-                  </NewButton>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </nav>
-
-        <div className="hidden md:flex items-center">
-          {isAuthenticated ? (
-            <div className="flex items-center gap-4">
-              <Link href={profileLink}>
-                <NewButton
-                  size={'sm'}
-                  variant={'transparent'}
-                  className="flex items-center"
-                >
-                  <Image
-                    src={userImage || UserProfile}
-                    alt={userName || 'Perfil'}
-                    className="h-10 w-10 mr-3 rounded-full object-cover"
-                    width={40}
-                    height={40}
-                  />
-                  {userName}
+      {/* Navegação para telas maiores */}
+      <nav className="hidden lg:flex">
+        <ul className="flex items-center space-x-2">
+          {navLinks.map((link) => (
+            <li key={link.href}>
+              <Link href={link.href}>
+                <NewButton variant={'transparent'} size={'sm'}>
+                  {link.label}
                 </NewButton>
               </Link>
-              <NewButton onClick={handleLogout} size={'sm'} className="min-w-0">
-                Sair
-              </NewButton>
-            </div>
-          ) : (
-            <NewButton onClick={handleLogin} size={'sm'} className="ml-7">
-              Entrar
-            </NewButton>
-          )}
-        </div>
-      </header>
+            </li>
+          ))}
+        </ul>
+      </nav>
 
-      {isMenuOpen && (
-        <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-primary text-white gap-8 md:hidden">
-          <nav>
-            <ul className="flex flex-col items-center gap-6">
-              {navLinks.map((link) => (
-                <li key={link.href}>
-                  <Link href={link.href} onClick={() => setIsMenuOpen(false)}>
-                    <NewButton variant="transparent" size="lg">
-                      {link.label}
-                    </NewButton>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </nav>
-          <div className="flex flex-col items-center gap-4">
-            {isAuthenticated ? (
-              <>
-                <Link href={profileLink} onClick={() => setIsMenuOpen(false)}>
-                  <NewButton
-                    size="lg"
-                    variant="transparent"
-                    className="flex items-center"
-                  >
-                    <Image
-                      src={userImage || UserProfile}
-                      alt={userName || 'Perfil'}
-                      className="h-10 w-10 mr-3 rounded-full object-cover"
-                      width={40}
-                      height={40}
-                    />
-                    {userName}
-                  </NewButton>
-                </Link>
-                <NewButton
-                  onClick={() => {
-                    setIsMenuOpen(false);
-                    handleLogout();
-                  }}
-                  size="lg"
-                >
-                  Sair
-                </NewButton>
-              </>
-            ) : (
+      {/* Seção do usuário para telas médias e maiores */}
+      <div className="items-center hidden md:flex">
+        {isAuthenticated ? (
+          <div className="flex items-center gap-8">
+            <Link href={profileLink}>
               <NewButton
-                onClick={() => {
-                  setIsMenuOpen(false);
-                  handleLogin();
-                }}
-                size="lg"
+                size={'sm'}
+                variant={'transparent'}
+                className="flex items-center p-0"
               >
-                Entrar
+                <Image
+                  src={userImage || UserProfile}
+                  alt={userName || 'Perfil'}
+                  className="h-10 w-10 mr-3 rounded-full object-cover"
+                  width={40}
+                  height={40}
+                />
+                {userName}
               </NewButton>
-            )}
+            </Link>
+            <NewButton onClick={handleLogout} size={'sm'} className="min-w-24">
+              Sair
+            </NewButton>
           </div>
+        ) : (
+          <NewButton onClick={handleLogin} size={'sm'} className="ml-7">
+            Entrar
+          </NewButton>
+        )}
+      </div>
 
-          <button
-            className="absolute top-4 right-4 text-2xl font-bold"
-            onClick={() => setIsMenuOpen(false)}
-            aria-label="Fechar menu"
-          >
-            ×
-          </button>
+      {/* Botão Hamburger para abrir o menu em telas menores */}
+      <button
+        className="lg:hidden ml-auto md:ml-0 p-2"
+        onClick={() => setIsMenuOpen(!isMenuOpen)}
+        aria-label="Abrir menu"
+      >
+        <Menu size={32} />
+      </button>
+
+      {/* --- Início do Componente de Menu Móvel --- */}
+      {isMenuOpen && (
+        <div>
         </div>
       )}
-    </>
+      {/* --- Fim do Componente de Menu Móvel --- */}
+    </header>
   );
 }
