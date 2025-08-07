@@ -103,7 +103,11 @@ export default function Header() {
           {isAuthenticated ? (
             <div className="flex items-center gap-8">
               <Link href={profileLink}>
-                <NewButton size={'sm'} variant={'transparent'} className="flex items-center p-0">
+                <NewButton
+                  size={'sm'}
+                  variant={'transparent'}
+                  className="flex items-center p-0"
+                >
                   <Image
                     src={userImage || UserProfile}
                     alt={userName || 'Perfil'}
@@ -114,7 +118,11 @@ export default function Header() {
                   {userName}
                 </NewButton>
               </Link>
-              <NewButton onClick={handleLogout} size={'sm'} className="min-w-24">
+              <NewButton
+                onClick={handleLogout}
+                size={'sm'}
+                className="min-w-24"
+              >
                 Sair
               </NewButton>
             </div>
@@ -125,7 +133,11 @@ export default function Header() {
           )}
         </div>
 
-        <button className="lg:hidden ml-auto md:ml-0 p-2" onClick={() => setIsMenuOpen(true)} aria-label="Abrir menu">
+        <button
+          className="lg:hidden ml-auto md:ml-0 p-2"
+          onClick={() => setIsMenuOpen(true)}
+          aria-label="Abrir menu"
+        >
           <Menu size={32} />
         </button>
       </header>
@@ -139,10 +151,8 @@ export default function Header() {
 
       <div
         className={`
-          fixed top-0 right-0 h-full w-4/5 max-w-sm bg-primary text-white z-50
-          transform transition-transform ease-in-out duration-300
-          flex flex-col
-          lg:hidden
+          fixed top-0 right-0 h-full bg-primary text-white z-50 transform transition-transform ease-in-out duration-300 flex flex-col lg:hidden w-full md:w-4/5 md:max-w-sm
+
           ${isMenuOpen ? 'translate-x-0' : 'translate-x-full'}
         `}
       >
@@ -185,11 +195,19 @@ export default function Header() {
           </div>
           <div className="w-full flex flex-col items-center space-y-4 mt-6">
             {isAuthenticated ? (
-              <NewButton onClick={() => handleLinkClick(handleLogout)} size={'lg'} className="w-full max-w-xs">
+              <NewButton
+                onClick={() => handleLinkClick(handleLogout)}
+                size={'lg'}
+                className="w-full max-w-xs"
+              >
                 Sair
               </NewButton>
             ) : (
-              <NewButton onClick={() => handleLinkClick(handleLogin)} size={'lg'} className="w-full max-w-xs">
+              <NewButton
+                onClick={() => handleLinkClick(handleLogin)}
+                size={'lg'}
+                className="w-full max-w-xs"
+              >
                 Entrar
               </NewButton>
             )}
