@@ -19,7 +19,7 @@ export default function ChallengeGrid({ challenges }: ChallengeGridProps) {
     <div>
       <hr className="my-8 border-gray-300" />
       {challenges.length > 0 ? (
-        <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
           {challenges.map((challenge) => (
             <ChallengeCard
               key={challenge.id}

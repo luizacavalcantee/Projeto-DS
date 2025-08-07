@@ -37,8 +37,8 @@ export default function ChallengeCard({
 
   return (
     <Link href={detailUrl} className="block hover:scale-[1.02] transition-transform duration-200 ease-in-out h-full">
-      <div className="flex bg-white rounded-md overflow-hidden drop-shadow-md max-w-[600px] cursor-pointer h-full">
-        <div className="w-2/5 relative"> 
+      <div className="flex flex-col md:flex-row bg-white rounded-md overflow-hidden drop-shadow-md max-w-[600px] cursor-pointer h-full">
+        <div className="w-full h-48 md:w-2/5 md:h-auto relative"> 
           <Image
             src={imageSrc}
             alt={imageAlt}
@@ -47,9 +47,9 @@ export default function ChallengeCard({
           />
         </div>
 
-        <div className="flex flex-col gap-6 px-6 py-3 w-3/5">
+        <div className="flex flex-col gap-6 px-6 py-3 w-full md:w-3/5">
           <div>
-            <h2 className="text-base font-medium text-gray-900 mt-4 leading-snug">
+            <h2 className="text-base font-medium text-gray-900 mt-0 md:mt-4 leading-snug">
               {title}
             </h2>
             <p className="text-sm text-gray-700 mt-2 leading-tight line-clamp-2">

@@ -87,7 +87,7 @@ export function ChallengesCarousel({ filter }: ChallengesCarouselProps) {
   }
 
   return (
-    <div className="flex justify-center items-center">
+    <div className="flex justify-center items-center px-4 md:px-0">
       <Carousel
         opts={{
           align: 'start'
@@ -101,7 +101,7 @@ export function ChallengesCarousel({ filter }: ChallengesCarouselProps) {
             const progress = totalCheckpoints > 0 ? (completedCheckpoints / totalCheckpoints) * 100 : 0;
 
             return (
-              <CarouselItem key={challenge.id} className="basis-1/2">
+              <CarouselItem key={challenge.id} className="basis-full md:basis-1/2">
                 <div className="p-1 h-full">
                   <ChallengeCard
                     imageSrc={getChallengeCategoryImage(challenge.category)}
@@ -116,8 +116,8 @@ export function ChallengesCarousel({ filter }: ChallengesCarouselProps) {
             )
           })}
         </CarouselContent>
-        <CarouselPrevious />
-        <CarouselNext />
+        <CarouselPrevious className="left-2 md:-left-12 h-10 w-10 md:h-8 md:w-8 bg-white/80 hover:bg-white shadow-md z-10" />
+        <CarouselNext className="right-2 md:-right-12 h-10 w-10 md:h-8 md:w-8 bg-white/80 hover:bg-white shadow-md z-10" />
       </Carousel>
     </div>
   );
