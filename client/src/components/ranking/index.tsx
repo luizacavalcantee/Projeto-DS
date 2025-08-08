@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Second, Third, Trophy } from '@/assets';
+import { School, Second, Third, Trophy } from '@/assets';
 import PodiumPosition from '@/components/podium-position';
 import { getSchoolRanking, RankedSchool } from '@/services/ranking.services';
 
@@ -46,7 +46,7 @@ export default function Ranking() {
       {secondPlace && (
         <PodiumPosition
           schoolName={secondPlace.schoolName}
-          schoolImage={secondPlace.schoolImageUrl}
+          schoolImage={secondPlace.schoolImageUrl ?? School}
           podiumIcon={Second}
           podiumIconAlt="2º Lugar"
           barHeightClass="h-32 md:h-52"
@@ -56,7 +56,7 @@ export default function Ranking() {
       {firstPlace && (
         <PodiumPosition
           schoolName={firstPlace.schoolName}
-          schoolImage={firstPlace.schoolImageUrl}
+          schoolImage={firstPlace.schoolImageUrl ?? School}
           podiumIcon={Trophy}
           podiumIconAlt="1º Lugar"
           barHeightClass="h-40 md:h-60"
@@ -66,7 +66,7 @@ export default function Ranking() {
       {thirdPlace && (
         <PodiumPosition
           schoolName={thirdPlace.schoolName}
-          schoolImage={thirdPlace.schoolImageUrl}
+          schoolImage={thirdPlace.schoolImageUrl ?? School}
           podiumIcon={Third}
           podiumIconAlt="3º Lugar"
           barHeightClass="h-28 md:h-[11.25rem]"

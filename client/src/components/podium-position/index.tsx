@@ -1,5 +1,6 @@
 'use client';
 
+import { School } from '@/assets';
 import { StaticImport } from 'next/dist/shared/lib/get-img-props';
 import Image, { StaticImageData } from 'next/image';
 
@@ -15,13 +16,13 @@ export default function PodiumPosition({ schoolName, schoolImage, podiumIcon, po
   return (
     <div className="flex flex-col items-center gap-3 md:gap-6">
       <div className="relative w-20 md:w-32">
-        <Image
-          src={schoolImage}
-          alt={schoolName}
-          width={128}
-          height={128}
-          className="w-20 h-20 md:w-32 md:h-32 rounded-full drop-shadow-lg border border-lightBlueRanking/20 object-cover"
-        />
+          <Image
+            src={schoolImage ?? School}
+            alt={schoolName}
+            width={128}
+            height={128}
+            className="w-20 h-20 md:w-32 md:h-32 rounded-full drop-shadow-lg border border-lightBlueRanking/20 object-cover"
+          />
         <h1 className="absolute bottom-0 w-full bg-darkBlueRanking text-white p-1 text-xs font-semibold rounded text-center truncate md:whitespace-normal transform translate-y-1/3">
           {schoolName}
         </h1>

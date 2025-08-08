@@ -110,7 +110,15 @@ export default function SchoolManagerProfile() {
     setError(null);
 
     try {
-      let photoUrl: string | undefined = (user as SchoolManagerData).schoolImageUrl || undefined;
+      const existingImageSource = (user as SchoolManagerData).schoolImageUrl;
+      let photoUrl: string | undefined;
+
+      if (typeof existingImageSource === 'string') {
+        photoUrl = existingImageSource;
+      } else if (existingImageSource && typeof existingImageSource === 'object' && 'src' in existingImageSource) {
+        photoUrl = existingImageSource.src;
+      }
+
       if (data.image && data.image.length > 0) {
         photoUrl = await mockUploadFile(data.image[0]);
       }
