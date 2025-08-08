@@ -36,7 +36,7 @@ interface HeroProps {
 
 export default function Hero({ showButtons = false, leftButton, rightButton }: HeroProps) {
   return (
-    <section className="relative w-full text-white h-[calc(100vh-80px)] bg-primary md:bg-transparent">
+    <section className="relative w-full text-white h-[calc(80vh-80px)] md:h-[calc(100vh-80px)] bg-primary md:bg-transparent">
       <div className='md:bg-[#373737]/55 bg-transparent h-full w-full md:w-2/3 lg:w-1/2 absolute blur-lg'></div>
       <Image
         src={HeroBackgroung}
