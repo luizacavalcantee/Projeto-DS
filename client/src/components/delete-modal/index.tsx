@@ -18,7 +18,7 @@ interface DeleteModalProps {
   isDeleting: boolean;
 }
 
-export function DeleteModal({ onConfirm, isDeleting }: DeleteModalProps) {
+export default function DeleteModal({ onConfirm, isDeleting }: DeleteModalProps) {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>

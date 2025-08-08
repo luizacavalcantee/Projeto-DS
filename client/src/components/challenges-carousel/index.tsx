@@ -18,7 +18,7 @@ type ChallengesCarouselProps = {
   }
 }
 
-export function ChallengesCarousel({ filter }: ChallengesCarouselProps) {
+export default function ChallengesCarousel({ filter }: ChallengesCarouselProps) {
   const [allChallenges, setAllChallenges] = useState<ChallengeData[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
