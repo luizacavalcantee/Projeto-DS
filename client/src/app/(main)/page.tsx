@@ -13,7 +13,7 @@ export default function HomePage() {
   return (
     <main className="min-h-screen">
       <Hero />
-        <ImpactSection />
+      <ImpactSection />
       <section className="py-20">
         <div className="mx-auto">
           <div className="flex flex-col items-center justify-center mb-14">

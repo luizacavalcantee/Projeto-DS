@@ -18,7 +18,7 @@ interface DualActionButtonsProps {
 }
 
 const DualActionButtons: React.FC<DualActionButtonsProps> = ({ left, right, className }) => (
-  <div className={`flex gap-4 ${className || ''}`}>
+  <div className={`flex flex-col md:flex-row gap-4 ${className || ''}`}>
     <Link href={left.href}>
       <NewButton className="w-fit px-10 py-3" variant={left.variant || 'default'}>{left.text}</NewButton>
     </Link>
