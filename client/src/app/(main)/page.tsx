@@ -13,9 +13,7 @@ export default function HomePage() {
   return (
     <main className="min-h-screen">
       <Hero />
-      <div className="mt-24">
         <ImpactSection />
-      </div>
       <section className="py-20">
         <div className="mx-auto">
           <div className="flex flex-col items-center justify-center mb-14">
@@ -60,7 +58,7 @@ export default function HomePage() {
               Recife.
             </p>
           </div>
-          <div className="flex gap-32 items-center justify-center mx-16 mb-20">
+          <div className="flex flex-col lg:flex-row gap-16 lg:gap-24 items-center justify-center mb-10">
             <Ranking />
             <RankingTable actionType="viewFullRanking" />
           </div>

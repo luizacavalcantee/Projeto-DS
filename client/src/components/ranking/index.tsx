@@ -42,14 +42,14 @@ export default function Ranking() {
   const thirdPlace = topSchools[2];
 
   return (
-    <div className="flex gap-10 items-end justify-center">
+    <div className="flex gap-4 md:gap-10 items-end justify-center">
       {secondPlace && (
         <PodiumPosition
           schoolName={secondPlace.schoolName}
           schoolImage={secondPlace.schoolImageUrl}
           podiumIcon={Second}
           podiumIconAlt="2º Lugar"
-          barHeightClass="h-52"
+          barHeightClass="h-32 md:h-52"
         />
       )}
 
@@ -59,7 +59,7 @@ export default function Ranking() {
           schoolImage={firstPlace.schoolImageUrl}
           podiumIcon={Trophy}
           podiumIconAlt="1º Lugar"
-          barHeightClass="h-60"
+          barHeightClass="h-40 md:h-60"
         />
       )}
 
@@ -69,7 +69,7 @@ export default function Ranking() {
           schoolImage={thirdPlace.schoolImageUrl}
           podiumIcon={Third}
           podiumIconAlt="3º Lugar"
-          barHeightClass="h-[11.25rem]"
+          barHeightClass="h-28 md:h-[11.25rem]"
         />
       )}
     </div>

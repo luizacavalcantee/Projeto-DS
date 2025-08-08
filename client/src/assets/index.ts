@@ -34,6 +34,7 @@ import Inclusao from './inclusao.jpg';
 import Saude from './saude.jpg';
 import Tecnologia from './tecnologia.jpg';
 import ImagemPadrao from './imagem-padrao.png';
+import BoraImpactarDark from './bora-impactar-dark.svg';
 
 export {
   Logo,
@@ -71,5 +72,6 @@ export {
   Inclusao,
   Saude,
   Tecnologia,
-  ImagemPadrao
+  ImagemPadrao,
+  BoraImpactarDark
 };

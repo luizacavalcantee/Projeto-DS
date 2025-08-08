@@ -1,9 +1,10 @@
+import { StaticImport } from 'next/dist/shared/lib/get-img-props';
 import api from './api';
 
 export interface RankedSchool {
   id: number;
   schoolName: string;
-  schoolImageUrl: string | null;
+  schoolImageUrl?: string | StaticImport | null;
   completedChallengesCount: number;
 }
 

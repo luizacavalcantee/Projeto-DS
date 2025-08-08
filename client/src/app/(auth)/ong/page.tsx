@@ -20,9 +20,7 @@ export default function HomePage() {
       {/* Hero Section */}
       <Hero showButtons leftButton={'/ong/challenges'} rightButton={'/ong/my-challenges'}/>
       {/* Impact Section */}
-      <div className="mt-24">
         <ImpactSection />
-      </div>
       {/* Challenges Section */}
       <section className="py-20">
         <div className="mx-auto">
@@ -74,7 +72,7 @@ export default function HomePage() {
               Recife.
             </p>
           </div>
-          <div className="flex gap-32 items-center justify-center mx-16 mb-20">
+          <div className="flex flex-col lg:flex-row gap-16 lg:gap-32 items-center justify-center mb-10">
             <Ranking />
             <RankingTable actionType="viewFullRanking" />
           </div>

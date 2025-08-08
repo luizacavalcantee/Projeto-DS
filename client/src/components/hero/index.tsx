@@ -3,7 +3,7 @@ import Image from 'next/image';
 import React from 'react';
 
 import { NewButton } from '@/components/ui/new-button';
-import { BoraImpactarWhite, Destaque, HeroBackgroung } from '@/assets';
+import { BoraImpactarDark, BoraImpactarWhite, Destaque, HeroBackgroung } from '@/assets';
 
 interface ActionButtonProps {
   text: string;
@@ -36,8 +36,8 @@ interface HeroProps {
 
 export default function Hero({ showButtons = false, leftButton, rightButton }: HeroProps) {
   return (
-    <section className="relative w-full text-white h-[calc(100vh-80px)]">
-      <div className='bg-[#373737]/55 h-full w-1/2 absolute blur-lg'></div>
+    <section className="relative w-full text-white h-[calc(100vh-80px)] bg-primary md:bg-transparent">
+      <div className='md:bg-[#373737]/55 bg-transparent h-full w-full md:w-2/3 lg:w-1/2 absolute blur-lg'></div>
       <Image
         src={HeroBackgroung}
         alt="Background image of children"
@@ -45,15 +45,20 @@ export default function Hero({ showButtons = false, leftButton, rightButton }: H
         className="object-cover object-top -z-10"
         priority
       />
-      <div className="relative z-10 w-1/2 h-full flex flex-col justify-center pl-16">
+      <div className="relative z-10 w-full md:w-2/3 lg:w-1/2 h-full flex flex-col justify-center pr-4 md:pr-0 pl-4 md:pl-12 lg:pl-16">
         <div>
           <Image
             src={BoraImpactarWhite}
             alt="Bora Impactar Logo"
-            className="h-auto w-auto mb-6"
+            className="hidden md:block h-auto w-auto mb-6"
+          />
+          <Image
+            src={BoraImpactarDark}
+            alt="Bora Impactar Logo"
+            className="md:hidden h-auto w-auto mb-6"
           />
         </div>
-        <h1 className="text-4xl font-bold leading-tight mb-4 pr-16">
+        <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold leading-tight mb-4 pr-16">
           Conectamos quem quer ajudar com quem faz{' '}
           <span className="relative inline-block px-3">
             <span className="relative z-50">a diferença.</span>
@@ -66,7 +71,7 @@ export default function Hero({ showButtons = false, leftButton, rightButton }: H
             />
           </span>
         </h1>
-        <p className="text-lg mb-8">
+        <p className="text-base md:text-lg mb-8">
           Conectamos ONGs e empresas, voluntários e doadores que querem gerar
           impacto social real. Nossa plataforma facilita parcerias, promove
           projetos e fortalece quem já está transformando comunidades. <br />

@@ -1,3 +1,4 @@
+import { StaticImport } from 'next/dist/shared/lib/get-img-props';
 import api from './api';
 
 export enum TeachingStage {
@@ -20,7 +21,7 @@ export interface SchoolManagerData {
   address: string;
   addressNumber: string;
   addressComplement?: string | null;
-  schoolImageUrl?: string | null;
+  schoolImageUrl?: string | StaticImport | null;
 }
 
 // O tipo CreateSchoolManagerData se ajusta automaticamente com base na interface acima.
