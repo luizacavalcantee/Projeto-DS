@@ -40,7 +40,7 @@ import {
   ChallengeData,
   deleteChallenge
 } from '@/services/challenge.services';
-import { DeleteModal } from '@/components/delete-modal';
+import DeleteModal from '@/components/delete-modal';
 
 // Tipos, mocks e lógica principal
 type FormData = {

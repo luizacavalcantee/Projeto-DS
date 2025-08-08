@@ -4,7 +4,7 @@ import ImpactSection from '@/components/impact-section';
 import Ranking from '@/components/ranking';
 import RankingTable from '@/components/ranking-table';
 import { Underline, UnderlinedDark } from '@/assets';
-import { ChallengesCarousel } from '@/components/challenges-carousel';
+import ChallengesCarousel from '@/components/challenges-carousel';
 import { NewButton } from '@/components/ui/new-button';
 import Image from 'next/image';
 import Link from 'next/link';

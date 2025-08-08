@@ -3,7 +3,7 @@ import RankingComponent from '@/components/ranking';
 import Title from '@/components/title';
 import ScoringGuide from '@/components/scoring-guide';
 import Image from 'next/image';
-import { ChallengesCarousel } from '@/components/challenges-carousel';
+import ChallengesCarousel from '@/components/challenges-carousel';
 import { Underline, UnderlinedDark } from '@/assets';
 import Link from 'next/link';
 import { NewButton } from '@/components/ui/new-button';
