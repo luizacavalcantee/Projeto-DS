@@ -78,7 +78,7 @@ export default function HomePage() {
               Recife.
             </p>
           </div>
-          <div className="flex flex-col lg:flex-row gap-16 lg:gap-32 items-center justify-center mb-20">
+          <div className="flex flex-col lg:flex-row gap-16 lg:gap-32 items-center justify-center mb-20 px-4 md:px-12 lg:px-16">
             <Ranking />
             <RankingTable actionType="viewFullRanking" />
           </div>
