@@ -3,7 +3,7 @@ import Image from 'next/image';
 import React from 'react';
 
 import { NewButton } from '@/components/ui/new-button';
-import { BoraImpactarDark, BoraImpactarWhite, Destaque, HeroBackgroung } from '@/assets';
+import { BoraImpactarDark, BoraImpactarWhite, Destaque, HeroBackgroung, UnderlinedDark } from '@/assets';
 
 interface ActionButtonProps {
   text: string;
@@ -67,7 +67,14 @@ export default function Hero({ showButtons = false, leftButton, rightButton }: H
               alt="Highlight underline"
               width={160}
               height={10}
-              className="absolute bottom-[-5px] left-0 w-full h-auto"
+              className="hidden md:block absolute bottom-[-5px] left-0 w-full h-auto"
+            />
+            <Image
+              src={UnderlinedDark}
+              alt="Highlight underline"
+              width={160}
+              height={10}
+              className="md:hidden absolute bottom-[-5px] left-0 w-full h-auto"
             />
           </span>
         </h1>

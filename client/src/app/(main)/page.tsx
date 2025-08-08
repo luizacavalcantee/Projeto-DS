@@ -14,10 +14,10 @@ export default function HomePage() {
     <main className="min-h-screen">
       <Hero />
       <ImpactSection />
-      <section className="py-20">
+      <section className="py-10 lg:py-20">
         <div className="mx-auto">
           <div className="flex flex-col items-center justify-center mb-14">
-            <h2 className="text-4xl font-bold leading-tight text-center">
+            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold leading-tight text-center">
               Confira abaixo todos os{' '}
             </h2>
             <span className="text-4xl font-bold leading-tight relative inline-block">
@@ -40,10 +40,10 @@ export default function HomePage() {
         </div>
       </section>
       <ImpactNumbers />
-      <section className="py-16 px-4">
+      <section className="py-10 lg:py-16">
         <div className="mx-auto">
           <div className="flex flex-col items-center justify-center">
-            <h2 className="text-4xl font-bold leading-tight">
+            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold leading-tight">
               Veja o nosso{' '}
               <span className="relative inline-block">
                 <span className="relative z-10 text-primary">ranking</span>

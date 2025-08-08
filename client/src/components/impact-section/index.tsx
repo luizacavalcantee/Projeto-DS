@@ -28,7 +28,7 @@ export default function ImpactSection() {
       </div>
 
       <div className="w-full lg:w-3/5 text-center lg:text-left order-1 lg:order-2">
-        <h2 className="text-3xl lg:text-4xl font-bold leading-tight">
+        <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold leading-tight">
           Conectar, fortalecer, transformar: Descubra como fazemos{' '}
           <span className="relative inline-block">
             <span className="relative z-10 text-[#009FE3]">isso juntos!</span>

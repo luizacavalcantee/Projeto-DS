@@ -74,7 +74,7 @@ export default function RankingTable({ actionType, customLimit }: TableProps) {
     }
 
     return (
-        <div className='w-full flex items-center justify-center px-4 md:px-12 lg:px-16'>
+        <div className='w-full flex items-center justify-center'>
         <div className="w-full lg:max-w-5xl rounded-lg shadow-lg overflow-hidden">
             <div className="overflow-x-auto">
                 <table className="table-auto w-full">
