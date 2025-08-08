@@ -12,7 +12,6 @@ Table Ong {
   instagramLink String
   facebookLink String
   site String
-  coverPhotoUrl String
   logoPhotoUrl String
   challenges Challenge [not null]
 }
@@ -25,13 +24,11 @@ Table SchoolManager {
   password String [not null]
   schoolName String [not null]
   teachingStages TeachingStage[] [not null]
-  estimatedStudents Int [not null]
   inepCode String [unique, not null]
   cep String [not null]
   address String [not null]
   addressNumber String [not null]
   addressComplement String
-  schoolNumber String
   schoolImageUrl String
   schoolChallenges Challenge [not null]
 }
@@ -39,7 +36,6 @@ Table SchoolManager {
 Table Challenge {
   id Int [pk, increment]
   title String [not null]
-  location String
   description String [not null]
   startDate DateTime [not null]
   endDate DateTime [not null]
@@ -47,7 +43,6 @@ Table Challenge {
   neededResources String [not null]
   category ChallengeCategory [not null]
   documentUrls String[] [not null]
-  photoUrl String [not null]
   status ChallengeStatus [not null, default: 'PENDING']
   ongId Int [not null]
   managerId Int
@@ -64,8 +59,6 @@ Table Checkpoint {
   completionDate DateTime
   checkpointNumber Int [not null]
   challengeId Int [not null]
-  createdAt DateTime [default: `now()`, not null]
-  updatedAt DateTime [not null]
   challenge Challenge [not null]
 
   indexes {
@@ -89,7 +82,7 @@ Enum ChallengeCategory {
   TECNOLOGIA
   CIDADANIA
   INCLUSAO
-  SUSTENTABILIDADE
+  OUTRO
 }
 
 Enum ChallengeStatus {

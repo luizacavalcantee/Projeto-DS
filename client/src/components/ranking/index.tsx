@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { Second, Third, Trophy } from '@/assets';
-import PodiumPosition from '../podium-position';
+import PodiumPosition from '@/components/podium-position';
 import { getSchoolRanking, RankedSchool } from '@/services/ranking.services';
 
 export default function Ranking() {
@@ -14,7 +14,6 @@ export default function Ranking() {
     const fetchRanking = async () => {
       try {
         const rankingData = await getSchoolRanking();
-        // Pegamos apenas as 3 primeiras escolas para o pódio
         setTopSchools(rankingData.slice(0, 3));
       } catch (err) {
         setError("Não foi possível carregar o ranking.");
@@ -38,43 +37,39 @@ export default function Ranking() {
     return <div className="text-center p-10">Nenhuma escola no ranking ainda.</div>;
   }
 
-  // Mapeia as posições para os dados corretos
   const firstPlace = topSchools[0];
   const secondPlace = topSchools[1];
   const thirdPlace = topSchools[2];
 
   return (
-    <div className="flex gap-10 items-end justify-center">
-      {/* 2º Lugar */}
+    <div className="flex gap-4 md:gap-10 items-end justify-center">
       {secondPlace && (
         <PodiumPosition
           schoolName={secondPlace.schoolName}
           schoolImage={secondPlace.schoolImageUrl}
           podiumIcon={Second}
           podiumIconAlt="2º Lugar"
-          barHeightClass="h-52"
+          barHeightClass="h-32 md:h-52"
         />
       )}
 
-      {/* 1º Lugar */}
       {firstPlace && (
         <PodiumPosition
           schoolName={firstPlace.schoolName}
           schoolImage={firstPlace.schoolImageUrl}
           podiumIcon={Trophy}
           podiumIconAlt="1º Lugar"
-          barHeightClass="h-60"
+          barHeightClass="h-40 md:h-60"
         />
       )}
 
-      {/* 3º Lugar */}
       {thirdPlace && (
         <PodiumPosition
           schoolName={thirdPlace.schoolName}
           schoolImage={thirdPlace.schoolImageUrl}
           podiumIcon={Third}
           podiumIconAlt="3º Lugar"
-          barHeightClass="h-[11.25rem]"
+          barHeightClass="h-28 md:h-[11.25rem]"
         />
       )}
     </div>

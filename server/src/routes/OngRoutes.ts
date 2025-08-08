@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { OngController } from '../controllers';
+import { OngController } from '@controllers';
 
 const ongRouter = Router();
 

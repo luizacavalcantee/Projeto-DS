@@ -4,6 +4,10 @@ import { SchoolManagerData } from './schoolManager.services';
 
 export type UserType = 'ong' | 'manager';
 
+export type AuthenticatedUser =
+  | (OngData & { type: 'ong' })
+  | (SchoolManagerData & { type: 'manager' });
+  
 export interface LoginCredentials {
   email: string;
   password_hash: string; // O backend espera 'password', mas vamos manter 'password_hash' por enquanto e ajustar na chamada

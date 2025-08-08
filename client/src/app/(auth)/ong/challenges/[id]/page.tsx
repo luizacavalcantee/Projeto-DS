@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { getChallengeById, ChallengeData } from '@/services/challenge.services';
+import { getChallengeById, ChallengeData, getChallengeCategoryImage } from '@/services/challenge.services';
 
 // Importando os novos componentes
 import ChallengeHeader from '@/components/challenge-header';
@@ -68,9 +68,9 @@ export default function ChallengeDetailsOng({ params }: PageProps) {
 
   return (
     <main className="pb-16">
-      <ChallengeHeader title={challenge.title} imageUrl={challenge.photoUrl} />
+      <ChallengeHeader title={challenge.title} imageUrl={getChallengeCategoryImage(challenge.category)} />
 
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto px-4 md:px-12 lg:px-16">
         <article className="mt-8 text-textBlack">
           <header>
             <div className='flex justify-between items-center'>
@@ -92,6 +92,13 @@ export default function ChallengeDetailsOng({ params }: PageProps) {
             <h2 className="text-2xl font-semibold">Detalhes do desafio</h2>
             <p className="mt-3 text-justify font-light text-lg">
               {challenge.description}
+            </p>
+          </section>
+
+          <section className="mt-10">
+            <h2 className="text-2xl font-semibold">Recursos necessários</h2>
+            <p className="mt-3 text-justify font-light text-lg">
+              {challenge.neededResources}
             </p>
           </section>
 

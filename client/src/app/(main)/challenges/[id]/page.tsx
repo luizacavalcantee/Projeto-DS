@@ -1,9 +1,8 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { getChallengeById, ChallengeData } from '@/services/challenge.services';
+import { getChallengeById, ChallengeData, getChallengeCategoryImage } from '@/services/challenge.services';
 
-// Importando os novos componentes
 import ChallengeHeader from '@/components/challenge-header';
 import ChallengeStats from '@/components/challenge-status';
 import CheckpointTimeline from '@/components/checkpoint-timeline';
@@ -11,7 +10,6 @@ import SupportMaterials from '@/components/suported-materials';
 import OngCard from '@/components/ong-card';
 import ImpactGallery from '@/components/impact-gallery';
 
-// Props que a página recebe, incluindo os parâmetros do URL
 interface PageProps {
   params: {
     id: string;
@@ -24,7 +22,6 @@ export default function ChallengeDetailsPage({ params }: PageProps) {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    // Função para buscar os dados do desafio específico
     const fetchChallengeDetails = async () => {
       if (!params.id) return;
       try {
@@ -44,7 +41,7 @@ export default function ChallengeDetailsPage({ params }: PageProps) {
     };
 
     fetchChallengeDetails();
-  }, [params.id]); // O efeito é re-executado se o ID mudar
+  }, [params.id]); 
 
   if (loading) {
     return (
@@ -62,9 +59,9 @@ export default function ChallengeDetailsPage({ params }: PageProps) {
 
   return (
     <main className="pb-16">
-      <ChallengeHeader title={challenge.title} imageUrl={challenge.photoUrl} />
+      <ChallengeHeader title={challenge.title} imageUrl={getChallengeCategoryImage(challenge.category)} />
 
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto px-4 md:px-12 lg:px-16">
         <article className="mt-8 text-textBlack">
           <header>
             <h1 className="text-3xl font-bold">{challenge.title}</h1>
@@ -79,6 +76,13 @@ export default function ChallengeDetailsPage({ params }: PageProps) {
             <h2 className="text-2xl font-semibold">Detalhes do desafio</h2>
             <p className="mt-3 text-justify font-light text-lg">
               {challenge.description}
+            </p>
+          </section>
+
+          <section className="mt-10">
+            <h2 className="text-2xl font-semibold">Recursos necessários</h2>
+            <p className="mt-3 text-justify font-light text-lg">
+              {challenge.neededResources}
             </p>
           </section>
 

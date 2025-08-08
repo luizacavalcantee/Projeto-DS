@@ -18,7 +18,6 @@ export default function CheckpointTimeline({ checkpoints }: CheckpointTimelinePr
               <div>
                 <div className="flex items-center justify-center w-2 h-2 bg-black rounded-full"></div>
               </div>
-              {/* Não mostra a linha no último item */}
               {index < checkpoints.length - 1 && (
                 <div className="w-px h-full border-l border-gray-300"></div>
               )}

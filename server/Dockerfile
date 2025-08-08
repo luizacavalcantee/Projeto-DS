@@ -32,6 +32,8 @@ FROM base AS runner
 
 ENV NODE_ENV=production
 
+COPY --from=builder /home/node/app/package.json /home/node/app/package.json
+
 COPY --from=builder /home/node/app/node_modules /home/node/app/node_modules
 
 COPY --from=builder /home/node/app/dist /home/node/app/dist
@@ -44,7 +46,7 @@ USER node
 
 EXPOSE 3001
 
-CMD [ "node", "dist/src/server.js" ]
+CMD [ "pnpm", "run", "prod" ]
 
 # para a documentação seguida para construção desse arquivo, vá para o step 3 do link:
 

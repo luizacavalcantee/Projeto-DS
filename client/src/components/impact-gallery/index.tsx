@@ -8,6 +8,7 @@ interface ImpactGalleryProps {
 }
 
 export default function ImpactGallery({ checkpoints }: ImpactGalleryProps) {
+
   const checkpointsWithPhotos = checkpoints?.filter((cp) => cp.photoUrl);
 
   if (!checkpointsWithPhotos || checkpointsWithPhotos.length === 0) {

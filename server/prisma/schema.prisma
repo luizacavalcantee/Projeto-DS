@@ -22,7 +22,6 @@ model Ong {
   instagramLink   String?   @map("instagram_link")
   facebookLink    String?   @map("facebook_link")
   site            String?
-  coverPhotoUrl   String?   @map("cover_photo_url")
   logoPhotoUrl    String?   @map("logo_photo_url")
   challenges      Challenge[]
 }
@@ -42,13 +41,11 @@ model SchoolManager {
   password            String          
   schoolName          String              @map("school_name")
   teachingStages      TeachingStage[]     @default([])
-  estimatedStudents   Int                 @map("estimated_students")
   inepCode            String              @unique @map("inep_code")
   cep                 String             
   address             String     
   addressNumber       String              @map("address_number")
   addressComplement   String?             @map("address_complement")
-  schoolNumber        String?             @map("school_number")
   schoolImageUrl      String?             @map("school_image_url")
   schoolChallenges    Challenge[]
 }
@@ -62,7 +59,7 @@ enum ChallengeCategory {
   TECNOLOGIA
   CIDADANIA
   INCLUSAO
-  SUSTENTABILIDADE
+  OUTRO
 }
 
 enum ChallengeStatus {
@@ -74,7 +71,6 @@ enum ChallengeStatus {
 model Challenge {
   id                      Int                 @id @default(autoincrement())
   title                   String
-  location                String?
   description             String
   startDate               DateTime
   endDate                 DateTime
@@ -82,7 +78,6 @@ model Challenge {
   neededResources         String
   category                ChallengeCategory
   documentUrls            String[]            @default([])
-  photoUrl                String     
   status                  ChallengeStatus     @default(PENDING)         
 
   ongId                   Int    
@@ -102,9 +97,6 @@ model Checkpoint {
 
   checkpointNumber  Int       
   challengeId       Int      
-
-  createdAt         DateTime  @default(now())
-  updatedAt         DateTime  @updatedAt
 
   challenge         Challenge @relation(fields: [challengeId], references: [id])
 

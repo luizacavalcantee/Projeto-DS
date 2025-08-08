@@ -42,16 +42,6 @@ export const CreateSchoolManager = z.object({
     })
     .min(1, { message: 'Selecione ao menos uma etapa de ensino' }),
 
-  estimatedStudents: z
-    .number({
-      invalid_type_error: 'A estimativa de alunos deve ser um número',
-      required_error: 'A estimativa de alunos é obrigatória',
-    })
-    .int({ message: 'A estimativa de alunos deve ser um número inteiro' })
-    .positive({
-      message: 'A estimativa de alunos deve ser um número positivo',
-    }),
-
   inepCode: z
     .string({
       invalid_type_error: 'O código INEP deve ser uma string',
@@ -79,13 +69,6 @@ export const CreateSchoolManager = z.object({
   }),
 
   addressComplement: z.string().optional(),
-
-  schoolNumber: z
-    .string()
-    .regex(/^\d{10,11}$/, {
-      message: 'O telefone da escola deve ter 10 ou 11 dígitos (DDD + número)',
-    })
-    .optional(),
 
   schoolImageUrl: z
     .string({ invalid_type_error: 'A URL da imagem deve ser uma string' })

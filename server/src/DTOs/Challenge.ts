@@ -9,10 +9,6 @@ export const CreateChallenge = z.object({
     })
     .min(3, { message: 'O título deve ter no mínimo 3 caracteres' }),
 
-  location: z
-    .string({ invalid_type_error: 'A localização deve ser uma string' })
-    .optional(),
-
   description: z
     .string({
       invalid_type_error: 'A descrição deve ser uma string',
@@ -46,13 +42,6 @@ export const CreateChallenge = z.object({
     errorMap: () => ({ message: 'Selecione uma categoria válida' }),
   }),
   
-  photoUrl: z
-    .string({
-      invalid_type_error: 'A URL da foto deve ser uma string',
-      required_error: 'A foto do desafio é obrigatória',
-    })
-    .url({ message: 'A URL da foto é inválida' }),
-
   documentUrls: z
     .array(z.string().url({ message: 'URL de documento inválida' }))
     .optional(),
@@ -65,7 +54,7 @@ export const CreateChallenge = z.object({
   managerId: z.number({
     invalid_type_error: 'O ID do gestor deve ser um número',
     required_error: 'O ID do gestor é obrigatório',
-  }).int().positive(),
+  }).int().positive().optional(),
 
   // Campos para a criação inicial dos checkpoints
   checkpoint1Title: z.string({ required_error: 'O título do checkpoint 1 é obrigatório' }),

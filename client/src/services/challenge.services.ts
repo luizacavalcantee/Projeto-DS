@@ -1,6 +1,18 @@
 import api from './api';
 import { OngData } from './ong.services';
 import { SchoolManagerData, TeachingStage } from './schoolManager.services';
+import {
+  Cidadania,
+  Cultura,
+  Educacao,
+  Esportes,
+  MeioAmbiente,
+  Inclusao,
+  Saude,
+  Tecnologia,
+  ImagemPadrao 
+} from '@/assets';
+
 
 export enum ChallengeCategory {
   EDUCACAO = 'EDUCACAO',
@@ -32,7 +44,6 @@ export interface CheckpointData {
 export interface ChallengeData {
   id: number;
   title: string;
-  location?: string | null;
   description: string;
   startDate: string;
   endDate: string;
@@ -40,10 +51,9 @@ export interface ChallengeData {
   neededResources: string;
   category: ChallengeCategory;
   documentUrls: string[];
-  photoUrl: string;
   status: ChallengeStatus;
   ongId: number;
-  managerId: number;
+  managerId?: number;
   ong?: OngData;
   schoolManager?: SchoolManagerData;
   checkpoints?: CheckpointData[];
@@ -58,9 +68,27 @@ export type CreateChallengeData = Omit<
   checkpoint3Title: string;
 };
 
+// Este tipo permanece o mesmo para não afetar sua tela de edição
 export type UpdateChallengeData = Partial<
   Omit<CreateChallengeData, 'ongId' | 'managerId'>
 >;
+
+const categoryImageMap: Record<ChallengeCategory, any> = {
+  [ChallengeCategory.CIDADANIA]: Cidadania,
+  [ChallengeCategory.CULTURA]: Cultura,
+  [ChallengeCategory.EDUCACAO]: Educacao,
+  [ChallengeCategory.ESPORTE]: Esportes,
+  [ChallengeCategory.MEIO_AMBIENTE]: MeioAmbiente,
+  [ChallengeCategory.INCLUSAO]: Inclusao,
+  [ChallengeCategory.SAUDE]: Saude,
+  [ChallengeCategory.TECNOLOGIA]: Tecnologia,
+  [ChallengeCategory.SUSTENTABILIDADE]: MeioAmbiente
+};
+
+export const getChallengeCategoryImage = (category: ChallengeCategory) => {
+  return categoryImageMap[category] || ImagemPadrao;
+};
+
 
 export const getAllChallenges = async (): Promise<ChallengeData[]> => {
   try {
@@ -105,6 +133,22 @@ export const updateChallenge = async (
     challengeData
   );
   return response.data.data;
+};
+
+export const assignManagerToChallenge = async (
+  challengeId: number,
+  managerId: number
+): Promise<ChallengeData> => {
+  try {
+    const response = await api.patch<{ data: ChallengeData }>(
+      `/challenges/${challengeId}`,
+      { managerId }
+    );
+    return response.data.data;
+  } catch (error) {
+    console.error(`Erro ao atribuir manager ao desafio ${challengeId}:`, error);
+    throw error;
+  }
 };
 
 export const deleteChallenge = async (id: number): Promise<void> => {

@@ -9,7 +9,6 @@ export interface OngData {
     instagramLink?: string | null;
     facebookLink?: string | null;
     site?: string | null;
-    coverPhotoUrl?: string | null;
     logoPhotoUrl?: string | null;
 }
 

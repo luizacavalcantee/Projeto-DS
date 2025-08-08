@@ -4,24 +4,10 @@ import React, { useState, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import { format } from 'date-fns';
-Expandir
-message.txt
-18 KB
-tela cadastro desafio
-Lucas dos Santos <lss11> — 14:55
-beleza amg
-﻿
-'use client';
-
-import React, { useState, useRef } from 'react';
-import { useForm } from 'react-hook-form';
-import { useRouter } from 'next/navigation';
-import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
-import { CalendarIcon, UploadCloud, AlertCircle } from 'lucide-react';
+import { CalendarIcon, AlertCircle } from 'lucide-react';
 import Image from 'next/image';
 
-// Seus Componentes UI (sem alterações)
 import { NewInput } from '@/components/ui/new-input';
 import { NewTextarea } from '@/components/ui/new-textarea';
 import { Button } from '@/components/ui/button';
@@ -45,18 +31,12 @@ import { Input } from '@/components/ui/input';
 import { Upload } from '@/assets';
 import { cn } from '@/lib/utils';
 
-// Importações do Serviço da API e tipos relacionados que o serviço expõe
 import { createChallenge, CreateChallengeData, ChallengeCategory } from '@/services/challenge.services';
 import { TeachingStage } from '@/services/schoolManager.services';
-// O tipo `TeachingStage` também precisa estar acessível no frontend.
-// Se ele não for exportado pelo `challenge.services`, importe-o de onde for apropriado.
-// Exemplo: import { TeachingStage } from '@/types/enums';
-// Por agora, vou criar um enum local para o código funcionar.
+import { useAuth } from '@/hooks/useAuth';
 
-// Tipo do formulário do React Hook Form
 type FormData = {
   nomeProjeto: string;
-  localizacaoDesafio: string;
   descricao: string;
   dataInicio: Date;
   dataFim: Date;
@@ -70,14 +50,9 @@ type FormData = {
   anexos?: FileList;
 };
 
-// ==============================================================================
-// FUNÇÕES MOCK PARA UPLOAD DE ARQUIVOS
-// !! IMPORTANTE !! Substitua esta lógica pela sua implementação real de upload.
-// Ex: upload para AWS S3, Firebase Storage, etc. que retorna a URL do arquivo.
-// ==============================================================================
 const mockUploadFile = async (file: File): Promise<string> => {
   console.log(`Simulando upload do arquivo: ${file.name}`);
-  await new Promise((resolve) => setTimeout(resolve, 1000)); // Simula delay da rede
+  await new Promise((resolve) => setTimeout(resolve, 1000)); 
   return `https://fake-storage.com/uploads/${Date.now()}-${file.name}`;
 };
 
@@ -86,12 +61,12 @@ const mockUploadMultipleFiles = async (files: FileList): Promise<string[]> => {
   const uploadPromises = Array.from(files).map((file) => mockUploadFile(file));
   return await Promise.all(uploadPromises);
 };
-// ==============================================================================
 
 export default function CreateChallenge() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const { user } = useAuth();
 
   const {
     register,
@@ -101,20 +76,21 @@ export default function CreateChallenge() {
     formState: { errors }
   } = useForm<FormData>();
 
-  // Observa valores para atualizar a UI
-  const imageFile = watch('imagem');
   const attachmentFiles = watch('anexos');
   const dataInicio = watch('dataInicio');
   const dataFim = watch('dataFim');
   const idadeIdealValue = watch('idadeIdeal');
   const categoriaValue = watch('categoria');
 
-  // Ref para o input de arquivos de anexo
   const attachmentsInputRef = useRef<HTMLInputElement | null>(null);
   const { ref: attachmentsRegisterRef, ...attachmentsRegisterRest } = register('anexos');
 
   const onSubmit = async (data: FormData) => {
-    // Validação simples para campos que não são nativos do RHF (React-Hook-Form)
+    if (!user || user.type !== 'ong') {
+        setError('Acesso negado. Você precisa estar logado como uma ONG para criar um desafio.');
+        return;
+    }
+
     if (!data.dataInicio || !data.dataFim || !data.idadeIdeal || !data.categoria) {
       setError('Por favor, preencha todos os campos obrigatórios.');
       return;
@@ -124,39 +100,27 @@ export default function CreateChallenge() {
     setError(null);
 
     try {
-      // 1. Fazer o upload dos arquivos e obter as URLs
-      let photoUrl = '';
-      if (data.imagem && data.imagem.length > 0) {
-        photoUrl = await mockUploadFile(data.imagem[0]);
-      } else {
-        throw new Error('A imagem do desafio é obrigatória.');
-      }
-
       let documentUrls: string[] = [];
       if (data.anexos && data.anexos.length > 0) {
         documentUrls = await mockUploadMultipleFiles(data.anexos);
       }
 
-      // 2. Mapear os dados do formulário para o formato da API (CreateChallengeData)
-      // Este tipo é importado do seu arquivo de serviço.
       const payload: CreateChallengeData = {
         title: data.nomeProjeto,
-        location: data.localizacaoDesafio,
         description: data.descricao,
         startDate: data.dataInicio.toISOString(),
         endDate: data.dataFim.toISOString(),
-        idealAge: [data.idadeIdeal], // A API espera um array
+        idealAge: [data.idadeIdeal],
         neededResources: data.secretaria,
         category: data.categoria,
-        photoUrl: photoUrl,
         documentUrls: documentUrls,
         checkpoint1Title: data.tituloCheckpoint1,
         checkpoint2Title: data.tituloCheckpoint2,
         checkpoint3Title: data.tituloCheckpoint3,
-        // !! IMPORTANTE !! Substitua pelos IDs reais (ex: do usuário logado)
-        ongId: 1,
-        managerId: 1
+        ongId: user.id
       };
+
+      console.log(payload)
 
       // 3. Chamar a API através do serviço
       const newChallenge = await createChallenge(payload);
@@ -173,10 +137,6 @@ export default function CreateChallenge() {
     } finally {
       setIsLoading(false);
     }
-  };
-
-  const handleReturn = () => {
-    router.back();
   };
 
   return (
@@ -201,15 +161,6 @@ export default function CreateChallenge() {
               className="border"
             />
             {errors.nomeProjeto && <p className="text-red-500 text-sm">{errors.nomeProjeto.message}</p>}
-          </div>
-
-          <div className="space-y-1">
-            <NewLabel htmlFor="localizacaoDesafio">Localização do Desafio</NewLabel>
-            <NewInput
-              id="localizacaoDesafio"
-              placeholder="Digite onde o desafio deverá ocorrer"
-              {...register('localizacaoDesafio')}
-            />
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -338,23 +289,7 @@ export default function CreateChallenge() {
             />
             {errors.tituloCheckpoint3 && <p className="text-red-500 text-sm">{errors.tituloCheckpoint3.message}</p>}
           </div>
-          
-          <div className="space-y-2 pt-4">
-            <NewLabel className="text-xl font-semibold" htmlFor="imagem-upload">Imagem do desafio</NewLabel>
-            <p className="text-sm text-muted-foreground">Escolha uma imagem para representar o desafio</p>
-          </div>
-          <div>
-            <NewLabel htmlFor="imagem-upload" className="flex flex-col items-center bg-white/60 justify-center w-full h-32 px-4 py-6 text-center border border-gray-300 border-dashed rounded-lg cursor-pointer text-muted-foreground transition-colors hover:border-primary hover:text-primary">
-              <UploadCloud className="w-8 h-8" />
-              <span className="mt-2 text-sm font-medium">Clique para fazer upload</span>
-              <span className="mt-1 text-xs">SVG, PNG, JPG or GIF</span>
-            </NewLabel>
-            <Input id="imagem-upload" type="file" className="hidden" accept="image/svg+xml, image/png, image/jpeg, image/gif" {...register('imagem')} />
-            {imageFile && imageFile.length > 0 && (
-              <div className="mt-2 text-sm text-muted-foreground"><strong>Arquivo selecionado:</strong> {imageFile[0].name}</div>
-            )}
-          </div>
-          
+                    
           <div className="space-y-2 pt-4">
             <NewLabel className="text-xl font-semibold">Anexar arquivos</NewLabel>
             <p className="text-sm text-muted-foreground">Anexe documentos relevantes referente ao desafio. (Max: 5MB por arquivo).</p>
@@ -392,5 +327,3 @@ export default function CreateChallenge() {
     </div>
   );
 }
-message.txt
-18 KB

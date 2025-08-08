@@ -2,21 +2,10 @@
 CREATE TYPE "TeachingStage" AS ENUM ('EDUCACAO_INFANTIL', 'ENSINO_FUNDAMENTAL_I', 'ENSINO_FUNDAMENTAL_II', 'ENSINO_MEDIO');
 
 -- CreateEnum
-CREATE TYPE "ChallengeCategory" AS ENUM ('EDUCACAO', 'MEIO_AMBIENTE', 'SAUDE', 'CULTURA', 'ESPORTE', 'TECNOLOGIA', 'CIDADANIA', 'INCLUSAO', 'SUSTENTABILIDADE');
+CREATE TYPE "ChallengeCategory" AS ENUM ('EDUCACAO', 'MEIO_AMBIENTE', 'SAUDE', 'CULTURA', 'ESPORTE', 'TECNOLOGIA', 'CIDADANIA', 'INCLUSAO', 'OUTRO');
 
 -- CreateEnum
 CREATE TYPE "ChallengeStatus" AS ENUM ('PENDING', 'IN_PROGRESS', 'COMPLETED');
-
--- CreateTable
-CREATE TABLE "User" (
-    "id" TEXT NOT NULL,
-    "name" TEXT NOT NULL,
-    "phone" TEXT,
-    "email" TEXT NOT NULL,
-    "password" TEXT NOT NULL,
-
-    CONSTRAINT "User_pkey" PRIMARY KEY ("id")
-);
 
 -- CreateTable
 CREATE TABLE "Ong" (
@@ -29,7 +18,6 @@ CREATE TABLE "Ong" (
     "instagram_link" TEXT,
     "facebook_link" TEXT,
     "site" TEXT,
-    "cover_photo_url" TEXT,
     "logo_photo_url" TEXT,
 
     CONSTRAINT "Ong_pkey" PRIMARY KEY ("id")
@@ -44,13 +32,11 @@ CREATE TABLE "SchoolManager" (
     "password" TEXT NOT NULL,
     "school_name" TEXT NOT NULL,
     "teachingStages" "TeachingStage"[] DEFAULT ARRAY[]::"TeachingStage"[],
-    "estimated_students" INTEGER NOT NULL,
     "inep_code" TEXT NOT NULL,
     "cep" TEXT NOT NULL,
     "address" TEXT NOT NULL,
     "address_number" TEXT NOT NULL,
     "address_complement" TEXT,
-    "school_number" TEXT,
     "school_image_url" TEXT,
 
     CONSTRAINT "SchoolManager_pkey" PRIMARY KEY ("id")
@@ -60,7 +46,6 @@ CREATE TABLE "SchoolManager" (
 CREATE TABLE "Challenge" (
     "id" SERIAL NOT NULL,
     "title" TEXT NOT NULL,
-    "location" TEXT,
     "description" TEXT NOT NULL,
     "startDate" TIMESTAMP(3) NOT NULL,
     "endDate" TIMESTAMP(3) NOT NULL,
@@ -68,10 +53,9 @@ CREATE TABLE "Challenge" (
     "neededResources" TEXT NOT NULL,
     "category" "ChallengeCategory" NOT NULL,
     "documentUrls" TEXT[] DEFAULT ARRAY[]::TEXT[],
-    "photoUrl" TEXT NOT NULL,
     "status" "ChallengeStatus" NOT NULL DEFAULT 'PENDING',
     "ongId" INTEGER NOT NULL,
-    "managerId" INTEGER NOT NULL,
+    "managerId" INTEGER,
 
     CONSTRAINT "Challenge_pkey" PRIMARY KEY ("id")
 );
@@ -85,14 +69,9 @@ CREATE TABLE "Checkpoint" (
     "completionDate" TIMESTAMP(3),
     "checkpointNumber" INTEGER NOT NULL,
     "challengeId" INTEGER NOT NULL,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "Checkpoint_pkey" PRIMARY KEY ("id")
 );
-
--- CreateIndex
-CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Ong_name_key" ON "Ong"("name");
@@ -113,7 +92,7 @@ CREATE UNIQUE INDEX "Checkpoint_challengeId_checkpointNumber_key" ON "Checkpoint
 ALTER TABLE "Challenge" ADD CONSTRAINT "Challenge_ongId_fkey" FOREIGN KEY ("ongId") REFERENCES "Ong"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Challenge" ADD CONSTRAINT "Challenge_managerId_fkey" FOREIGN KEY ("managerId") REFERENCES "SchoolManager"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Challenge" ADD CONSTRAINT "Challenge_managerId_fkey" FOREIGN KEY ("managerId") REFERENCES "SchoolManager"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Checkpoint" ADD CONSTRAINT "Checkpoint_challengeId_fkey" FOREIGN KEY ("challengeId") REFERENCES "Challenge"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

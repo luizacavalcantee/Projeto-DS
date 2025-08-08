@@ -3,25 +3,15 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { logout as logoutService } from '@/services/auth.services';
-import { OngData } from '@/services/ong.services';
-import { SchoolManagerData } from '@/services/schoolManager.services';
+import { AuthenticatedUser } from '@/services/auth.services';
 
-// Um tipo unificado para o usuário, incluindo o 'type' que vamos determinar
-type AuthenticatedUser = (OngData | SchoolManagerData) & { type: 'ong' | 'manager' };
-
-/**
- * Hook customizado para gerenciar o estado de autenticação do usuário.
- * Lê os dados do usuário do localStorage e fornece informações e ações
- * para os componentes da UI.
- */
 export function useAuth() {
   const [user, setUser] = useState<AuthenticatedUser | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [loading, setLoading] = useState(true); // Inicia como true para checar o estado inicial
+  const [loading, setLoading] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
-    // Função para verificar o estado de login no localStorage
     const checkAuthState = () => {
       try {
         const userJson = localStorage.getItem('user');
@@ -29,7 +19,6 @@ export function useAuth() {
 
         if (userJson && token) {
           const parsedUser = JSON.parse(userJson);
-          // Determina o tipo do usuário verificando uma propriedade única (ex: inepCode)
           const userType = 'inepCode' in parsedUser ? 'manager' : 'ong';
           
           setUser({ ...parsedUser, type: userType });
