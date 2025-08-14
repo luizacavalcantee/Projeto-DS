@@ -1,0 +1,79 @@
+# Nome do workflow que aparecerá na aba "Actions" do seu repositório
+name: CI - Testes Automatizados
+
+# Define os gatilhos que iniciarão este workflow
+on:
+  # Roda quando um push é feito para a branch 'main'
+  push:
+    branches: [ main ]
+  # Roda também quando um Pull Request é aberto (ou atualizado) para a branch 'main'
+  pull_request:
+    branches: [ main ]
+
+# Define os trabalhos (jobs) que serão executados
+jobs:
+  # Primeiro job: testar o backend
+  test-backend:
+    # Nome do job que aparecerá na interface do GitHub
+    name: Testar Backend (Node.js/PNPM)
+    # Define a máquina virtual que será usada para rodar o job
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Clona o código do seu repositório para dentro da máquina virtual
+      - name: 1. Checkout do código
+        uses: actions/checkout@v4
+
+      # 2. Configura o PNPM
+      - name: 2. Setup PNPM
+        uses: pnpm/action-setup@v3
+        with:
+          version: 8 # ou a versão do pnpm que você usa
+
+      # 3. Configura o Node.js e o cache de dependências do PNPM
+      - name: 3. Setup Node.js 20.x
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x' # Use uma versão compatível com seu Dockerfile
+          cache: 'pnpm'
+          cache-dependency-path: 'server/pnpm-lock.yaml'
+
+      # 4. Instala as dependências do backend
+      - name: 4. Instalar dependências
+        working-directory: ./server # Define o diretório de trabalho
+        run: pnpm install --frozen-lockfile
+
+      # 5. Roda os testes do backend (usando o comando que você configurou no package.json)
+      - name: 5. Rodar testes com Jest
+        working-directory: ./server # Define o diretório de trabalho
+        run: pnpm test
+
+  # Segundo job: testar o frontend
+  test-frontend:
+    # Nome do job que aparecerá na interface do GitHub
+    name: Testar Frontend (Next.js/NPM)
+    # Roda em paralelo com o job do backend
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Clona o código do seu repositório
+      - name: 1. Checkout do código
+        uses: actions/checkout@v4
+
+      # 2. Configura o Node.js e o cache de dependências do NPM
+      - name: 2. Setup Node.js 18.x
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18.x' # Use uma versão compatível com seu Dockerfile
+          cache: 'npm'
+          cache-dependency-path: 'client/package-lock.json'
+
+      # 3. Instala as dependências do frontend
+      - name: 3. Instalar dependências
+        working-directory: ./client # Define o diretório de trabalho
+        run: npm ci # 'npm ci' é recomendado para CI, pois usa o lockfile
+
+      # 4. Roda os testes do frontend
+      - name: 4. Rodar testes com Jest
+        working-directory: ./client # Define o diretório de trabalho
+        run: npm test
