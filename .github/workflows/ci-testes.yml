@@ -38,6 +38,11 @@ jobs:
           cache: 'pnpm'
           cache-dependency-path: 'server/pnpm-lock.yaml'
 
+      # --- PASSO DE DEBUG ADICIONADO ---
+      - name: DEBUG Listar arquivos no diretório de trabalho
+        run: ls -laR
+        working-directory: ./server
+
       # 4. Instala as dependências do backend
       - name: 4. Instalar dependências
         working-directory: ./server # Define o diretório de trabalho
