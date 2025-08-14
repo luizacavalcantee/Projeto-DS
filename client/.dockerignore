@@ -1,0 +1,12 @@
+# Ignorar dependências
+node_modules
+
+# Ignorar a pasta de build do Next.js
+.next
+
+# Ignorar arquivos de ambiente local
+.env.local
+
+# Outros
+npm-debug.log
+README.md

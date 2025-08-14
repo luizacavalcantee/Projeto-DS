@@ -1,0 +1,51 @@
+networks:
+  boraimpactar:
+    driver: bridge
+
+volumes:
+  postgres_data:
+
+services:
+  boilerplate-db:
+    image: postgres:15
+    container_name: school_postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: docker
+      POSTGRES_DB: boilerplate
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - boraimpactar
+
+  school_backend:
+    build: ./server
+    container_name: school_backend
+    depends_on:
+      - boilerplate-db
+    # --- A SOLUÇÃO ESTÁ AQUI ---
+    # Esta linha diz ao Docker para carregar as variáveis do arquivo .env
+    # que está dentro da pasta 'server'.
+    env_file:
+      - ./server/.env
+    networks:
+      - boraimpactar
+
+  school_frontend:
+    build: ./client
+    container_name: school_frontend
+    networks:
+      - boraimpactar
+
+  nginx:
+    image: nginx:latest
+    container_name: school_reverse_proxy
+    ports:
+      - "8080:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - school_backend
+      - school_frontend
+    networks:
+      - boraimpactar

@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'https://projeto-ds-dvg4.onrender.com/'
+  baseURL: '/school-api'
 });
 
 export default api;
