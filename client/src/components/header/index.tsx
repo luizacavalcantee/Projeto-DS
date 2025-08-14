@@ -109,7 +109,7 @@ export default function Header() {
                   className="flex items-center p-0"
                 >
                   <Image
-                    src={userImage || UserProfile}
+                    src={UserProfile}
                     alt={userName || 'Perfil'}
                     className="h-10 w-10 mr-3 rounded-full object-cover"
                     width={40}

@@ -17,7 +17,7 @@ export default function PodiumPosition({ schoolName, schoolImage, podiumIcon, po
     <div className="flex flex-col items-center gap-3 md:gap-6">
       <div className="relative w-20 md:w-32">
           <Image
-            src={schoolImage ?? School}
+            src={School}
             alt={schoolName}
             width={128}
             height={128}
