@@ -12,7 +12,43 @@ on:
 
 # Define os trabalhos (jobs) que serão executados
 jobs:
-  # Primeiro job: testar o frontend
+  # Primeiro job: testar o backend
+  test-backend:
+    # Nome do job que aparecerá na interface do GitHub
+    name: Testar Backend (Node.js/PNPM)
+    # Define a máquina virtual que será usada para rodar o job
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Clona o código do seu repositório para dentro da máquina virtual
+      - name: 1. Checkout do código
+        uses: actions/checkout@v4
+
+      # 2. Configura o PNPM na versão correta (a sua versão local)
+      - name: 2. Setup PNPM
+        uses: pnpm/action-setup@v3
+        with:
+          version: 10
+
+      # 3. Configura o Node.js na versão correta (a sua versão local)
+      - name: 3. Setup Node.js 22.x
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.x'
+          cache: 'pnpm'
+          cache-dependency-path: 'server/pnpm-lock.yaml'
+
+      # 4. Instala as dependências do backend
+      - name: 4. Instalar dependências
+        working-directory: ./server
+        run: pnpm install --frozen-lockfile
+
+      # 5. Roda os testes do backend
+      - name: 5. Rodar testes com Jest
+        working-directory: ./server
+        run: pnpm test
+
+  # Segundo job: testar o frontend
   test-frontend:
     # Nome do job que aparecerá na interface do GitHub
     name: Testar Frontend (Next.js/NPM)
@@ -28,16 +64,16 @@ jobs:
       - name: 2. Setup Node.js 18.x
         uses: actions/setup-node@v4
         with:
-          node-version: '18.x' # Use uma versão compatível com seu Dockerfile
+          node-version: '18.x' # Mantido conforme Dockerfile do frontend
           cache: 'npm'
           cache-dependency-path: 'client/package-lock.json'
 
       # 3. Instala as dependências do frontend
       - name: 3. Instalar dependências
-        working-directory: ./client # Define o diretório de trabalho
-        run: npm ci # 'npm ci' é recomendado para CI, pois usa o lockfile
+        working-directory: ./client
+        run: npm ci # 'npm ci' é mais rápido e seguro para CI
 
       # 4. Roda os testes do frontend
       - name: 4. Rodar testes com Jest
-        working-directory: ./client # Define o diretório de trabalho
+        working-directory: ./client
         run: npm test
