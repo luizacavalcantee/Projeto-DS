@@ -15,7 +15,7 @@ A maneira mais simples de executar o projeto completo (frontend, backend e banco
 
     Antes de tudo é necessário clocar o repositório na sua máquina com o comando a baixo:
     ```bash
-    git clone https://github.com/luizacavalcantee/Projeto-DS
+    git clone https://github.com/luizacavalcantee/Projeto-DS.git
     ```
 
 2.  **Configuração de Ambiente**
