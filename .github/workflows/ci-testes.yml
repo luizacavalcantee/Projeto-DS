@@ -43,8 +43,17 @@ jobs:
         working-directory: ./server
         run: pnpm install --frozen-lockfile
 
-      # 5. Roda os testes do backend
-      - name: 5. Rodar testes com Jest
+      - name: 5. Gerar Cliente Prisma
+        working-directory: ./server
+        run: pnpm prisma generate
+
+      - name: 6. Rodar testes com Jest
+        working-directory: ./server
+        run: pnpm test
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL_TEST }}
+
+      - name: 7. Rodar testes com Jest
         working-directory: ./server
         run: pnpm test
 
