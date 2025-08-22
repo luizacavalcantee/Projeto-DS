@@ -23,7 +23,7 @@ pnpm install
 PROJECT_NAME=boilerplate
 
 # ###### SERVER SETTINGS #######
-SERVER_PORT=3001
+SERVER_PORT=8001
 NODE_ENV=development
 
 # ###### DATABASE SETTINGS #######
@@ -98,9 +98,9 @@ pnpm migration
 
 ### Erro ao rodar `docker-compose up`:
 
-- _Bind for 0.0.0.0:3001 failed: port is already allocated_:
+- _Bind for 0.0.0.0:8001 failed: port is already allocated_:
 
-  Você provavelmente já tem um servidor rodando na porta 3001. Pare a execução do outro servidor e tente novamente.
+  Você provavelmente já tem um servidor rodando na porta 8001. Pare a execução do outro servidor e tente novamente.
 
   ```bash
   # Para listar os containers rodando, bem como as portas em uso

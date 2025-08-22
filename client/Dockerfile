@@ -37,8 +37,8 @@ COPY --from=builder /app/.next/static ./.next/static
 # Define o usuário 'nextjs' para rodar a aplicação
 USER nextjs
 
-EXPOSE 3000
-ENV PORT 3000
+EXPOSE 3001
+ENV PORT 3001
 
 # O comando para iniciar o servidor agora aponta para o 'server.js'
 # que está dentro da pasta 'standalone'.
