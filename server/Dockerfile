@@ -44,7 +44,7 @@ RUN chown -R node:node /home/node/app/prisma/
 
 USER node
 
-EXPOSE 8001
+EXPOSE 3001
 
 CMD [ "pnpm", "run", "prod" ]
 

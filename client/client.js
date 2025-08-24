@@ -21,9 +21,9 @@ app
       return handle(req, res);
     });
 
-    server.listen(3001, (err) => {
+    server.listen(8001, (err) => {
       if (err) throw err;
-      console.log('> Ready on port 3001');
+      console.log('> Ready on port 8001');
     });
   })
   .catch((ex) => {

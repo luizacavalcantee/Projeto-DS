@@ -40,7 +40,7 @@ RUN ls node_modules/.pnpm/ \
 
 USER node
 
-EXPOSE 8001
+EXPOSE 3001
 
 CMD [ "pnpm", "dev" ]
 
