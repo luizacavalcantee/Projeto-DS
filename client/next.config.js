@@ -1,8 +1,6 @@
 /** @type {import('next').NextConfig} */
 
-module.exports = {
-  basePath: '/school',
-  
+module.exports = {  
   pageExtensions: ['tsx', 'ts', 'jsx', 'js'],
   output: 'standalone',
 
