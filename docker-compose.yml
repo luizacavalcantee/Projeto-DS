@@ -37,7 +37,5 @@ services:
     container_name: school_frontend
     ports:
       - "8001:8001"
-    environment:
-      - NEXT_PUBLIC_API_URL=http://localhost:3001
     networks:
       - boraimpactar
