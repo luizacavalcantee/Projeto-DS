@@ -3,6 +3,7 @@
 module.exports = {  
   pageExtensions: ['tsx', 'ts', 'jsx', 'js'],
   output: 'standalone',
+  basePath: '/escolaong',
 
   async rewrites() {
     return [
@@ -10,10 +11,10 @@ module.exports = {
         source: '/api/proxy/:path*',
         destination: 'https://bora-impactar-dev.setd.rdmapps.com.br/api/:path*',
       },
-      {
-        source: '/escolaong/:path*',
-        destination: '/:path*'
-      }
+      // {
+      //   source: '/escolaong/:path*',
+      //   destination: '/:path*'
+      // }
     ];
   },
 
