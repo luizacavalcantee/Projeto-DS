@@ -19,7 +19,6 @@ module.exports = {
   },
 
   images: {
-    path:'/escolaong/_next/image',
     remotePatterns: [
       {
         protocol: 'https',
