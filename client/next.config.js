@@ -4,7 +4,6 @@ module.exports = {
   pageExtensions: ['tsx', 'ts', 'jsx', 'js'],
   output: 'standalone',
   assetPrefix: '/escolaong',
-
   async rewrites() {
     return [
       {
@@ -19,6 +18,7 @@ module.exports = {
   },
 
   images: {
+    path:'/escolaong/_next/image',
     remotePatterns: [
       {
         protocol: 'https',
