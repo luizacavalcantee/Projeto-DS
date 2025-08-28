@@ -1,5 +1,3 @@
-version: '3.8'
-
 networks:
   boraimpactar:
     driver: bridge
@@ -18,7 +16,7 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:
-      - boraimpactar
+      - boraimpactar2
 
   school_backend:
     build: ./server
@@ -30,7 +28,7 @@ services:
     ports:
       - "3001:3001"
     networks:
-      - boraimpactar
+      - boraimpactar2
 
   school_frontend:
     build: ./client
@@ -38,4 +36,4 @@ services:
     ports:
       - "8001:8001"
     networks:
-      - boraimpactar
+      - boraimpactar2
