@@ -5,7 +5,7 @@ module.exports = {
   output: 'standalone',
   basePath: '/escolaong',
   assetPrefix: '/escolaong',
-  trailingSlash: true,
+  trailingSlash: false,
   async rewrites() {
     return [
       {
@@ -20,6 +20,7 @@ module.exports = {
   },
 
   images: {
+    unoptimized: true,
     remotePatterns: [
       {
         protocol: 'https',
