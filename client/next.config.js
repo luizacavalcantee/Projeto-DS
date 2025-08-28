@@ -3,8 +3,8 @@
 module.exports = {  
   pageExtensions: ['tsx', 'ts', 'jsx', 'js'],
   output: 'standalone',
-  basePath: '/escolaong',
-  assetPrefix: '/escolaong',
+  // basePath: '/escolaong',
+  // assetPrefix: '/escolaong',
   trailingSlash: true,
   async rewrites() {
     return [
