@@ -3,6 +3,7 @@
 module.exports = {  
   pageExtensions: ['tsx', 'ts', 'jsx', 'js'],
   output: 'standalone',
+  assetPrefix: '/escolaong',
 
   async rewrites() {
     return [
