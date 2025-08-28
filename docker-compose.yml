@@ -36,4 +36,4 @@ services:
 
 networks: 
   boraimpactar2:
-    driver: external
+    external: true
