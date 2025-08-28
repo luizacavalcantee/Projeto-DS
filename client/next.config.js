@@ -3,7 +3,7 @@
 module.exports = {  
   pageExtensions: ['tsx', 'ts', 'jsx', 'js'],
   output: 'standalone',
-  // basePath: '/escolaong',
+  basePath: '/escolaong',
   assetPrefix: '/escolaong',
   trailingSlash: true,
   async rewrites() {
