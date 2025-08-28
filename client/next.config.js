@@ -5,6 +5,7 @@ module.exports = {
   output: 'standalone',
   basePath: '/escolaong',
   assetPrefix: '/escolaong',
+  trailingSlash: true,
   async rewrites() {
     return [
       {
