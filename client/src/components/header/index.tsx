@@ -42,30 +42,30 @@ export default function Header() {
   let userImage: string | any = UserProfile;
   let profileLink: string = '/login';
   let navLinks = [
-    { label: 'Início', href: '/' },
-    { label: 'Desafios', href: '/challenges' },
-    { label: 'Ranking', href: '/ranking' }
+    { label: 'Início', href: '/escolaong/' },
+    { label: 'Desafios', href: '/escolaong/challenges' },
+    { label: 'Ranking', href: '/escolaong/ranking' }
   ];
 
   if (isAuthenticated && user) {
     const routePrefix = user.type === 'ong' ? '/ong' : '/manager';
     navLinks = [
-      { label: 'Início', href: '/' },
-      { label: 'Desafios', href: `${routePrefix}/challenges` },
-      { label: 'Ranking', href: `${routePrefix}/ranking` }
+      { label: 'Início', href: '/escolaong/' },
+      { label: 'Desafios', href: `escolaong/${routePrefix}/challenges` },
+      { label: 'Ranking', href: `escolaong/${routePrefix}/ranking` }
     ];
     if (user.type === 'ong') {
       userName = user.name;
       userImage = user.logoPhotoUrl;
       navLinks.push({
         label: 'Criar Desafio',
-        href: '/ong/my-challenges/create-challenge'
+        href: '/escolaong/ong/my-challenges/create-challenge'
       });
     } else {
       userName = user.fullName;
       userImage = user.schoolImageUrl;
     }
-    profileLink = `${routePrefix}/profile`;
+    profileLink = `/escolaong/${routePrefix}/profile`;
   }
 
   const handleLogin = () => router.push('/login');

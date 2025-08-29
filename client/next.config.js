@@ -3,6 +3,8 @@
 module.exports = {  
   pageExtensions: ['tsx', 'ts', 'jsx', 'js'],
   output: 'standalone',
+  basePath: '/escolaong',
+  assetPrefix: '/escolaong',
   trailingSlash: true,
   
   // Configurações importantes para proxy reverso
@@ -16,10 +18,6 @@ module.exports = {
         source: '/api/proxy/:path*',
         destination: 'https://bora-impactar-dev.setd.rdmapps.com.br/api/:path*',
       },
-      {
-        source: '/escolaong/:path*',
-        destination: '/:path*',
-      }
     ];
   },
 
