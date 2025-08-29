@@ -5,17 +5,13 @@ module.exports = {
   output: 'standalone',
   basePath: '/escolaong',
   assetPrefix: '/escolaong',
-  trailingSlash: false,
+  trailingSlash: true,
   async rewrites() {
     return [
       {
         source: '/api/proxy/:path*',
         destination: 'https://bora-impactar-dev.setd.rdmapps.com.br/api/:path*',
       },
-      // {
-      //   source: '/escolaong/:path*',
-      //   destination: '/:path*'
-      // }
     ];
   },
 

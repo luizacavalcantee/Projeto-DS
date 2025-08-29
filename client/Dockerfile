@@ -15,6 +15,9 @@ RUN npm install
 # Copia o restante do código-fonte
 COPY . .
 
+# Define variáveis de ambiente para o build
+ENV NEXT_PUBLIC_BASE_PATH=/escolaong
+
 # Executa o build de produção
 RUN npm run build
 
@@ -46,6 +49,7 @@ USER nextjs
 
 EXPOSE 8001
 ENV PORT 8001
+ENV HOSTNAME "0.0.0.0"
 
 # O comando para iniciar o servidor
 CMD ["node", "server.js"]
