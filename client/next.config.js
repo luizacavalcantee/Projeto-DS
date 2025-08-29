@@ -3,9 +3,13 @@
 module.exports = {  
   pageExtensions: ['tsx', 'ts', 'jsx', 'js'],
   output: 'standalone',
-  basePath: '/escolaong',
-  assetPrefix: '/escolaong',
   trailingSlash: true,
+  
+  // Configurações importantes para proxy reverso
+  experimental: {
+    trustHost: true
+  },
+  
   async rewrites() {
     return [
       {
