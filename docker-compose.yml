@@ -2,22 +2,28 @@ services:
   school_backend:
     build: ./server
     container_name: school_backend
-    depends_on:
-      - boilerplate-db
     env_file:
       - ./server/.env
     ports:
       - "3001:3001"
     networks:
       - boraimpactar2
+    restart: unless-stopped
 
   school_frontend:
     build: ./client
     container_name: school_frontend
     ports:
       - "8001:8001"
+    # ADICIONAR: Variáveis de ambiente para Next.js
+    environment:
+      - NODE_ENV=production
+      - NEXT_PUBLIC_BASE_PATH=/escolaong
+    depends_on:
+      - school_backend
     networks:
       - boraimpactar2
+    restart: unless-stopped
 
 networks:
   boraimpactar2:
