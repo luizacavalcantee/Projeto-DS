@@ -4,9 +4,9 @@ module.exports = {
   pageExtensions: ['tsx', 'ts', 'jsx', 'js'],
   output: 'standalone',
   
-  // Configuração para proxy reverso nginx - TEMPORARIAMENTE DESABILITADO PARA TESTE
-  // basePath: '/escolaong',
-  // assetPrefix: '/escolaong',
+  // Configuração para proxy reverso nginx
+  basePath: '/escolaong',
+  assetPrefix: '/escolaong',
   trailingSlash: true,
 
   async rewrites() {
