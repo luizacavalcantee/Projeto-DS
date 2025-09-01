@@ -2,16 +2,14 @@
 
 import Image from 'next/image';
 import { CheckpointData } from '@/services/challenge.services';
+import { School } from '@/assets';
 
 interface ImpactGalleryProps {
   checkpoints: CheckpointData[] | undefined;
 }
 
 export default function ImpactGallery({ checkpoints }: ImpactGalleryProps) {
-
-  const checkpointsWithPhotos = checkpoints?.filter((cp) => cp.photoUrl);
-
-  if (!checkpointsWithPhotos || checkpointsWithPhotos.length === 0) {
+  if (!checkpoints || checkpoints.length === 0) {
     return null;
   }
 
@@ -21,12 +19,11 @@ export default function ImpactGallery({ checkpoints }: ImpactGalleryProps) {
         Galeria de Impacto
       </h2>
       <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 lg:gap-12">
-        {' '}
-        {checkpointsWithPhotos.map((cp) => (
+        {checkpoints.map((cp) => (
           <figure key={cp.id}>
             <div className="relative w-full aspect-[4/3] overflow-hidden rounded-xl shadow-md">
               <Image
-                src={cp.photoUrl!}
+                src={cp.photoUrl || School}
                 alt={`Imagem do ${cp.title}`}
                 fill
                 sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
