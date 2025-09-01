@@ -337,42 +337,6 @@ export default function EditChallengeOng({
             </NewSelect>
           </div>
 
-          <div>
-            <Input
-              id="file-attachments"
-              type="file"
-              className="hidden"
-              multiple
-              {...attachmentsRegisterRest}
-              ref={(e) => {
-                attachmentsRegisterRef(e);
-                attachmentsInputRef.current = e;
-              }}
-            />
-            <NewButton
-              variant={'lightBlue'}
-              size={'lg'}
-              type="button"
-              onClick={() => attachmentsInputRef.current?.click()}
-              className="flex items-center justify-center gap-2"
-            >
-              <Image src={Upload} alt="Upload Icon" />
-              <span className="text-white">Carregar novo(s) arquivo(s)</span>
-            </NewButton>
-            {attachmentFiles && attachmentFiles.length > 0 && (
-              <div className="mt-2 space-y-1">
-                <p className="text-sm font-semibold">
-                  Novos arquivos selecionados:
-                </p>
-                <ul className="list-disc list-inside text-sm">
-                  {Array.from(attachmentFiles).map((file, index) => (
-                    <li key={index}>{file.name}</li>
-                  ))}
-                </ul>
-              </div>
-            )}
-          </div>
-
           {error && (
             <div
               className="flex items-center p-4 mt-4 text-sm text-red-800 rounded-lg bg-red-50"
@@ -394,7 +358,6 @@ export default function EditChallengeOng({
               {isSubmitting ? 'Salvando...' : 'Salvar Alterações'}
             </NewButton>
 
-            {/* ✅ Passando a função e o estado de exclusão para o modal */}
             <DeleteModal onConfirm={handleDelete} isDeleting={isDeleting} />
           </div>
         </form>

@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { NewButton } from '@/components/ui/new-button';
-import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
@@ -14,20 +13,11 @@ import {
   DialogTrigger,
   DialogClose
 } from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { Nuvem } from '@/assets';
-import Image from 'next/image';
 import { Loader2 } from 'lucide-react';
 import { CheckpointData } from '@/services/challenge.services';
 import { updateCheckpoint } from '@/services/checkpoint.services';
-
-const mockUploadFile = async (file: File): Promise<string> => {
-  console.log(`Simulando upload do arquivo: ${file.name}`);
-  await new Promise((resolve) => setTimeout(resolve, 1000));
-  return `https://fake-storage.com/uploads/photo-${file.name}`;
-};
 
 interface CheckpointModalProps {
   checkpoint: CheckpointData;
@@ -47,23 +37,13 @@ export default function CheckpointModal({
   const [error, setError] = useState<string | null>(null);
   const { register, handleSubmit, watch } = useForm<FormData>();
 
-  const selectedFile = watch('photo');
-
   const onSubmit = async (data: FormData) => {
-     if (!data.photo || data.photo.length === 0) {
-      setError('Por favor, selecione uma foto para o checkpoint.');
-      return;
-    }
-
     setIsSubmitting(true);
     setError(null);
 
     try {
-      const photoUrl = await mockUploadFile(data.photo[0]);
-
       await updateCheckpoint(checkpoint.id, {
         description: data.description,
-        photoUrl: photoUrl,
         completionDate: new Date().toISOString()
       });
 

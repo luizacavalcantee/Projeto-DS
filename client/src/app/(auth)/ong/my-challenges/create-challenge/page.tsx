@@ -290,26 +290,6 @@ export default function CreateChallenge() {
             {errors.tituloCheckpoint3 && <p className="text-red-500 text-sm">{errors.tituloCheckpoint3.message}</p>}
           </div>
                     
-          <div className="space-y-2 pt-4">
-            <NewLabel className="text-xl font-semibold">Anexar arquivos</NewLabel>
-            <p className="text-sm text-muted-foreground">Anexe documentos relevantes referente ao desafio. (Max: 5MB por arquivo).</p>
-          </div>
-          <div>
-            <Input id="file-attachments" type="file" className="hidden" multiple {...attachmentsRegisterRest} ref={(e) => { attachmentsRegisterRef(e); attachmentsInputRef.current = e; }} />
-            <NewButton variant={'lightBlue'} size={'lg'} type="button" onClick={() => attachmentsInputRef.current?.click()} className="flex items-center justify-center gap-2">
-              <Image src={Upload} alt="Upload Icon" />
-              <span className="text-white">Carregar arquivo(s)</span>
-            </NewButton>
-            {attachmentFiles && attachmentFiles.length > 0 && (
-              <div className="mt-2 space-y-1">
-                <p className="text-sm font-semibold">Arquivos selecionados:</p>
-                <ul className="list-disc list-inside text-sm text-muted-foreground">
-                  {Array.from(attachmentFiles).map((file, index) => (<li key={index}>{file.name}</li>))}
-                </ul>
-              </div>
-            )}
-          </div>
-
           {error && (
             <div className="flex items-center p-4 text-sm text-red-800 rounded-lg bg-red-50" role="alert">
               <AlertCircle className="flex-shrink-0 inline w-4 h-4 mr-3" />
