@@ -1,4 +1,3 @@
-# dockerfile used for production. no further configuration is needed
 
 FROM node:20.9.0-slim AS base
 
@@ -14,8 +13,6 @@ RUN mkdir -p /home/node/app/node_modules && chown -R node:node /home/node/app
 
 WORKDIR /home/node/app
 
-################################################################################
-
 FROM base AS builder
 
 COPY package.json pnpm-lock.yaml ./
@@ -25,8 +22,6 @@ RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
 COPY . .
 
 RUN pnpm build && pnpm generate --generator client
-
-################################################################################
 
 FROM base AS runner
 
@@ -47,7 +42,3 @@ USER node
 EXPOSE 3001
 
 CMD [ "pnpm", "run", "prod" ]
-
-# para a documentação seguida para construção desse arquivo, vá para o step 3 do link:
-
-# https://www.digitalocean.com/community/tutorials/como-construir-uma-aplicacao-node-js-com-o-docker-pt

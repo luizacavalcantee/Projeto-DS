@@ -42,7 +42,6 @@ import {
 } from '@/services/challenge.services';
 import DeleteModal from '@/components/delete-modal';
 
-// Tipos, mocks e lógica principal
 type FormData = {
   nomeProjeto: string;
   descricao: string;
@@ -338,34 +337,6 @@ export default function EditChallengeOng({
             </NewSelect>
           </div>
 
-          <div className="space-y-2 pt-4">
-            <NewLabel className="text-xl font-semibold">
-              Anexar arquivos
-            </NewLabel>
-            <p className="text-sm text-muted-foreground">
-              Envie novos arquivos para substituir os existentes.
-            </p>
-            {existingChallenge?.documentUrls &&
-              existingChallenge.documentUrls.length > 0 && (
-                <div className="mt-2 text-sm">
-                  <p className="font-medium">Anexos Atuais:</p>
-                  <ul className="list-disc list-inside">
-                    {existingChallenge.documentUrls.map((url, i) => (
-                      <li key={i}>
-                        <a
-                          href={url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-blue-600 hover:underline"
-                        >
-                          {url.split('/').pop()}
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-          </div>
           <div>
             <Input
               id="file-attachments"

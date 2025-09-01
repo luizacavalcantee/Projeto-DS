@@ -18,8 +18,6 @@ COPY . .
 # Executa o build de produção
 RUN npm run build
 
-# ---
-
 # Estágio 2: Runner - A imagem final e otimizada
 FROM node:18-alpine
 

@@ -370,45 +370,6 @@ export default function SchoolManagerRegistration() {
             </div>
           </div>
 
-          {/* SEÇÃO DE UPLOAD DE IMAGEM */}
-          <div>
-            <NewLabel className="text-xl font-semibold" htmlFor="image-upload">
-              Imagem da escola (Opcional)
-            </NewLabel>
-            <p className="text-sm text-muted-foreground">
-              Escolha uma imagem para representar a sua escola.
-            </p>
-            <div className="mt-4">
-              <NewLabel
-                htmlFor="image-upload"
-                className="flex flex-col items-center bg-white/60 justify-center w-full h-32 px-4 py-6 text-center border border-gray-300 border-dashed rounded-lg cursor-pointer text-muted-foreground transition-colors hover:border-primary hover:text-primary"
-              >
-                <UploadCloud className="w-8 h-8" />
-                <span className="mt-2 text-sm font-medium">
-                  Clique para fazer upload
-                </span>
-                <span className="mt-1 text-xs">SVG, PNG, JPG</span>
-              </NewLabel>
-              <Input
-                id="image-upload"
-                type="file"
-                className="hidden"
-                accept="image/svg+xml, image/png, image/jpeg"
-                {...register('image')}
-              />
-              {errors.image?.message && (
-                <p className="text-red-500 text-sm mt-2">
-                  {String(errors.image.message)}
-                </p>
-              )}
-              {imageFile && imageFile.length > 0 && (
-                <div className="mt-2 text-sm text-muted-foreground">
-                  <strong>Arquivo selecionado:</strong> {imageFile[0].name}
-                </div>
-              )}
-            </div>
-          </div>
-
           {error && (
             <div
               className="flex items-center p-4 text-sm text-red-800 rounded-lg bg-red-50"

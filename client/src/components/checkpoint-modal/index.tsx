@@ -1,5 +1,3 @@
-// src/components/checkpoint-modal.tsx
-
 'use client';
 
 import { useState } from 'react';
@@ -38,7 +36,7 @@ interface CheckpointModalProps {
 
 type FormData = {
   description: string;
-  photo: FileList;
+  photo?: FileList;
 };
 
 export default function CheckpointModal({
@@ -105,35 +103,6 @@ export default function CheckpointModal({
                 rows={4}
                 {...register('description', { required: true })}
               />
-            </div>
-            <div className="grid gap-2 sm:gap-3">
-              <Label htmlFor="file-upload">Faça upload de uma foto</Label>
-              <div className="relative">
-                <Input
-                  id="file-upload"
-                  type="file"
-                  accept="image/*"
-                  className="absolute inset-0 z-10 h-full w-full cursor-pointer opacity-0"
-                  {...register('photo', { required: true })}
-                />
-                <Button
-                  type="button"
-                  variant="outline"
-                  className="h-[74px] w-full border-2 border-dashed bg-transparent"
-                >
-                  <div className="flex flex-col items-center">
-                    <div className="flex items-center gap-2">
-                      <Image src={Nuvem} alt="Upload" className="h-5 w-5" />
-                      <span>
-                        {selectedFile && selectedFile.length > 0
-                          ? selectedFile[0].name
-                          : 'Clique para fazer upload'}
-                      </span>
-                    </div>
-                    <p className="mt-1 text-xs text-gray-500">SVG, PNG, JPG</p>
-                  </div>
-                </Button>
-              </div>
             </div>
           </div>
           {error && (
