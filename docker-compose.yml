@@ -1,41 +1,36 @@
-version: '3.8'
-
-networks:
-  boraimpactar:
-    driver: bridge
-
-volumes:
-  postgres_data:
-
 services:
-  boilerplate-db:
-    image: postgres:15
-    container_name: school_postgres
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: docker
-      POSTGRES_DB: boilerplate
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    networks:
-      - boraimpactar
-
   school_backend:
     build: ./server
     container_name: school_backend
-    depends_on:
-      - boilerplate-db
     env_file:
       - ./server/.env
     ports:
       - "3001:3001"
     networks:
-      - boraimpactar
+      - boraimpactar2
+    restart: on-failure:5
+    # Aguardar um pouco antes de iniciar
+    command: >
+      sh -c "
+        echo 'Aguardando banco de dados...';
+        sleep 30;
+        pnpm run migration:deploy && pnpm run start;
+      "
 
   school_frontend:
     build: ./client
     container_name: school_frontend
     ports:
       - "8001:8001"
+    environment:
+      - NODE_ENV=production
+      - NEXT_PUBLIC_BASE_PATH=/escolaong
+    depends_on:
+      - school_backend
     networks:
-      - boraimpactar
+      - boraimpactar2
+    restart: unless-stopped
+
+networks:
+  boraimpactar2:
+    external: true

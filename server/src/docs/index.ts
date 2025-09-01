@@ -10,7 +10,7 @@ export default {
   },
   servers: [
     {
-      url: 'http://localhost:3001',
+      url: 'http://vm-cinboraimpactar2.cin.ufpe.br/escolaongback',
       description: 'Local Server',
     },
   ],
